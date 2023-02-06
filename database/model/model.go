@@ -24,15 +24,15 @@ type User struct {
 }
 
 type Inbound struct {
-	Id         int    `json:"id" form:"id" gorm:"primaryKey;autoIncrement"`
-	UserId     int    `json:"-"`
-	Up         int64  `json:"up" form:"up"`
-	Down       int64  `json:"down" form:"down"`
-	Total      int64  `json:"total" form:"total"`
-	Remark     string `json:"remark" form:"remark"`
-	Enable     bool   `json:"enable" form:"enable"`
-	ExpiryTime int64  `json:"expiryTime" form:"expiryTime"`
-    ClientStats []xray.ClientTraffic  `gorm:"foreignKey:InboundId;references:Id" json:"clientStats" form:"clientStats"`
+	Id          int                  `json:"id" form:"id" gorm:"primaryKey;autoIncrement"`
+	UserId      int                  `json:"-"`
+	Up          int64                `json:"up" form:"up"`
+	Down        int64                `json:"down" form:"down"`
+	Total       int64                `json:"total" form:"total"`
+	Remark      string               `json:"remark" form:"remark"`
+	Enable      bool                 `json:"enable" form:"enable"`
+	ExpiryTime  int64                `json:"expiryTime" form:"expiryTime"`
+	ClientStats []xray.ClientTraffic `gorm:"foreignKey:InboundId;references:Id" json:"clientStats" form:"clientStats"`
 
 	// config part
 	Listen         string   `json:"listen" form:"listen"`
@@ -42,11 +42,6 @@ type Inbound struct {
 	StreamSettings string   `json:"streamSettings" form:"streamSettings"`
 	Tag            string   `json:"tag" form:"tag" gorm:"unique"`
 	Sniffing       string   `json:"sniffing" form:"sniffing"`
-}
-type InboundClientIps struct {
-	Id       int    `json:"id" gorm:"primaryKey;autoIncrement"`
-	ClientEmail string `json:"clientEmail" form:"clientEmail" gorm:"unique"`
-	Ips string `json:"ips" form:"ips"`
 }
 
 func (i *Inbound) GenXrayInboundConfig() *xray.InboundConfig {
@@ -70,12 +65,12 @@ type Setting struct {
 	Key   string `json:"key" form:"key"`
 	Value string `json:"value" form:"value"`
 }
+
 type Client struct {
-	ID       string `json:"id"`
-	AlterIds uint16 `json:"alterId"`
-	Email string `json:"email"`
-	LimitIP int `json:"limitIp"`
-	Security string `json:"security"`
-	TotalGB      int64  `json:"totalGB" form:"totalGB"`
+	ID         string `json:"id"`
+	AlterIds   uint16 `json:"alterId"`
+	Email      string `json:"email"`
+	Security   string `json:"security"`
+	TotalGB    int64  `json:"totalGB" form:"totalGB"`
 	ExpiryTime int64  `json:"expiryTime" form:"expiryTime"`
 }

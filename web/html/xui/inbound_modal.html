@@ -77,40 +77,16 @@
                     this.inModal.inbound.tls = false;
                 }
             },
-            addClient(protocol,value, clients) {
+            addClient(protocol, clients) {
                 switch (protocol) {
                     case Protocols.VMESS: return clients.push(new Inbound.VmessSettings.Vmess());
                     case Protocols.VLESS: return clients.push(new Inbound.VLESSSettings.VLESS());
+                    case Protocols.TROJAN: return clients.push(new Inbound.TrojanSettings.Trojan());
                     default: return null;
                 }
             },
             removeClient(index, clients) {
                 clients.splice(index, 1);
-            },
-
-            async getDBClientIps(email,event) {
-
-                const msg = await HttpUtil.post('/xui/inbound/clientIps/'+ email);
-                if (!msg.success) {
-                    return;
-                }
-                try {
-                    ips = JSON.parse(msg.obj)
-                    ips = ips.join(",")
-                    event.target.value = ips
-                } catch (error) {
-                    // text
-                    event.target.value = msg.obj
-
-                }
-
-            },
-            async clearDBClientIps(email,event) {
-                const msg = await HttpUtil.post('/xui/inbound/clearClientIps/'+ email);
-                if (!msg.success) {
-                    return;
-                }
-                event.target.value = ""
             },
             async resetClientTraffic(client,event) {
                 const msg = await HttpUtil.post('/xui/inbound/resetClientTraffic/'+ client.email);

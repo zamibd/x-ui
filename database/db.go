@@ -1,15 +1,16 @@
 package database
 
 import (
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 	"io/fs"
 	"os"
 	"path"
 	"x-ui/config"
-	"x-ui/xray"
 	"x-ui/database/model"
+	"x-ui/xray"
+
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 var db *gorm.DB
@@ -41,9 +42,7 @@ func initInbound() error {
 func initSetting() error {
 	return db.AutoMigrate(&model.Setting{})
 }
-func initInboundClientIps() error {
-	return db.AutoMigrate(&model.InboundClientIps{})
-}
+
 func initClientTraffic() error {
 	return db.AutoMigrate(&xray.ClientTraffic{})
 }
@@ -83,15 +82,12 @@ func InitDB(dbPath string) error {
 	if err != nil {
 		return err
 	}
-	err = initInboundClientIps()
-	if err != nil {
-		return err
-	}
+
 	err = initClientTraffic()
 	if err != nil {
 		return err
 	}
-	
+
 	return nil
 }
 

@@ -31,8 +31,8 @@
 "host" = "host"
 "path" = "path"
 "camouflage" = "camouflage"
-"turnOn" = "turn on"
-"closure" = "closure"
+"enabled" = "enabled"
+"disabled" = "disabled"
 "domainName" = "domain name"
 "additional" = "alter"
 "monitor" = "Listen IP"
@@ -41,6 +41,7 @@
 "success" = " success"
 "getVersion" = "get version"
 "install" = "install"
+"clients" = "Clients"
 
 [menu]
 "dashboard" = "System Status"
@@ -55,9 +56,9 @@
 
 [pages.login.toasts]
 "invalidFormData" = "Input Data Format Is Invalid"
-"emptyUsername" = "please Enter Username"
-"emptyPassword" = "please Enter Password"
-"wrongUsernameOrPassword" = "invalid username or password"
+"emptyUsername" = "Please Enter Username"
+"emptyPassword" = "Please Enter Password"
+"wrongUsernameOrPassword" = "Invalid username or password"
 "successLogin" = "Login"
 
 
@@ -122,6 +123,7 @@
 "publicKeyContent" = "public key content"
 "keyPath" = "key file path"
 "keyContent" = "key content"
+"clickOnQRcode" = "click on QR Code to Copy"
 
 [pages.inbounds.toasts]
 "obtain" = "Obtain"

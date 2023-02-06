@@ -2,16 +2,15 @@
 > **Disclaimer: This project is only for personal learning and communication, please do not use it for illegal purposes, please do not use it in a production environment**
 
 
-xray panel supporting multi-protocol, **Multi-lang (English,Chinese)**, **IP Restrication Per Inbound**
+xray panel supporting multi-protocol, **Multi-lang (English,Farsi,Chinese)**
 
 | Features        | Enable?           |
 | ------------- |:-------------:|
 | Multi-lang | :heavy_check_mark: |
-| [IP Restriction](https://github.com/HexaSoftwareTech/x-ui/#enable-ip-restrictions-per-inbound) | :heavy_check_mark: |
-| [Inbound Multi User](https://github.com/HexaSoftwareTech/x-ui/#enable-multi-user-traffic--exprire-day) | :heavy_check_mark: |
-| [Multi User Traffic & expire day](https://github.com/HexaSoftwareTech/x-ui/#enable-multi-user-traffic--exprire-day) | :heavy_check_mark: |
-| [REST API](https://github.com/HexaSoftwareTech/x-ui/pull/51) | :heavy_check_mark: |
-| [Telegram BOT](https://github.com/HexaSoftwareTech/x-ui/pull/110) | :heavy_check_mark: |
+| [Inbound Multi User](https://github.com/alireza0/x-ui/#enable-multi-user-traffic--exprire-day) | :heavy_check_mark: |
+| [Multi User Traffic & expire day](https://github.com/alireza0/x-ui/#enable-multi-user-traffic--exprire-day) | :heavy_check_mark: |
+| [REST API](https://github.com/alireza0/x-ui/pull/51) | :heavy_check_mark: |
+| [Telegram BOT](https://github.com/alireza0/x-ui/pull/110) | :heavy_check_mark: |
 
 **If you think this project is helpful to you, you may wish to give a** :star2: 
 
@@ -27,24 +26,6 @@ xray panel supporting multi-protocol, **Multi-lang (English,Chinese)**, **IP Res
 - Support one-click SSL certificate application and automatic renewal
 - For more advanced configuration items, please refer to the panel
 
-# Enable IP Restrictions Per Inbound
-`!!! NO NEED TO DO THIS IF YOU HAVE FRESH INSTALL`
-
-1 - open panel settings and tab xray related settings find `"api": ` and put bellow code just before it :
- ```json
- "log": {
-    "loglevel": "warning", 
-    "access": "./access.log"
-  }, 
-```
-- change access log path as you want
-
-2 - add **IP limit and Unique Email** for inbound(vmess & vless)
-
-# Enable Multi User Traffic & Exprire Day
-![Screenshot from 2022-11-15 07-43-58](https://user-images.githubusercontent.com/16622377/201922652-111ff5b8-272b-49f5-a656-d6f57d79eaed.png)
-
-`!!! NO NEED TO DO THIS IF YOU HAVE FRESH INSTALL`
 
 **for enable traffic for users you should do :**
 
@@ -85,12 +66,12 @@ find this in config :
 # Install & Upgrade
 
 ```
-bash <(curl -Ls https://raw.githubusercontent.com/HexaSoftwareTech/x-ui/master/install.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/alireza0/x-ui/master/install.sh)
 ```
 
 ## Manual install & upgrade
 
-1. First download the latest compressed package from https://github.com/HexaSoftwareTech/x-ui/releases , generally choose Architecture `amd64`
+1. First download the latest compressed package from https://github.com/alireza0/x-ui/releases , generally choose Architecture `amd64`
 2. Then upload the compressed package to the server's `/root/` directory and `root` rootlog in to the server with user
 
 > If your server cpu architecture is not `amd64` replace another architecture
@@ -110,7 +91,7 @@ systemctl restart x-ui
 
 ## Install using docker
 
-> This docker tutorial and docker image are provided by [HexaSoftwareTech](https://github.com/HexaSoftwareTech)
+> This docker tutorial and docker image are provided by [alireza0](https://github.com/alireza0)
 
 1. install docker
 
@@ -126,7 +107,7 @@ docker run -itd --network=host \
     -v $PWD/db/:/etc/x-ui/ \
     -v $PWD/cert/:/root/cert/ \
     --name x-ui --restart=unless-stopped \
-    HexaSoftwareTech/x-ui:latest
+    alireza0/x-ui:latest
 ```
 
 > Build your own image
@@ -207,4 +188,4 @@ x-ui v2-ui
 
 ## Stargazers over time
 
-[![Stargazers over time](https://starchart.cc/HexaSoftwareTech/x-ui.svg)](https://starchart.cc/HexaSoftwareTech/x-ui)
+[![Stargazers over time](https://starchart.cc/alireza0/x-ui.svg)](https://starchart.cc/alireza0/x-ui)

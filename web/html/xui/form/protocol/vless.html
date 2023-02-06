@@ -1,5 +1,6 @@
 {{define "form/vless"}}
 <a-form layout="inline">
+<label>{{ i18n "clients"}}</label>
 <a-collapse activeKey="0"  v-for="(vless, index) in inbound.settings.vlesses"
 :key="`vless-${index}`">
 
@@ -21,43 +22,6 @@
                     </a-tooltip>
                 </span>
                 <a-input v-model.trim="vless.email"></a-input>
-            </a-form-item>
-            <a-form-item>
-                <span slot="label">
-                    IP Count Limit
-                    <a-tooltip>
-                        <template slot="title">
-                            disable inbound if more than entered count (0 for disable limit ip)
-                        </template>
-                        <a-icon type="question-circle" theme="filled"></a-icon>
-                    </a-tooltip>
-                </span>
-
-                <a-input type="number" v-model.number="vless.limitIp" min="0" ></a-input>
-            </a-form-item>
-            <a-form-item v-if="vless.email && vless.limitIp > 0 && isEdit">
-                <span slot="label">
-                    IP log
-                    <a-tooltip>
-                        <template slot="title">
-                            IPs history Log (before enabling inbound after it has been disabled by IP limit, you should clear the log)
-                        </template>
-                        <a-icon type="question-circle" theme="filled"></a-icon>
-                    </a-tooltip>
-                    <a-tooltip>
-                        <template slot="title">
-                            clear the log
-                        </template>
-                        <span style="color: #FF4D4F">
-                            <a-icon type="delete" @click="clearDBClientIps(vless.email,$event)"></a-icon>
-                        </span>
-                    </a-tooltip>
-                </span>
-                <a-form layout="block">
-
-                    <a-textarea readonly @click="getDBClientIps(vless.email,$event)" placeholder="Click To Get IPs"  :auto-size="{ minRows: 0.5, maxRows: 10 }">
-                    </a-textarea>
-                </a-form>
             </a-form-item>
         </a-form>
         <a-form-item label="id">
@@ -105,23 +69,7 @@
             </a-tooltip>
             <a-tag color="blue">[[ sizeFormat(getUpStats(vless.email)) ]] / [[ sizeFormat(getDownStats(vless.email)) ]]</a-tag>
             <a-tag v-if="vless._totalGB > 0" color="red">used : [[ sizeFormat(getUpStats(vless.email) + getDownStats(vless.email)) ]]</a-tag>
-            <a-tag>
-                <svg
-    
-                    @click="addClient(inbound.protocol,vless, inbound.settings.vlesses)"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 22 22"
-                    width="22"
-                    height="22"
-                    class="mt-2 cursor-pointer"
-                    >
-                    <path fill="none" d="M0 0h24v24H0z" />
-                    <path
-                    fill="green"
-                    d="M11 11V7h2v4h4v2h-4v4h-2v-4H7v-2h4zm1 11C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"
-                    />
-                </svg>
-            </a-tag>
+
             <a-tag v-show="inbound.settings.vlesses.length > 1">
                 <svg
                 @click="removeClient(index, inbound.settings.vlesses)"
@@ -139,9 +87,24 @@
                 </svg>
             </a-tag>
         </a-form>
-
-
-    </a-form>
+    </a-collapse-panel>
+</a-collapse>
+<a-tag>
+    <svg
+        @click="addClient(inbound.protocol, inbound.settings.vlesses)"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        width="24"
+        height="24"
+        class="ml-2 cursor-pointer"
+        >
+        <path fill="none" d="M0 0h24v24H0z" />
+        <path
+        fill="green"
+        d="M11 11V7h2v4h4v2h-4v4h-2v-4H7v-2h4zm1 11C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"
+        />
+    </svg>
+</a-tag>
 
 <a-form layout="inline">
     <a-form-item label="fallbacks">

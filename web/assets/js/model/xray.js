@@ -825,6 +825,10 @@ class Inbound extends XrayCommonClass {
                 if(this.settings.vlesses[index]._expiryTime != null)
                     return this.settings.vlesses[index]._expiryTime < new Date().getTime();
                 return false
+                case Protocols.TROJAN:
+                    if(this.settings.trojans[index]._expiryTime != null)
+                        return this.settings.trojans[index]._expiryTime < new Date().getTime();
+                    return false
             default:
                 return false;
         }
@@ -1053,9 +1057,9 @@ class Inbound extends XrayCommonClass {
             + '#' + encodeURIComponent(remark);
     }
 
-    genTrojanLink(address='', remark='') {
+    genTrojanLink(address='', remark='', clientIndex=0) {
         let settings = this.settings;
-        return `trojan://${settings.clients[0].password}@${address}:${this.port}#${encodeURIComponent(remark)}`;
+        return `trojan://${settings.trojans[clientIndex].password}@${address}:${this.port}#${encodeURIComponent(remark+"-"+settings.trojans[clientIndex].email)}`;
     }
 
     genLink(address='', remark='', clientIndex=0) {
@@ -1063,7 +1067,7 @@ class Inbound extends XrayCommonClass {
             case Protocols.VMESS: return this.genVmessLink(address, remark, clientIndex);
             case Protocols.VLESS: return this.genVLESSLink(address, remark, clientIndex);
             case Protocols.SHADOWSOCKS: return this.genSSLink(address, remark);
-            case Protocols.TROJAN: return this.genTrojanLink(address, remark);
+            case Protocols.TROJAN: return this.genTrojanLink(address, remark, clientIndex);
             default: return '';
         }
     }
@@ -1181,12 +1185,11 @@ Inbound.VmessSettings = class extends Inbound.Settings {
     }
 };
 Inbound.VmessSettings.Vmess = class extends XrayCommonClass {
-    constructor(id=RandomUtil.randomUUID(), alterId=0, email='', limitIp=0, totalGB=0, expiryTime='') {
+    constructor(id=RandomUtil.randomUUID(), alterId=0, email='', totalGB=0, expiryTime='') {
         super();
         this.id = id;
         this.alterId = alterId;
         this.email = email;
-        this.limitIp = limitIp;
         this.totalGB = totalGB;
         this.expiryTime = expiryTime;
     }
@@ -1196,7 +1199,6 @@ Inbound.VmessSettings.Vmess = class extends XrayCommonClass {
             json.id,
             json.alterId,
             json.email,
-            json.limitIp,
             json.totalGB,
             json.expiryTime,
 
@@ -1265,12 +1267,11 @@ Inbound.VLESSSettings = class extends Inbound.Settings {
 };
 Inbound.VLESSSettings.VLESS = class extends XrayCommonClass {
 
-    constructor(id=RandomUtil.randomUUID(), flow=FLOW_CONTROL.DIRECT, email='', limitIp=0, totalGB=0, expiryTime='') {
+    constructor(id=RandomUtil.randomUUID(), flow=FLOW_CONTROL.DIRECT, email='', totalGB=0, expiryTime='') {
         super();
         this.id = id;
         this.flow = flow;
         this.email = email;
-        this.limitIp = limitIp;
         this.totalGB = totalGB;
         this.expiryTime = expiryTime;
 
@@ -1281,7 +1282,6 @@ Inbound.VLESSSettings.VLESS = class extends XrayCommonClass {
             json.id,
             json.flow,
             json.email,
-            json.limitIp,
             json.totalGB,
             json.expiryTime,
 
@@ -1351,10 +1351,10 @@ Inbound.VLESSSettings.Fallback = class extends XrayCommonClass {
 
 Inbound.TrojanSettings = class extends Inbound.Settings {
     constructor(protocol,
-                clients=[new Inbound.TrojanSettings.Client()],
+                trojans=[new Inbound.TrojanSettings.Trojan()],
                 fallbacks=[],) {
         super(protocol);
-        this.clients = clients;
+        this.trojans = trojans;
         this.fallbacks = fallbacks;
     }
 
@@ -1366,43 +1366,71 @@ Inbound.TrojanSettings = class extends Inbound.Settings {
         this.fallbacks.splice(index, 1);
     }
 
+    static fromJson(json={}) {
+        return new Inbound.TrojanSettings(
+            Protocols.TROJAN,
+            json.clients.map(client => Inbound.TrojanSettings.Trojan.fromJson(client)),
+            Inbound.TrojanSettings.Fallback.fromJson(json.fallbacks),);
+    }
+
     toJson() {
         return {
-            clients: Inbound.TrojanSettings.toJsonArray(this.clients),
+            clients: Inbound.TrojanSettings.toJsonArray(this.trojans),
             fallbacks: Inbound.TrojanSettings.toJsonArray(this.fallbacks),
         };
     }
-
-    static fromJson(json={}) {
-        const clients = [];
-        for (const c of json.clients) {
-            clients.push(Inbound.TrojanSettings.Client.fromJson(c));
-        }
-        return new Inbound.TrojanSettings(
-            Protocols.TROJAN,
-            clients,
-            Inbound.TrojanSettings.Fallback.fromJson(json.fallbacks),);
-    }
 };
-Inbound.TrojanSettings.Client = class extends XrayCommonClass {
-    constructor(password=RandomUtil.randomSeq(10), flow=FLOW_CONTROL.DIRECT) {
+Inbound.TrojanSettings.Trojan = class extends XrayCommonClass {
+    constructor(password=RandomUtil.randomSeq(10), flow=FLOW_CONTROL.DIRECT, email='', totalGB=0, expiryTime='') {
         super();
         this.password = password;
         this.flow = flow;
+        this.email = email;
+        this.totalGB = totalGB;
+        this.expiryTime = expiryTime;
     }
 
     toJson() {
         return {
             password: this.password,
             flow: this.flow,
+            email: this.email,
+            totalGB: this.totalGB,
+            expiryTime: this.expiryTime,
         };
     }
 
     static fromJson(json={}) {
-        return new Inbound.TrojanSettings.Client(
+        return new Inbound.TrojanSettings.Trojan(
             json.password,
             json.flow,
+            json.email,
+            json.totalGB,
+            json.expiryTime,
+
         );
+    }
+
+    get _expiryTime() {
+        if (this.expiryTime === 0 || this.expiryTime === "") {
+            return null;
+        }
+        return moment(this.expiryTime);
+    }
+
+    set _expiryTime(t) {
+        if (t == null || t === "") {
+            this.expiryTime = 0;
+        } else {
+            this.expiryTime = t.valueOf();
+        }
+    }
+    get _totalGB() {
+        return toFixed(this.totalGB / ONE_GB, 2);
+    }
+
+    set _totalGB(gb) {
+        this.totalGB = toFixed(gb * ONE_GB, 0);
     }
 
 };

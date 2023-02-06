@@ -46,8 +46,8 @@
                         <div slot="title">
                             <a-button type="primary" icon="plus" @click="openAddInbound"></a-button>
                         </div>
-<!--                        <a-input v-model="searchKey" placeholder="搜索" autofocus style="max-width: 300px"></a-input>-->
-                        <a-table :columns="columns" :row-key="dbInbound => dbInbound.id"
+<!--                        <a-input v-model="searchKey" placeholder="search" autofocus style="max-width: 300px"></a-input>-->
+                            <a-table :columns="columns" :row-key="dbInbound => dbInbound.id"
                                  :data-source="dbInbounds"
                                  :loading="spinning" :scroll="{ x: 1500 }"
                                  :pagination="false"
@@ -55,7 +55,7 @@
                                  @change="() => getDBInbounds()">
                             <template slot="action" slot-scope="text, dbInbound">
                                 <a-dropdown :trigger="['click']">
-                                    <a @click="e => e.preventDefault()">{{ i18n "pages.inbounds.operate" }}</a>
+                                    <a-icon @click="e => e.preventDefault()" type="menu"></a-icon>
                                     <a-menu slot="overlay" @click="a => clickAction(a, dbInbound)">
                                         <a-menu-item v-if="dbInbound.hasLink()" key="qrcode">
                                             <a-icon type="qrcode"></a-icon>
@@ -112,6 +112,11 @@
                                 </template>
                                 <a-tag v-else color="green">{{ i18n "indefinitely" }}</a-tag>
                             </template>
+                            <template #expandedRowRender="{ record }">
+                                <p style="margin: 0">
+                                  {{ i18n "none" }}
+                                </p>
+                              </template>                          
                         </a-table>
                     </a-card>
                 </transition>

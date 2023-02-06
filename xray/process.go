@@ -154,15 +154,15 @@ func (p *process) Start() (err error) {
 
 	data, err := json.MarshalIndent(p.config, "", "  ")
 	if err != nil {
-		return common.NewErrorf("生成 xray 配置文件失败: %v", err)
+		return common.NewErrorf("Failure to generate XRAY configuration files: %v", err)
 	}
 	configPath := GetConfigPath()
 	err = os.WriteFile(configPath, data, fs.ModePerm)
 	if err != nil {
-		return common.NewErrorf("写入配置文件失败: %v", err)
+		return common.NewErrorf("Write the configuration file failed: %v", err)
 	}
 
-	cmd := exec.Command(GetBinaryPath(), "-c", configPath, "-restrictedIPsPath", "./bin/blockedIPs")
+	cmd := exec.Command(GetBinaryPath(), "-c", configPath)
 	p.cmd = cmd
 
 	stdReader, err := cmd.StdoutPipe()
@@ -262,18 +262,18 @@ func (p *process) GetTraffic(reset bool) ([]*Traffic, []*ClientTraffic, error) {
 			matchs := ClientTrafficRegex.FindStringSubmatch(stat.Name)
 			if len(matchs) < 3 {
 				continue
-			}else {
+			} else {
 
 				isUser := matchs[1] == "user"
 				email := matchs[2]
 				isDown := matchs[3] == "downlink"
-				if ! isUser {
+				if !isUser {
 					continue
 				}
 				traffic, ok := emailTrafficMap[email]
 				if !ok {
 					traffic = &ClientTraffic{
-						Email:       email,
+						Email: email,
 					}
 					emailTrafficMap[email] = traffic
 					clientTraffics = append(clientTraffics, traffic)
@@ -283,7 +283,7 @@ func (p *process) GetTraffic(reset bool) ([]*Traffic, []*ClientTraffic, error) {
 				} else {
 					traffic.Up = stat.Value
 				}
-		
+
 			}
 			continue
 		}
