@@ -1,17 +1,16 @@
-FROM golang:latest AS builder
-WORKDIR /root
+FROM golang:1.20-alpine AS builder
+WORKDIR /app
+ENV CGO_ENABLED 1
+RUN apk add gcc && apk --no-cache --update add build-base
 COPY . .
 RUN go build main.go
 
-
-FROM debian:11-slim
+FROM alpine
 LABEL org.opencontainers.image.authors="alireza7@gmail.com"
-ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && apt-get install -y --no-install-recommends -y ca-certificates \
-    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apk add ca-certificates tzdata
 ENV TZ=Asia/Tehran
-WORKDIR /root
-COPY --from=builder  /root/main /root/x-ui
-COPY ./bin/. /root/bin/.
+WORKDIR /app
+COPY --from=builder  /app/main /app/x-ui
+COPY ./bin/. /app/bin/.
 VOLUME [ "/etc/x-ui" ]
 CMD [ "./x-ui" ]

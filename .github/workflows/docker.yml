@@ -7,7 +7,7 @@ on:
         project:
           description: 'Project'
           required: true
-          default: 
+          default: ''
 
 jobs:
 
