@@ -952,8 +952,7 @@ class Inbound extends XrayCommonClass {
                 address = this.stream.tls.server;
             }
         }
-
-        remark = this.settings.vmesses[clientIndex].email ?? remark;
+        
         let obj = {
             v: '2',
             ps: remark,
@@ -976,7 +975,6 @@ class Inbound extends XrayCommonClass {
         const port = this.port;
         const type = this.stream.network;
         const params = new Map();
-        remark = settings.vlesses[clientIndex].email ?? remark;
         params.set("type", this.stream.network);
         if (this.xtls) {
             params.set("security", "xtls");
@@ -1061,16 +1059,27 @@ class Inbound extends XrayCommonClass {
 
     genTrojanLink(address='', remark='', clientIndex=0) {
         let settings = this.settings;
-        remark = settings.trojans[clientIndex].email ?? remark;
         return `trojan://${settings.trojans[clientIndex].password}@${address}:${this.port}#${encodeURIComponent(remark)}`;
     }
 
     genLink(address='', remark='', clientIndex=0) {
         switch (this.protocol) {
-            case Protocols.VMESS: return this.genVmessLink(address, remark, clientIndex);
-            case Protocols.VLESS: return this.genVLESSLink(address, remark, clientIndex);
+            case Protocols.VMESS:
+                if (this.settings.vmesses[clientIndex].email != ""){
+                    remark += '-' + this.settings.vmesses[clientIndex].email
+                }
+                return this.genVmessLink(address, remark, clientIndex);
+            case Protocols.VLESS:
+                if (this.settings.vlesses[clientIndex].email != ""){
+                    remark += '-' + this.settings.vlesses[clientIndex].email
+                }
+                return this.genVLESSLink(address, remark, clientIndex);
             case Protocols.SHADOWSOCKS: return this.genSSLink(address, remark);
-            case Protocols.TROJAN: return this.genTrojanLink(address, remark, clientIndex);
+            case Protocols.TROJAN:
+                if (this.settings.trojans[clientIndex].email != ""){
+                    remark += '-' + this.settings.trojans[clientIndex].email
+                }
+                return this.genTrojanLink(address, remark, clientIndex);
             default: return '';
         }
     }
