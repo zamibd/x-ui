@@ -34,7 +34,7 @@
 "path" = "مسیر"
 "camouflage" = "استتار"
 "enabled" = "فعال"
-"disabled" = "disabled"
+"disabled" = "غیرفعال"
 "domainName" = "آدرس دامنه"
 "additional" = "آی دی جایگزین"
 "monitor" = "آی پی اتصال"
