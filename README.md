@@ -7,16 +7,18 @@ xray panel supporting multi-protocol, **Multi-lang (English,Farsi,Chinese)**
 | Features        | Enable?           |
 | ------------- |:-------------:|
 | Multi-lang | :heavy_check_mark: |
-| [Inbound Multi User](https://github.com/alireza0/x-ui/#enable-multi-user-traffic--exprire-day) | :heavy_check_mark: |
-| [Multi User Traffic & expire day](https://github.com/alireza0/x-ui/#enable-multi-user-traffic--exprire-day) | :heavy_check_mark: |
-| [REST API](https://github.com/alireza0/x-ui/pull/51) | :heavy_check_mark: |
-| [Telegram BOT](https://github.com/alireza0/x-ui/pull/110) | :heavy_check_mark: |
+| Search in deep | :heavy_check_mark: |
+| Inbound Multi User | :heavy_check_mark: |
+| Multi User Traffic & Expiration time | :heavy_check_mark: |
+| REST API | :heavy_check_mark: |
+| Telegram BOT | :heavy_check_mark: |
 
 **If you think this project is helpful to you, you may wish to give a** :star2: 
 
 # Features
 
 - System Status Monitoring
+- Search within all inbounds and clients
 - Support multi-user multi-protocol, web page visualization operation
 - Supported protocols: vmess, vless, trojan, shadowsocks, dokodemo-door, socks, http
 - Support for configuring more transport configurations
@@ -26,43 +28,10 @@ xray panel supporting multi-protocol, **Multi-lang (English,Farsi,Chinese)**
 - Support one-click SSL certificate application and automatic renewal
 - For more advanced configuration items, please refer to the panel
 
+# Inbouds picture
 
-**for enable traffic for users you should do :**
+![inbounds](./media/inbounds.png)
 
-find this in config : 
-``` json
- "policy": {
-    "system": {
-```
-**and add this just after  ` "policy": {` :**
-```json
-    "levels": {
-      "0": {
-        "statsUserUplink": true,
-        "statsUserDownlink": true
-      }
-    },
-```
-
-
-**the final output is like :**
-```json
-  "policy": {
-    "levels": {
-      "0": {
-        "statsUserUplink": true,
-        "statsUserDownlink": true
-      }
-    },
-
-    "system": {
-      "statsInboundDownlink": true,
-      "statsInboundUplink": true
-    }
-  },
-  "routing": {
-```
- restart panel
 # Install & Upgrade
 
 ```
@@ -118,27 +87,19 @@ docker build -t x-ui .
 
 ## SSL certificate application
 
+### Cloudflare
+
 > This feature and tutorial are provided by [FranzKafkaYu](https://github.com/FranzKafkaYu)
 
-The script has a built-in SSL certificate application function. To use this script to apply for a certificate, the following conditions must be met:
+### Certbot
 
-- Know the Cloudflare registered email
-- Know the Cloudflare Global API Key
-- The domain name has been resolved to the current server through cloudflare
+```bash
+snap install core; snap refresh core
+snap install --classic certbot
+ln -s /snap/bin/certbot /usr/bin/certbot
 
-How to get the Cloudflare Global API Key:
-    ![](media/bda84fbc2ede834deaba1c173a932223.png)
-    ![](media/d13ffd6a73f938d1037d0708e31433bf.png)
-
-When using, just enter `email`, `domain`, `API KEY` and the schematic diagram is as follows：
-        ![](media/2022-04-04_141259.png)
-
-Precautions:
-
-- The script uses DNS API for certificate request
-- By default, Let'sEncrypt is used as the CA party
-- The certificate installation directory is the /root/cert directory
-- The certificates applied for by this script are all generic domain name certificates
+certbot certonly --standalone --register-unsafely-without-email --non-interactive --agree-tos -d <Your Domain Name>
+```
 
 ## Tg robot use (under development, temporarily unavailable)
 
@@ -185,6 +146,46 @@ First install the latest version of x-ui on the server where v2-ui is installed,
 ```
 x-ui v2-ui
 ```
+
+# T-Shoots:
+
+**If you ygrade from an old version or other forks, for enable traffic for users you should do :**
+
+find this in config : 
+``` json
+ "policy": {
+    "system": {
+```
+**and add this just after  ` "policy": {` :**
+```json
+    "levels": {
+      "0": {
+        "statsUserUplink": true,
+        "statsUserDownlink": true
+      }
+    },
+```
+
+
+**the final output is like :**
+```json
+  "policy": {
+    "levels": {
+      "0": {
+        "statsUserUplink": true,
+        "statsUserDownlink": true
+      }
+    },
+
+    "system": {
+      "statsInboundDownlink": true,
+      "statsInboundUplink": true
+    }
+  },
+  "routing": {
+```
+ restart panel
+ 
 
 ## Stargazers over time
 
