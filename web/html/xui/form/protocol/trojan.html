@@ -4,7 +4,7 @@
 <a-collapse activeKey="0"  v-for="(trojan, index) in inbound.settings.trojans"
 :key="`trojan-${index}`">
 
-    <a-collapse-panel :header="getHeaderText(trojan.email)">
+    <a-collapse-panel :class="getHeaderStyle(trojan.email)" :header="getHeaderText(trojan.email)">
         <a-tag v-if="isExpiry(index) || ((getUpStats(trojan.email) + getDownStats(trojan.email)) > trojan.totalGB && trojan.totalGB != 0)" color="red" style="margin-bottom: 10px;display: block;text-align: center;">Account is (Expired|Traffic Ended) And Disabled</a-tag>
         <a-form layout="inline">
             <a-form-item>
@@ -60,7 +60,7 @@
         <a-form layout="inline">
             <a-tooltip v-if="trojan._totalGB > 0">
                 <template slot="title">
-                    reset traffic
+                    {{ i18n "pages.inbounds.resetTraffic" }}
                 </template>
                 <span style="color: #FF4D4F">
                     <a-icon type="delete" @click="resetClientTraffic(trojan,$event)"></a-icon>

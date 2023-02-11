@@ -157,6 +157,10 @@
                 return email + (this.isClientEnable(email) == true ? ' Active' : ' Deactive')
             },
 
+            getHeaderStyle(email) {
+                return (this.isClientEnable(email) == true ? '' : 'deactive-client')
+            },
+            
             getNewEmail(client) {
                 var chars = 'abcdefghijklmnopqrstuvwxyz1234567890';
                 var string = '';

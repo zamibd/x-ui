@@ -145,3 +145,8 @@
 .ant-progress-inner {
     background-color: #EBEEF5;
 }
+
+.deactive-client .ant-collapse-header{
+    color:rgb(255, 255, 255) !important;
+    background-color: rgb(255, 127, 127);
+}
