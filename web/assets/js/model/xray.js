@@ -953,6 +953,7 @@ class Inbound extends XrayCommonClass {
             }
         }
 
+        remark = this.settings.vmesses[clientIndex].email ?? remark;
         let obj = {
             v: '2',
             ps: remark,
@@ -975,6 +976,7 @@ class Inbound extends XrayCommonClass {
         const port = this.port;
         const type = this.stream.network;
         const params = new Map();
+        remark = settings.vlesses[clientIndex].email ?? remark;
         params.set("type", this.stream.network);
         if (this.xtls) {
             params.set("security", "xtls");
@@ -1059,7 +1061,8 @@ class Inbound extends XrayCommonClass {
 
     genTrojanLink(address='', remark='', clientIndex=0) {
         let settings = this.settings;
-        return `trojan://${settings.trojans[clientIndex].password}@${address}:${this.port}#${encodeURIComponent(remark+"-"+settings.trojans[clientIndex].email)}`;
+        remark = settings.trojans[clientIndex].email ?? remark;
+        return `trojan://${settings.trojans[clientIndex].password}@${address}:${this.port}#${encodeURIComponent(remark)}`;
     }
 
     genLink(address='', remark='', clientIndex=0) {
