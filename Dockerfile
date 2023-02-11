@@ -7,10 +7,10 @@ RUN go build main.go
 
 FROM alpine
 LABEL org.opencontainers.image.authors="alireza7@gmail.com"
-RUN apk add ca-certificates tzdata
 ENV TZ=Asia/Tehran
 WORKDIR /app
+
+RUN apk add ca-certificates tzdata && mkdir bin
 COPY --from=builder  /app/main /app/x-ui
-COPY ./bin/. /app/bin/.
 VOLUME [ "/etc/x-ui" ]
 CMD [ "./x-ui" ]
