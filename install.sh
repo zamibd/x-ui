@@ -26,7 +26,7 @@ elif cat /proc/version | grep -Eqi "ubuntu"; then
 elif cat /proc/version | grep -Eqi "centos|red hat|redhat"; then
     release="centos"
 else
-    echo -e "${red} check system OS failed,please contact with author! ${plain}\n" && exit 1
+    echo -e "${red} Check system OS failed, please contact the author! ${plain}\n" && exit 1
 fi
 
 arch=$(arch)
@@ -39,13 +39,13 @@ elif [[ $arch == "s390x" ]]; then
     arch="s390x"
 else
     arch="amd64"
-    echo -e "${red} Fail to check system arch,will use default arch here: ${arch}${plain}"
+    echo -e "${red} Fail to check system arch, will use default arch: ${arch}${plain}"
 fi
 
 echo "arch: ${arch}"
 
 if [ $(getconf WORD_BIT) != '32' ] && [ $(getconf LONG_BIT) != '64' ]; then
-    echo "x-ui dosen't support 32bit(x86) system,please use 64 bit operating system(x86_64) instead,if there is something wrong,plz let me know"
+    echo "x-ui dosen't support 32-bit(x86) system, please use 64 bit operating system(x86_64) instead,if there is something wrong, plz let me know"
     exit -1
 fi
 
@@ -61,15 +61,15 @@ fi
 
 if [[ x"${release}" == x"centos" ]]; then
     if [[ ${os_version} -le 6 ]]; then
-        echo -e "${red} please use CentOS 7 or higher version ${plain}\n" && exit 1
+        echo -e "${red} Please use CentOS 7 or higher version ${plain}\n" && exit 1
     fi
 elif [[ x"${release}" == x"ubuntu" ]]; then
     if [[ ${os_version} -lt 16 ]]; then
-        echo -e "${red} please use Ubuntu 16 or higher version ${plain}\n" && exit 1
+        echo -e "${red} Please use Ubuntu 16 or higher version ${plain}\n" && exit 1
     fi
 elif [[ x"${release}" == x"debian" ]]; then
     if [[ ${os_version} -lt 8 ]]; then
-        echo -e "${red} please use Debian 8 or higher version ${plain}\n" && exit 1
+        echo -e "${red} Please use Debian 8 or higher version ${plain}\n" && exit 1
     fi
 fi
 
@@ -83,22 +83,22 @@ install_base() {
 
 #This function will be called when user installed x-ui out of sercurity
 config_after_install() {
-    echo -e "${yellow} Install/update finished need to modify panel settings out of security ${plain}"
-    read -p "are you continue,if you type n will skip this at this time[y/n]": config_confirm
+    echo -e "${yellow}Install/update finished! For security it's recommended to modify panel settings ${plain}"
+    read -p "Do you want to continue with the modification [y/n]? ": config_confirm
     if [[ x"${config_confirm}" == x"y" || x"${config_confirm}" == x"Y" ]]; then
-        read -p "please set up your username:" config_account
-        echo -e "${yellow}your username will be:${config_account}${plain}"
-        read -p "please set up your password:" config_password
-        echo -e "${yellow}your password will be:${config_password}${plain}"
-        read -p "please set up the panel port:" config_port
-        echo -e "${yellow}your panel port is:${config_port}${plain}"
-        echo -e "${yellow}initializing,wait some time here...${plain}"
+        read -p "Please set up your username:" config_account
+        echo -e "${yellow}Your username will be:${config_account}${plain}"
+        read -p "Please set up your password:" config_password
+        echo -e "${yellow}Your password will be:${config_password}${plain}"
+        read -p "Please set up the panel port:" config_port
+        echo -e "${yellow}Your panel port is:${config_port}${plain}"
+        echo -e "${yellow}Initializing, please wait...${plain}"
         /usr/local/x-ui/x-ui setting -username ${config_account} -password ${config_password}
-        echo -e "${yellow}account name and password set down!${plain}"
+        echo -e "${yellow}Account name and password set successfully!${plain}"
         /usr/local/x-ui/x-ui setting -port ${config_port}
-        echo -e "${yellow}panel port set down!${plain}"
+        echo -e "${yellow}Panel port set successfully!${plain}"
     else
-        echo -e "${red}Canceled, all setting items are default settings${plain}"
+        echo -e "${red}Canceled, will use the default settings.${plain}"
     fi
 }
 
@@ -109,19 +109,19 @@ install_x-ui() {
     if [ $# == 0 ]; then
         last_version=$(curl -Ls "https://api.github.com/repos/alireza0/x-ui/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
         if [[ ! -n "$last_version" ]]; then
-            echo -e "${red}refresh x-ui version failed,it may due to Github API restriction,please try it later${plain}"
+            echo -e "${red}Failed to fetch x-ui version, it maybe due to Github API restrictions, please try it later${plain}"
             exit 1
         fi
-        echo -e "get x-ui latest version succeed: ${last_version}, begin to install..."
+        echo -e "Got x-ui latest version: ${last_version}, beginning the installation..."
         wget -N --no-check-certificate -O /usr/local/x-ui-linux-${arch}.tar.gz https://github.com/alireza0/x-ui/releases/download/${last_version}/x-ui-linux-${arch}.tar.gz
         if [[ $? -ne 0 ]]; then
-            echo -e "${red}dowanload x-ui failed,please be sure that your server can access Github ${plain}"
+            echo -e "${red}Dowanloading x-ui failed, please be sure that your server can access Github ${plain}"
             exit 1
         fi
     else
         last_version=$1
         url="https://github.com/alireza0/x-ui/releases/download/${last_version}/x-ui-linux-${arch}.tar.gz"
-        echo -e "begin to install x-ui v$1"
+        echo -e "Begining to install x-ui v$1"
         wget -N --no-check-certificate -O /usr/local/x-ui-linux-${arch}.tar.gz ${url}
         if [[ $? -ne 0 ]]; then
             echo -e "${red}dowanload x-ui v$1 failed,please check the verison exists${plain}"
@@ -151,7 +151,7 @@ install_x-ui() {
     systemctl daemon-reload
     systemctl enable x-ui
     systemctl start x-ui
-    echo -e "${green}x-ui v${last_version}${plain} install finished,it is working now..."
+    echo -e "${green}x-ui v${last_version}${plain} installation finished, it is up and running now..."
     echo -e ""
     echo -e "x-ui control menu usages: "
     echo -e "----------------------------------------------"
@@ -170,6 +170,6 @@ install_x-ui() {
     echo -e "----------------------------------------------"
 }
 
-echo -e "${green}excuting...${plain}"
+echo -e "${green}Excuting...${plain}"
 install_base
 install_x-ui $1

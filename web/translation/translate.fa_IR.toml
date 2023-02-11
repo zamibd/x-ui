@@ -10,6 +10,7 @@
 "remark" = "نام"
 "enable" = "فعال"
 "protocol" = "پروتکل"
+"search" = "جستجو"
 
 "loading" = "در حال بروزرسانی..."
 "second" = "ثانیه"
@@ -17,10 +18,11 @@
 "hour" = "ساعت"
 "day" = "روز"
 "check" = "چک کردن"
-"indefinitely" = "نامحدود"
+"indefinite" = "نامحدود"
 "unlimited" = "نامحدود"
 "none" = "هیچ"
 "qrCode" = "QR کد"
+"info" = "اطلاعات بیشتر"
 "edit" = "ویرایش"
 "delete" = "حذف"
 "reset" = "ریست"
@@ -42,6 +44,7 @@
 "getVersion" = "دریافت ورژن"
 "install" = "نصب"
 "clients" = "کاربران"
+"usage" = "استفاده"
 
 [menu]
 "dashboard" = "وضعیت سیستم"
@@ -124,6 +127,7 @@
 "keyPath" = "مسیر فایل Private.key"
 "keyContent" = "محتوای Private.key"
 "clickOnQRcode" = "برای کپی بر روی کد تصویری کلیک کنید"
+"client" = "کاربر"
 
 [pages.inbounds.toasts]
 "obtain" = "Obtain"

@@ -10,6 +10,7 @@
 "remark" = "remark"
 "enable" = "enable"
 "protocol" = "protocol"
+"search" = "search"
 
 "loading" = "Loading"
 "second" = "second"
@@ -17,10 +18,11 @@
 "hour" = "hour"
 "day" = "day"
 "check" = "check"
-"indefinitely" = "indefinitely"
+"indefinite" = "indefinite"
 "unlimited" = "unlimited"
 "none" = "none"
 "qrCode" = "QR Code"
+"info" = "More information"
 "edit" = "edit"
 "delete" = "delete"
 "reset" = "reset"
@@ -42,6 +44,7 @@
 "getVersion" = "get version"
 "install" = "install"
 "clients" = "Clients"
+"usage" = "Usage"
 
 [menu]
 "dashboard" = "System Status"
@@ -124,6 +127,7 @@
 "keyPath" = "key file path"
 "keyContent" = "key content"
 "clickOnQRcode" = "click on QR Code to Copy"
+"client" = "Client"
 
 [pages.inbounds.toasts]
 "obtain" = "Obtain"

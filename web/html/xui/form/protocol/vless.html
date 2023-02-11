@@ -4,7 +4,7 @@
 <a-collapse activeKey="0"  v-for="(vless, index) in inbound.settings.vlesses"
 :key="`vless-${index}`">
 
-    <a-collapse-panel :header="getHeaderText(vless.email)">
+    <a-collapse-panel :class="getHeaderStyle(vless.email)" :header="getHeaderText(vless.email)">
         <a-tag v-if="isExpiry(index) || ((getUpStats(vless.email) + getDownStats(vless.email)) > vless.totalGB && vless.totalGB != 0)" color="red" style="margin-bottom: 10px;display: block;text-align: center;">Account is (Expired|Traffic Ended) And Disabled</a-tag>
 
         <a-form layout="inline">
@@ -61,7 +61,7 @@
         <a-form layout="inline">
             <a-tooltip v-if="vless._totalGB > 0">
                 <template slot="title">
-                    reset traffic
+                    {{ i18n "pages.inbounds.resetTraffic" }}
                 </template>
                 <span style="color: #FF4D4F">
                     <a-icon type="delete" @click="resetClientTraffic(vless,$event)"></a-icon>

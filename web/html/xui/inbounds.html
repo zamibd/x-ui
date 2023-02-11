@@ -27,15 +27,15 @@
                     <a-card hoverable style="margin-bottom: 20px;">
                         <a-row>
                             <a-col :xs="24" :sm="24" :lg="12">
-                                {{ i18n "pages.inbounds.totalDownUp" }}：
+                                {{ i18n "pages.inbounds.totalDownUp" }}:
                                 <a-tag color="green">[[ sizeFormat(total.up) ]] / [[ sizeFormat(total.down) ]]</a-tag>
                             </a-col>
                             <a-col :xs="24" :sm="24" :lg="12">
-                                {{ i18n "pages.inbounds.totalUsage" }}：
+                                {{ i18n "pages.inbounds.totalUsage" }}:
                                 <a-tag color="green">[[ sizeFormat(total.up + total.down) ]]</a-tag>
                             </a-col>
                             <a-col :xs="24" :sm="24" :lg="12">
-                                {{ i18n "pages.inbounds.inboundCount" }}：
+                                {{ i18n "pages.inbounds.inboundCount" }}:
                                 <a-tag color="green">[[ dbInbounds.length ]]</a-tag>
                             </a-col>
                         </a-row>
@@ -46,10 +46,10 @@
                         <div slot="title">
                             <a-button type="primary" icon="plus" @click="openAddInbound"></a-button>
                         </div>
-<!--                        <a-input v-model="searchKey" placeholder="search" autofocus style="max-width: 300px"></a-input>-->
-                            <a-table :columns="columns" :row-key="dbInbound => dbInbound.id"
-                                 :data-source="dbInbounds"
-                                 :loading="spinning" :scroll="{ x: 1500 }"
+                        <a-input v-model.lazy="searchKey" placeholder="{{ i18n "search" }}" autofocus style="max-width: 300px"></a-input>
+                        <a-table :columns="columns" :row-key="dbInbound => dbInbound.id"
+                                 :data-source="searchedInbounds"
+                                 :loading="spinning" :scroll="{ x: 1300 }"
                                  :pagination="false"
                                  style="margin-top: 20px"
                                  @change="() => getDBInbounds()">
@@ -57,7 +57,7 @@
                                 <a-dropdown :trigger="['click']">
                                     <a-icon @click="e => e.preventDefault()" type="menu"></a-icon>
                                     <a-menu slot="overlay" @click="a => clickAction(a, dbInbound)">
-                                        <a-menu-item v-if="dbInbound.hasLink()" key="qrcode">
+                                        <a-menu-item v-if="dbInbound.isSS" key="qrcode">
                                             <a-icon type="qrcode"></a-icon>
                                             {{ i18n "qrCode" }}
                                         </a-menu-item>
@@ -87,9 +87,6 @@
                                 </template>
                                 <a-tag v-else color="green">{{ i18n "unlimited" }}</a-tag>
                             </template>
-                            <template slot="settings" slot-scope="text, dbInbound">
-                                <a-button type="link" @click="showInfo(dbInbound)">{{ i18n "check" }}</a-button>
-                            </template>
                             <template slot="stream" slot-scope="text, dbInbound, index">
                                 <template v-if="dbInbound.isVMess || dbInbound.isVLess || dbInbound.isTrojan || dbInbound.isSS">
                                     <a-tag color="green">[[ inbounds[index].stream.network ]]</a-tag>
@@ -110,13 +107,37 @@
                                         [[ DateUtil.formatMillis(dbInbound.expiryTime) ]]
                                     </a-tag>
                                 </template>
-                                <a-tag v-else color="green">{{ i18n "indefinitely" }}</a-tag>
+                                <a-tag v-else color="green">{{ i18n "indefinite" }}</a-tag>
                             </template>
-                            <template #expandedRowRender="{ record }">
-                                <p style="margin: 0">
-                                  {{ i18n "none" }}
-                                </p>
-                              </template>                          
+                            <template slot="expandedRowRender" slot-scope="record">
+                                <a-table
+                                v-if="(record.protocol === Protocols.VLESS) || (record.protocol === Protocols.VMESS)"
+                                :row-key="client => client.id"
+                                :columns="innerColumns"
+                                :data-source="getInboundClients(record)"
+                                :pagination="false"
+                                >
+                                    {{template "client_table"}}
+                                </a-table>
+                                <a-table
+                                v-else-if="record.protocol === Protocols.TROJAN"
+                                :row-key="client => client.id"
+                                :columns="innerTrojanColumns"
+                                :data-source="getInboundClients(record)"
+                                :pagination="false"
+                                >
+                                    {{template "client_table"}}
+                                </a-table>
+                                <a-table
+                                v-else
+                                :row-key="client => client.id"
+                                :columns="innerOneColumns"
+                                :data-source="record"
+                                :pagination="false"
+                                >
+                                    {{template "client_table"}}
+                                </a-table>
+                            </template>
                         </a-table>
                     </a-card>
                 </transition>
@@ -145,28 +166,23 @@
     }, {
         title: '{{ i18n "pages.inbounds.remark" }}',
         align: 'center',
-        width: 100,
+        width: 60,
         dataIndex: "remark",
     }, {
         title: '{{ i18n "pages.inbounds.protocol" }}',
         align: 'center',
-        width: 60,
+        width: 40,
         scopedSlots: { customRender: 'protocol' },
     }, {
         title: '{{ i18n "pages.inbounds.port" }}',
         align: 'center',
         dataIndex: "port",
-        width: 60,
+        width: 30,
     }, {
         title: '{{ i18n "pages.inbounds.traffic" }}↑|↓',
         align: 'center',
         width: 150,
         scopedSlots: { customRender: 'traffic' },
-    }, {
-        title: '{{ i18n "pages.inbounds.details" }}',
-        align: 'center',
-        width: 40,
-        scopedSlots: { customRender: 'settings' },
     }, {
         title: '{{ i18n "pages.inbounds.transportConfig" }}',
         align: 'center',
@@ -179,6 +195,26 @@
         scopedSlots: { customRender: 'expiryTime' },
     }];
 
+    const innerColumns = [
+        { title: '', width: 50, scopedSlots: { customRender: 'actions' } },
+        { title: '{{ i18n "pages.inbounds.client" }}', width: 80, scopedSlots: { customRender: 'client' } },
+        { title: '{{ i18n "pages.inbounds.traffic" }}', width: 100, scopedSlots: { customRender: 'traffic' } },
+        { title: '{{ i18n "pages.inbounds.expireDate" }}', width: 80, scopedSlots: { customRender: 'expiryTime' } },
+        { title: 'UID', width: 150, dataIndex: "id" },
+    ];
+
+    const innerTrojanColumns = [
+        { title: '', width: 50, scopedSlots: { customRender: 'actions' } },
+        { title: '{{ i18n "pages.inbounds.client" }}', width: 80, scopedSlots: { customRender: 'client' } },
+        { title: '{{ i18n "pages.inbounds.traffic" }}', width: 100, scopedSlots: { customRender: 'traffic' } },
+        { title: '{{ i18n "pages.inbounds.expireDate" }}', width: 80, scopedSlots: { customRender: 'expiryTime' } },
+        { title: 'Password', width: 150, dataIndex: "password" },
+    ];
+
+    const innerOneColumns = [
+        { title: '', width: 50, scopedSlots: { customRender: 'actions' } },
+    ];
+
     const app = new Vue({
         delimiters: ['[[', ']]'],
         el: '#app',
@@ -188,6 +224,7 @@
             inbounds: [],
             dbInbounds: [],
             searchKey: '',
+            searchedInbounds: [],
         },
         methods: {
             loading(spinning=true) {
@@ -205,10 +242,12 @@
             setInbounds(dbInbounds) {
                 this.inbounds.splice(0);
                 this.dbInbounds.splice(0);
+                this.searchedInbounds.splice(0);
                 for (const inbound of dbInbounds) {
                     const dbInbound = new DBInbound(inbound);
                     this.inbounds.push(dbInbound.toInbound());
                     this.dbInbounds.push(dbInbound);
+                    this.searchedInbounds.push(dbInbound);
                 }
             },
             searchInbounds(key) {
@@ -327,12 +366,12 @@
                     onOk: () => this.submit('/xui/inbound/del/' + dbInbound.id),
                 });
             },
-            showQrcode(dbInbound) {
-                const link = dbInbound.genLink();
+            showQrcode(dbInbound, clientIndex) {
+                const link = dbInbound.genLink(clientIndex);
                 qrModal.show('{{ i18n "qrCode"}}', link, dbInbound);
             },
-            showInfo(dbInbound) {
-                infoModal.show(dbInbound);
+            showInfo(dbInbound, index) {
+                infoModal.show(dbInbound, index);
             },
             switchEnable(dbInbound) {
                 this.submit(`/xui/inbound/update/${dbInbound.id}`, dbInbound);
@@ -343,11 +382,105 @@
                     await this.getDBInbounds();
                 }
             },
+            getInboundClients(dbInbound) {
+                if(dbInbound.protocol == Protocols.VLESS) {
+                    return dbInbound.toInbound().settings.vlesses
+                } else if(dbInbound.protocol == Protocols.VMESS) {
+                    return dbInbound.toInbound().settings.vmesses
+                } else if(dbInbound.protocol == Protocols.TROJAN) {
+                    return dbInbound.toInbound().settings.trojans
+                }
+            },
+            resetClientTraffic(client,inbound,event) {
+                this.$confirm({
+                    title: '{{ i18n "pages.inbounds.resetTraffic"}}',
+                    content: '{{ i18n "pages.inbounds.resetTrafficContent"}}',
+                    okText: '{{ i18n "reset"}}',
+                    cancelText: '{{ i18n "cancel"}}',
+                    onOk: () => {
+                        this.resetClTraffic(client,inbound,event);
+                    },
+                });
+            },
+            async resetClTraffic(client,inbound,event) {
+                const msg = await HttpUtil.post('/xui/inbound/resetClientTraffic/'+ client.email);
+                if (!msg.success) {
+                    return;
+                }
+                clientStats = inbound.clientStats
+                if(clientStats.length > 0)
+                {
+                    for (const key in clientStats) {
+                        if (Object.hasOwnProperty.call(clientStats, key)) {
+                            if(clientStats[key]['email'] == client.email){ 
+                                clientStats[key]['up'] = 0
+                                clientStats[key]['down'] = 0
+                            }
+                        }
+                    }
+                }
+            },
+            isExpiry(dbInbound, index) {
+                return dbInbound.toInbound().isExpiry(index)
+            },
+            getUpStats(dbInbound, email) {
+                clientStats = dbInbound.clientStats
+                if(clientStats.length > 0)
+                {
+                    for (const key in clientStats) {
+                        if (Object.hasOwnProperty.call(clientStats, key)) {
+                            if(clientStats[key]['email'] == email)
+                                return clientStats[key]['up']
+
+                        }
+                    }
+                }
+
+            },
+            getDownStats(dbInbound, email) {
+                clientStats = dbInbound.clientStats
+                if(clientStats.length > 0)
+                {
+                    for (const key in clientStats) {
+                        if (Object.hasOwnProperty.call(clientStats, key)) {
+                            if(clientStats[key]['email'] == email)
+                                return clientStats[key]['down']
+
+                        }
+                    }
+                }
+            },
+            isTrafficExhausted(dbInbound, email) {
+                clientStats = dbInbound.clientStats
+                if(clientStats.length > 0)
+                {
+                    for (const key in clientStats) {
+                        if (Object.hasOwnProperty.call(clientStats, key)) {
+                            if(clientStats[key]['email'] == email)
+                                return clientStats[key]['down']+clientStats[key]['up'] > clientStats[key]['total']
+
+                        }
+                    }
+                }
+            },
+            isClientEnabled(dbInbound, email) {
+                clientStats = dbInbound.clientStats
+                if(clientStats.length > 0)
+                {
+                    for (const key in clientStats) {
+                        if (Object.hasOwnProperty.call(clientStats, key)) {
+                            if(clientStats[key]['email'] == email)
+                                return clientStats[key]['enable']
+
+                        }
+                    }
+                }
+            },
         },
         watch: {
-            searchKey(value) {
-                this.searchInbounds(value);
-            }
+            searchKey: debounce(function (newVal) {
+                this.searchInbounds(newVal);
+            }, 500)
         },
         mounted() {
             this.getDBInbounds();
@@ -368,6 +501,7 @@
     });
 
 </script>
+
 {{template "inboundModal"}}
 {{template "promptModal"}}
 {{template "qrcodeModal"}}
