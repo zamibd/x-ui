@@ -4,6 +4,7 @@ on:
     tags:
       - "*"
   workflow_dispatch:
+
 jobs:
   release:
     runs-on: ubuntu-18.04
