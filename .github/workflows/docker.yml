@@ -1,18 +1,12 @@
 name: Docker Image CI
 on:
   push:
-    branches: [ master ]
+    tags:
+      - "*"
   workflow_dispatch:
-      inputs:
-        project:
-          description: 'Project'
-          required: true
-          default: 'x-ui'
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -24,10 +18,13 @@ jobs:
       id: meta
       uses: docker/metadata-action@v4
       with:
-        # list of Docker images to use as base name for tags
         images: |
           alireza7/x-ui
           ghcr.io/alireza0/x-ui
+        tags: |
+          type=ref,event=branch
+          type=ref,event=tag
+          type=pep440,pattern={{version}}
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v1
@@ -53,6 +50,6 @@ jobs:
       with:
         context: .
         push: true
-        platforms: linux/amd64,linux/arm64
+        platforms: linux/amd64,linux/arm64/v8
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
