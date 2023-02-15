@@ -64,7 +64,6 @@
 "wrongUsernameOrPassword" = "Invalid username or password"
 "successLogin" = "Login"
 
-
 [pages.index]
 "title" = "System status"
 "memory" = "Memory"
@@ -85,7 +84,6 @@
 "xraySwitchVersionDialog" = "Switch xray version"
 "xraySwitchVersionDialogDesc" = "Whether to switch the xray version to"
 "dontRefreshh" = "Installation is in progress, please do not refresh this page"
-
 
 [pages.inbounds]
 "title" = "Inbounds"
@@ -149,7 +147,6 @@
 [pages.inbounds.stream.quic]
 "encryption" = "Encryption"
 
-
 [pages.setting]
 "title" = "Setting"
 "save" = "Save"
@@ -174,8 +171,20 @@
 "currentPassword" = "Current Password"
 "newUsername" = "New Username"
 "newPassword" = "New Password"
-"xrayConfigTemplate" = "xray Configuration Template"
-"xrayConfigTemplateDesc" = "Generate the final xray configuration file based on this template, restart the panel to take effect"
+"advancedTemplate" = "Advanced template parts"
+"completeTemplate" = "Complete template of Xray configuration"
+"xrayConfigTemplate" = "Xray Configuration Template"
+"xrayConfigTemplateDesc" = "Generate the final xray configuration file based on this template, restart the panel to take effect."
+"xrayConfigTorrent" = "Ban bittorrent usage"
+"xrayConfigTorrentDesc" = "Change the configuration temlate to avoid using bittorrent by users, restart the panel to take effect"
+"xrayConfigPrivateIp" = "Ban private ip range to connect"
+"xrayConfigPrivateIpDesc" = "Change the configuration temlate to avoid connecting with private IP ranges, restart the panel to take effect"
+"xrayConfigInbounds" = "Configuration of Inbounds"
+"xrayConfigInboundsDesc" = "Change the configuration temlate to accept special clients, restart the panel to take effect"
+"xrayConfigOutbounds" = "Configuration of Outbounds"
+"xrayConfigOutboundsDesc" = "Change the configuration temlate to define outgoing ways for this server, restart the panel to take effect"
+"xrayConfigRoutings" = "Configuration of Routing rules"
+"xrayConfigRoutingsDesc" = "Change the configuration temlate to define Routing rules for this server, restart the panel to take effect"
 "telegramBotEnable" = "Enable telegram bot"
 "telegramBotEnableDesc" = "Restart the panel to take effect"
 "telegramToken" = "Telegram Token"
