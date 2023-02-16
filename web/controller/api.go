@@ -3,6 +3,7 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 )
+
 type APIController struct {
 	BaseController
 
@@ -26,10 +27,8 @@ func (a *APIController) initRouter(g *gin.RouterGroup) {
 	g.POST("/del/:id", a.delInbound)
 	g.POST("/update/:id", a.updateInbound)
 
-	
 	a.inboundController = NewInboundController(g)
 }
-
 
 func (a *APIController) inbounds(c *gin.Context) {
 	a.inboundController.getInbounds(c)
