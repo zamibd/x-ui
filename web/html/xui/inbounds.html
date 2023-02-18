@@ -279,7 +279,7 @@
                         this.showQrcode(dbInbound);
                         break;
                     case "edit":
-                        this.openEditInbound(dbInbound);
+                        this.openEditInbound(dbInbound.id);
                         break;
                     case "resetTraffic":
                         this.resetTraffic(dbInbound);
@@ -302,7 +302,8 @@
                     isEdit: false
                 });
             },
-            openEditInbound(dbInbound) {
+            openEditInbound(dbInbound_id) {
+                dbInbound = this.dbInbounds.find(row => row.id === dbInbound_id);
                 const inbound = dbInbound.toInbound();
                 inModal.show({
                     title: '{{ i18n "pages.inbounds.modifyInbound"}}',
