@@ -121,7 +121,6 @@
                         }
                     }
                 }
-
             },
             getDownStats(email) {
                 clientStats = this.inbound.clientStats
@@ -137,30 +136,18 @@
                 }
             },
             isClientEnable(email) {
-                clientStats = this.inbound.clientStats
-                if(clientStats.length > 0)
-                {
-                    for (const key in clientStats) {
-                        if (Object.hasOwnProperty.call(clientStats, key)) {
-                            if(clientStats[key]['email'] == email)
-                                return clientStats[key]['enable']
-
-                        }
-                    }
-                }
+                clientStats = this.dbInbound.clientStats ? this.dbInbound.clientStats.find(stats => stats.email === email) : null
+                return clientStats ? clientStats['enable'] : true
             },
-
             getHeaderText(email) {
                 if(email == "")
                     return "Add Client"
                 
                 return email + (this.isClientEnable(email) == true ? ' Active' : ' Deactive')
             },
-
             getHeaderStyle(email) {
                 return (this.isClientEnable(email) == true ? '' : 'deactive-client')
             },
-            
             getNewEmail(client) {
                 var chars = 'abcdefghijklmnopqrstuvwxyz1234567890';
                 var string = '';

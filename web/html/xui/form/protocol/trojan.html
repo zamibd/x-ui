@@ -68,19 +68,10 @@
             </a-tooltip>
             <a-tag color="blue">[[ sizeFormat(getUpStats(trojan.email)) ]] / [[ sizeFormat(getDownStats(trojan.email)) ]]</a-tag>
             <a-tag v-if="trojan._totalGB > 0" color="red">used : [[ sizeFormat(getUpStats(trojan.email) + getDownStats(trojan.email)) ]]</a-tag>
-            <a-tag v-show="inbound.settings.trojans.length > 1">
-                <svg
-                    v-show="inbound.settings.trojans.length > 1"
-                    @click="removeClient(index, inbound.settings.trojans)"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width="24"
-                    height="24"
-                    class="ml-2 cursor-pointer"
-                    >
+            <a-tag v-show="inbound.settings.vmesses.length > 1" @click="removeClient(index, inbound.settings.vmesses)">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22" width="22" height="22" class="mt-2 cursor-pointer">
                     <path fill="none" d="M0 0h24v24H0z" />
-                    <path
-                    fill="#EC4899"
+                    <path fill="#EC4899"
                     d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0-9.414l2.828-2.829 1.415 1.415L13.414 12l2.829 2.828-1.415 1.415L12 13.414l-2.828 2.829-1.415-1.415L10.586 12 7.757 9.172l1.415-1.415L12 10.586z"
                     />
                 </svg>
@@ -88,18 +79,10 @@
         </a-form>
     </a-collapse-panel>
 </a-collapse>
-<a-tag>
-    <svg
-        @click="addClient(inbound.protocol, inbound.settings.trojans)"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        width="24"
-        height="24"
-        class="ml-2 cursor-pointer"
-        >
+<a-tag @click="addClient(inbound.protocol, inbound.settings.vmesses)">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="ml-2 cursor-pointer">
         <path fill="none" d="M0 0h24v24H0z" />
-        <path
-        fill="green"
+        <path fill="green"
         d="M11 11V7h2v4h4v2h-4v4h-2v-4H7v-2h4zm1 11C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"
         />
     </svg>

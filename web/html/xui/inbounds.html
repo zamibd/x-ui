@@ -447,7 +447,6 @@
                         }
                     }
                 }
-
             },
             getDownStats(dbInbound, email) {
                 clientStats = dbInbound.clientStats
@@ -476,20 +475,8 @@
                 }
             },
             isClientEnabled(dbInbound, email) {
-                clientStats = dbInbound.clientStats
-                if(clientStats.length > 0)
-                {
-                    for (const key in clientStats) {
-                        if (Object.hasOwnProperty.call(clientStats, key)) {
-                            if(clientStats[key]['email'] == email)
-                                return clientStats[key]['enable']
-
-                        }
-                    }
-                }
-                else{
-                    return true
-                }
+                clientStats = dbInbound.clientStats ? dbInbound.clientStats.find(stats => stats.email === email) : null
+                return clientStats ? clientStats['enable'] : true
             },
         },
         watch: {
