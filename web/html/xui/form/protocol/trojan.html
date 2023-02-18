@@ -29,7 +29,7 @@
         <a-form-item v-if="inbound.xtls" label="flow">
             <a-select v-model="trojan.flow" style="width: 150px">
                 <a-select-option value="">{{ i18n "none" }}</a-select-option>
-                <a-select-option v-for="key in FLOW_CONTROL" :value="key">[[ key ]]</a-select-option>
+                <a-select-option v-for="key in XTLS_FLOW_CONTROL" :value="key">[[ key ]]</a-select-option>
             </a-select>
         </a-form-item>
         <a-form-item>
@@ -68,7 +68,7 @@
             </a-tooltip>
             <a-tag color="blue">[[ sizeFormat(getUpStats(trojan.email)) ]] / [[ sizeFormat(getDownStats(trojan.email)) ]]</a-tag>
             <a-tag v-if="trojan._totalGB > 0" color="red">used : [[ sizeFormat(getUpStats(trojan.email) + getDownStats(trojan.email)) ]]</a-tag>
-            <a-tag v-show="inbound.settings.vmesses.length > 1" @click="removeClient(index, inbound.settings.vmesses)">
+            <a-tag v-show="inbound.settings.trojans.length > 1" @click="removeClient(index, inbound.settings.trojans)">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22" width="22" height="22" class="mt-2 cursor-pointer">
                     <path fill="none" d="M0 0h24v24H0z" />
                     <path fill="#EC4899"
@@ -79,7 +79,7 @@
         </a-form>
     </a-collapse-panel>
 </a-collapse>
-<a-tag @click="addClient(inbound.protocol, inbound.settings.vmesses)">
+<a-tag @click="addClient(inbound.protocol, inbound.settings.trojans)">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="ml-2 cursor-pointer">
         <path fill="none" d="M0 0h24v24H0z" />
         <path fill="green"

@@ -24,6 +24,9 @@ const SSMethods = {
     CHACHA20_POLY1305: 'chacha20-poly1305',
     AES_256_GCM: 'aes-256-gcm',
     AES_128_GCM: 'aes-128-gcm',
+    BLAKE3_AES_128_GCM: '2022-blake3-aes-128-gcm',
+    BLAKE3_AES_256_GCM: '2022-blake3-aes-256-gcm',
+    BLAKE3_CHACHA20_POLY1305: '2022-blake3-chacha20-poly1305',
 };
 
 const RULE_IP = {
@@ -40,9 +43,53 @@ const RULE_DOMAIN = {
     SPEEDTEST: 'geosite:speedtest',
 };
 
-const FLOW_CONTROL = {
+const XTLS_FLOW_CONTROL = {
     ORIGIN: "xtls-rprx-origin",
     DIRECT: "xtls-rprx-direct",
+};
+
+const TLS_FLOW_CONTROL = {
+    VISION: "xtls-rprx-vision",
+};
+
+const TLS_VERSION_OPTION = {
+    TLS10: "1.0",
+    TLS11: "1.1",
+    TLS12: "1.2",
+    TLS13: "1.3",
+}
+
+const TLS_CIPHER_OPTION = {
+    RSA_AES_128_CBC: "TLS_RSA_WITH_AES_128_CBC_SHA",
+    RSA_AES_256_CBC: "TLS_RSA_WITH_AES_256_CBC_SHA",
+    RSA_AES_128_GCM: "TLS_RSA_WITH_AES_128_GCM_SHA256",
+    RSA_AES_256_GCM: "TLS_RSA_WITH_AES_256_GCM_SHA384",
+    AES_128_GCM: "TLS_AES_128_GCM_SHA256",
+    AES_256_GCM: "TLS_AES_256_GCM_SHA384",
+    CHACHA20_POLY1305: "TLS_CHACHA20_POLY1305_SHA256",
+    ECDHE_ECDSA_AES_128_CBC: "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
+    ECDHE_ECDSA_AES_256_CBC: "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA",
+    ECDHE_RSA_AES_128_CBC: "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
+    ECDHE_RSA_AES_256_CBC: "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
+    ECDHE_ECDSA_AES_128_GCM: "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
+    ECDHE_ECDSA_AES_256_GCM: "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+    ECDHE_RSA_AES_128_GCM: "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+    ECDHE_RSA_AES_256_GCM: "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+    ECDHE_ECDSA_CHACHA20_POLY1305: "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256",
+    ECDHE_RSA_CHACHA20_POLY1305: "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
+};
+
+const UTLS_FINGERPRINT = {
+    UTLS_CHROME: "chrome",
+    UTLS_FIREFOX: "firefox",
+    UTLS_SAFARI: "safari",
+    UTLS_IOS: "ios",
+    UTLS_android: "android",
+    UTLS_EDGE: "edge",
+    UTLS_360: "360",
+    UTLS_QQ: "qq",
+    UTLS_RANDOM: "random",
+    UTLS_RANDOMIZED: "randomized",
 };
 
 Object.freeze(Protocols);
@@ -50,7 +97,10 @@ Object.freeze(VmessMethods);
 Object.freeze(SSMethods);
 Object.freeze(RULE_IP);
 Object.freeze(RULE_DOMAIN);
-Object.freeze(FLOW_CONTROL);
+Object.freeze(XTLS_FLOW_CONTROL);
+Object.freeze(TLS_FLOW_CONTROL);
+Object.freeze(TLS_VERSION_OPTION);
+Object.freeze(TLS_CIPHER_OPTION);
 
 class XrayCommonClass {
 
@@ -417,9 +467,16 @@ class GrpcStreamSettings extends XrayCommonClass {
 
 class TlsStreamSettings extends XrayCommonClass {
     constructor(serverName='',
-                certificates=[new TlsStreamSettings.Cert()], alpn=[]) {
+                minVersion = TLS_VERSION_OPTION.TLS12,
+                maxVersion = TLS_VERSION_OPTION.TLS13,
+                cipherSuites = '',
+                certificates=[new TlsStreamSettings.Cert()],
+                alpn=["h2", "http/1.1"]) {
         super();
         this.server = serverName;
+        this.minVersion = minVersion;
+        this.maxVersion = maxVersion;
+        this.cipherSuites = cipherSuites;
         this.certs = certificates;
         this.alpn = alpn;
     }
@@ -440,6 +497,9 @@ class TlsStreamSettings extends XrayCommonClass {
 
         return new TlsStreamSettings(
             json.serverName,
+            json.minVersion,
+            json.maxVersion,
+            json.cipherSuites,
             certs,
             json.alpn
         );
@@ -448,6 +508,9 @@ class TlsStreamSettings extends XrayCommonClass {
     toJson() {
         return {
             serverName: this.server,
+            minVersion: this.minVersion,
+            maxVersion: this.maxVersion,
+            cipherSuites: this.cipherSuites,
             certificates: TlsStreamSettings.toJsonArray(this.certs),
             alpn: this.alpn
         };
@@ -710,7 +773,7 @@ class Inbound extends XrayCommonClass {
             case Protocols.VLESS:
                 return this.settings.vlesses[0].flow;
             case Protocols.TROJAN:
-                return this.settings.clients[0].flow;
+                return this.settings.trojans[0].flow;
             default:
                 return "";
         }
@@ -741,7 +804,7 @@ class Inbound extends XrayCommonClass {
     get password() {
         switch (this.protocol) {
             case Protocols.TROJAN:
-                return this.settings.clients[0].password;
+                return this.settings.trojans[0].password;
             case Protocols.SHADOWSOCKS:
                 return this.settings.password;
             case Protocols.SOCKS:
@@ -857,6 +920,19 @@ class Inbound extends XrayCommonClass {
         }
     }
 
+    //this is used for xtls-rprx-vison
+    canEnableTlsFlow() {
+        if ((this.stream.security === 'tls') && (this.network === "tcp")) {
+            switch (this.protocol) {
+                case Protocols.VLESS:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+        return false;
+    }
+
     canSetTls() {
         return this.canEnableTls();
     }
@@ -876,6 +952,7 @@ class Inbound extends XrayCommonClass {
         switch (this.protocol) {
             case Protocols.VMESS:
             case Protocols.VLESS:
+            case Protocols.TROJAN:
             case Protocols.SHADOWSOCKS:
                 return true;
             default:
@@ -1032,6 +1109,7 @@ class Inbound extends XrayCommonClass {
                 address = this.stream.tls.server;
                 params.set("sni", address);
             }
+            params.set("flow", this.settings.vlesses[clientIndex].flow);
         }
 
         if (this.xtls) {
@@ -1053,13 +1131,87 @@ class Inbound extends XrayCommonClass {
         if (!ObjectUtil.isEmpty(server)) {
             address = server;
         }
-        return 'ss://' + safeBase64(settings.method + ':' + settings.password + '@' + address + ':' + this.port)
-            + '#' + encodeURIComponent(remark);
+        if (settings.method == SSMethods.BLAKE3_AES_128_GCM || settings.method == SSMethods.BLAKE3_AES_256_GCM || settings.method == SSMethods.BLAKE3_CHACHA20_POLY1305) {
+            return `ss://${settings.method}:${settings.password}@${address}:${this.port}#${encodeURIComponent(remark)}`;
+        } else {
+            return 'ss://' + safeBase64(settings.method + ':' + settings.password + '@' + address + ':' + this.port)
+                + '#' + encodeURIComponent(remark);
+        }
     }
 
-    genTrojanLink(address='', remark='', clientIndex=0) {
+    genTrojanLink(address = '', remark = '', clientIndex = 0) {
         let settings = this.settings;
-        return `trojan://${settings.trojans[clientIndex].password}@${address}:${this.port}#${encodeURIComponent(remark)}`;
+        const port = this.port;
+        const type = this.stream.network;
+        const params = new Map();
+        params.set("type", this.stream.network);
+        if (this.xtls) {
+            params.set("security", "xtls");
+        } else {
+            params.set("security", this.stream.security);
+        }
+        switch (type) {
+            case "tcp":
+                const tcp = this.stream.tcp;
+                if (tcp.type === 'http') {
+                    const request = tcp.request;
+                    params.set("path", request.path.join(','));
+                    const index = request.headers.findIndex(header => header.name.toLowerCase() === 'host');
+                    if (index >= 0) {
+                        const host = request.headers[index].value;
+                        params.set("host", host);
+                    }
+                    params.set("headerType", 'http');
+                }
+                break;
+            case "kcp":
+                const kcp = this.stream.kcp;
+                params.set("headerType", kcp.type);
+                params.set("seed", kcp.seed);
+                break;
+            case "ws":
+                const ws = this.stream.ws;
+                params.set("path", ws.path);
+                const index = ws.headers.findIndex(header => header.name.toLowerCase() === 'host');
+                if (index >= 0) {
+                    const host = ws.headers[index].value;
+                    params.set("host", host);
+                }
+                break;
+            case "http":
+                const http = this.stream.http;
+                params.set("path", http.path);
+                params.set("host", http.host);
+                break;
+            case "quic":
+                const quic = this.stream.quic;
+                params.set("quicSecurity", quic.security);
+                params.set("key", quic.key);
+                params.set("headerType", quic.type);
+                break;
+            case "grpc":
+                const grpc = this.stream.grpc;
+                params.set("serviceName", grpc.serviceName);
+                break;
+        }
+
+        if (this.stream.security === 'tls') {
+            if (!ObjectUtil.isEmpty(this.stream.tls.server)) {
+                address = this.stream.tls.server;
+                params.set("sni", address);
+            }
+            params.set("flow", this.settings.trojans[clientIndex].flow);
+        }
+        if (this.xtls) {
+            params.set("flow", this.settings.trojans[clientIndex].flow);
+        }
+        const link = `trojan://${settings.trojans[clientIndex].password}@${address}:${this.port}#${encodeURIComponent(remark)}`;
+        const url = new URL(link);
+        for (const [key, value] of params) {
+            url.searchParams.set(key, value)
+        }
+        url.hash = encodeURIComponent(remark);
+        return url.toString();
     }
 
     genLink(address='', remark='', clientIndex=0) {
@@ -1279,12 +1431,13 @@ Inbound.VLESSSettings = class extends Inbound.Settings {
 };
 Inbound.VLESSSettings.VLESS = class extends XrayCommonClass {
 
-    constructor(id=RandomUtil.randomUUID(), flow=FLOW_CONTROL.DIRECT, email=RandomUtil.randomText(), totalGB=0, expiryTime='') {
+    constructor(id=RandomUtil.randomUUID(), flow='', email=RandomUtil.randomText(), totalGB=0, fingerprint = UTLS_FINGERPRINT.UTLS_CHROME, expiryTime='') {
         super();
         this.id = id;
         this.flow = flow;
         this.email = email;
         this.totalGB = totalGB;
+        this.fingerprint = fingerprint;
         this.expiryTime = expiryTime;
 
     }
@@ -1295,6 +1448,7 @@ Inbound.VLESSSettings.VLESS = class extends XrayCommonClass {
             json.flow,
             json.email,
             json.totalGB,
+            json.fingerprint,
             json.expiryTime,
 
         );
@@ -1393,7 +1547,7 @@ Inbound.TrojanSettings = class extends Inbound.Settings {
     }
 };
 Inbound.TrojanSettings.Trojan = class extends XrayCommonClass {
-    constructor(password=RandomUtil.randomSeq(10), flow=FLOW_CONTROL.DIRECT, email=RandomUtil.randomText(), totalGB=0, expiryTime='') {
+    constructor(password=RandomUtil.randomSeq(10), flow='', email=RandomUtil.randomText(), totalGB=0, expiryTime='') {
         super();
         this.password = password;
         this.flow = flow;
@@ -1488,8 +1642,8 @@ Inbound.TrojanSettings.Fallback = class extends XrayCommonClass {
 
 Inbound.ShadowsocksSettings = class extends Inbound.Settings {
     constructor(protocol,
-                method=SSMethods.AES_256_GCM,
-                password=RandomUtil.randomSeq(10),
+                method=SSMethods.BLAKE3_AES_256_GCM,
+                password=RandomUtil.randomSeq(44),
                 network='tcp,udp'
     ) {
         super(protocol);
