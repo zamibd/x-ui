@@ -21,11 +21,11 @@ import (
 	"x-ui/web/network"
 	"x-ui/web/service"
 
-	"github.com/BurntSushi/toml"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
+	"github.com/pelletier/go-toml/v2"
 	"github.com/robfig/cron/v3"
 	"golang.org/x/text/language"
 )
