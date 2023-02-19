@@ -190,7 +190,11 @@ find this in config :
   "routing": {
 ```
  restart panel
- 
+
+# a special thanks to
+- [HexaSoftwareTech](https://github.com/HexaSoftwareTech/)
+- [FranzKafkaYu](https://github.com/FranzKafkaYu)
+- [MHSanaei](https://github.com/MHSanaei) 
 
 ## Stargazers over time
 
