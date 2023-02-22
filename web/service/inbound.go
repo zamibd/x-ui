@@ -384,7 +384,7 @@ func (s *InboundService) AddClientTraffic(traffics []*xray.ClientTraffic) (err e
 				traffic.Total = client.TotalGB
 			}
 		}
-		if tx.Where("inbound_id = ?, email = ?", inbound.Id, traffic.Email).
+		if tx.Where("inbound_id = ? and email = ?", inbound.Id, traffic.Email).
 			UpdateColumns(map[string]interface{}{
 				"enable":      true,
 				"expiry_time": traffic.ExpiryTime,
