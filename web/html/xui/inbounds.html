@@ -65,7 +65,7 @@
                                             <a-icon type="edit"></a-icon>
                                             {{ i18n "edit" }}
                                         </a-menu-item>
-                                        <a-menu-item v-if="dbInbound.clientStats.length>1" key="addClient">
+                                        <a-menu-item v-if="dbInbound.isTrojan || dbInbound.isVLess || dbInbound.isVMess" key="addClient">
                                             <a-icon type="user"></a-icon>
                                             {{ i18n "pages.client.add"}}
                                         </a-menu-item>

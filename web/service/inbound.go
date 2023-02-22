@@ -466,7 +466,7 @@ func (s *InboundService) ResetClientTraffic(clientEmail string) error {
 
 	result := db.Model(xray.ClientTraffic{}).
 		Where("email = ?", clientEmail).
-		Updates(map[string]interface{}{"up": 0, "down": 0})
+		Updates(map[string]interface{}{"enable": true, "up": 0, "down": 0})
 
 	err := result.Error
 
