@@ -363,11 +363,12 @@
                     isEdit: false
                 });
             },
-            openEditClient(inbound, index) {
+            openEditClient(dbInbound_id, index) {
+                dbInbound = this.dbInbounds.find(row => row.id === dbInbound_id);
                 clientModal.show({
                     title: '{{ i18n "pages.client.edit"}}',
                     okText: '{{ i18n "pages.client.submitEdit"}}',
-                    dbInbound: inbound,
+                    dbInbound: dbInbound,
                     index: index,
                     confirm: async (inbound, dbInbound, index) => {
                         clientModal.loading();
@@ -488,60 +489,30 @@
                 if (!msg.success) {
                     return;
                 }
-                clientStats = inbound.clientStats
+                clientStats = inbound.clientStats.find(stats => stats.email == client.email)
                 if(clientStats.length > 0)
                 {
-                    for (const key in clientStats) {
-                        if (Object.hasOwnProperty.call(clientStats, key)) {
-                            if(clientStats[key]['email'] == client.email){ 
-                                clientStats[key]['up'] = 0
-                                clientStats[key]['down'] = 0
-                            }
-                        }
-                    }
+                    clientStats.up = 0
+                    clientStats.down = 0
                 }
             },
             isExpiry(dbInbound, index) {
                 return dbInbound.toInbound().isExpiry(index)
             },
             getUpStats(dbInbound, email) {
-                clientStats = dbInbound.clientStats
-                if(clientStats.length > 0)
-                {
-                    for (const key in clientStats) {
-                        if (Object.hasOwnProperty.call(clientStats, key)) {
-                            if(clientStats[key]['email'] == email)
-                                return clientStats[key]['up']
-
-                        }
-                    }
-                }
+                if(email.length == 0) return 0
+                clientStats = dbInbound.clientStats.find(stats => stats.email === email)
+                return clientStats ? clientStats.up : 0
             },
             getDownStats(dbInbound, email) {
-                clientStats = dbInbound.clientStats
-                if(clientStats.length > 0)
-                {
-                    for (const key in clientStats) {
-                        if (Object.hasOwnProperty.call(clientStats, key)) {
-                            if(clientStats[key]['email'] == email)
-                                return clientStats[key]['down']
-
-                        }
-                    }
-                }
+                if(email.length == 0) return 0
+                clientStats = dbInbound.clientStats.find(stats => stats.email === email)
+                return clientStats ? clientStats.down : 0
             },
             isTrafficExhausted(dbInbound, email) {
-                clientStats = dbInbound.clientStats
-                if(clientStats.length > 0)
-                {
-                    for (const key in clientStats) {
-                        if (Object.hasOwnProperty.call(clientStats, key)) {
-                            if(clientStats[key]['email'] == email)
-                                return clientStats[key]['down']+clientStats[key]['up'] > clientStats[key]['total']
-
-                        }
-                    }
-                }
+                if(email.length == 0) return false
+                clientStats = dbInbound.clientStats.find(stats => stats.email === email)
+                return clientStats.down + clientStats.up > clientStats.total
             },
             isClientEnabled(dbInbound, email) {
                 clientStats = dbInbound.clientStats ? dbInbound.clientStats.find(stats => stats.email === email) : null

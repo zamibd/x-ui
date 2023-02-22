@@ -68,7 +68,7 @@
             <tr><th>{{ i18n "usage" }}</th><th>{{ i18n "pages.inbounds.totalFlow" }}</th><th>{{ i18n "pages.inbounds.expireDate" }}</th><th>{{ i18n "enable" }}</th></tr>    
         <tr>
             <td>
-                <a-tag :color="statsColor(infoModal.clientStats)">
+                <a-tag v-if="infoModal.clientStats" :color="statsColor(infoModal.clientStats)">
                     [[ sizeFormat(infoModal.clientStats['up']) ]] / 
                     [[ sizeFormat(infoModal.clientStats['down']) ]]
                     ([[ sizeFormat(infoModal.clientStats['up'] + infoModal.clientStats['down']) ]])
@@ -87,7 +87,7 @@
                 <a-tag v-else color="green">{{ i18n "indefinite" }}</a-tag>
             </td>
             <td>
-                <a-tag v-if="infoModal.clientStats.enable" color="blue">{{ i18n "enabled" }}</a-tag>
+                <a-tag v-if="isEnable" color="blue">{{ i18n "enabled" }}</a-tag>
                 <a-tag v-else color="red">{{ i18n "disabled" }}</a-tag>
             </td>
         </tr>
@@ -145,6 +145,12 @@
             },
             get inbound() {
                 return this.infoModal.inbound;
+            },
+            get isEnable() {
+                if(infoModal.clientStats){
+                    return infoModal.clientStats.enable;
+                }
+                return true;
             }
         },
         methods: {
@@ -167,6 +173,7 @@
                 });
             },
             statsColor(stats) {
+                if(!stats) return 'blue'
                 if(stats['total'] === 0) return 'blue'
                 else if(stats['total'] > 0 && (stats['down']+stats['up']) < stats['total']) return 'cyan'
                 else return 'red'

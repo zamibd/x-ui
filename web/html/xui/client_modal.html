@@ -28,6 +28,7 @@
             this.inbound = dbInbound.toInbound();
             this.clients = this.getClients(this.inbound.protocol, this.inbound.settings);
             this.index = index === null ? this.clients.length : index;
+            this.isExpired = isEdit ? this.inbound.isExpiry(this.index) : false;
             if (!isEdit){
                 this.addClient(this.inbound.protocol, this.clients);
             }
@@ -76,17 +77,23 @@
             get isEdit() {
                 return this.clientModal.isEdit;
             },
+            get isTrafficExhausted() {
+                if(!clientStats) return false
+                if(clientStats.total == 0) return false
+                if(clientStats.up + clientStats.down < clientStats.total) return false
+                return true
+            },
+            get isExpiry() {
+                return this.clientModal.isExpired
+            },
             get statsColor() {
-                stats = this.clientModal.clientStats
-                if(stats.total === 0) return 'blue'
-                else if(stats.total > 0 && (stats.down+stats.up) < stats.total) return 'cyan'
+                if(!clientStats) return 'blue'
+                if(clientStats.total === 0) return 'blue'
+                else if(clientStats.total > 0 && (clientStats.down+clientStats.up) < clientStats.total) return 'cyan'
                 else return 'red'
             }
         },
         methods: {
-            isExpiry() {
-                return this.clientModal.inbound.isExpiry(this.clientModal.index);
-            },
             getNewEmail(client) {
                 var chars = 'abcdefghijklmnopqrstuvwxyz1234567890';
                 var string = '';

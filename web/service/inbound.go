@@ -251,7 +251,9 @@ func (s *InboundService) AddInboundClient(inbound *model.Inbound) error {
 
 	oldInbound.Settings = inbound.Settings
 
-	s.AddClientStat(inbound.Id, &clients[len(clients)-1])
+	if len(clients[len(clients)-1].Email) > 0 {
+		s.AddClientStat(inbound.Id, &clients[len(clients)-1])
+	}
 	db := database.GetDB()
 	return db.Save(oldInbound).Error
 }
@@ -264,6 +266,7 @@ func (s *InboundService) DelInboundClient(inboundId int, index int) error {
 	settings := map[string][]model.Client{}
 	json.Unmarshal([]byte(oldInbound.Settings), &settings)
 	clients := settings["clients"]
+	email := clients[index].Email
 	settings["clients"] = append(clients[:index], clients[index+1:]...)
 
 	newSetting, err := json.Marshal(settings)
@@ -273,7 +276,10 @@ func (s *InboundService) DelInboundClient(inboundId int, index int) error {
 	oldInbound.Settings = string(newSetting)
 
 	db := database.GetDB()
-	s.DelClientStat(db, clients[index].Email)
+	err = s.DelClientStat(db, email)
+	if err != nil {
+		return err
+	}
 	return db.Save(oldInbound).Error
 }
 
@@ -303,8 +309,17 @@ func (s *InboundService) UpdateInboundClient(inbound *model.Inbound, index int) 
 
 	oldInbound.Settings = inbound.Settings
 
-	s.UpdateClientStat(oldClients[index].Email, &clients[index])
 	db := database.GetDB()
+
+	if len(clients[index].Email) > 0 {
+		if len(oldClients[index].Email) > 0 {
+			s.UpdateClientStat(oldClients[index].Email, &clients[index])
+		} else {
+			s.AddClientStat(inbound.Id, &clients[index])
+		}
+	} else {
+		s.DelClientStat(db, oldClients[index].Email)
+	}
 	return db.Save(oldInbound).Error
 }
 

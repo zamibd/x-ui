@@ -6,7 +6,7 @@
     </a-tooltip>
     <a-tooltip>
         <template slot="title">{{ i18n "pages.client.edit" }}</template>
-        <a-icon style="font-size: 24px;" type="edit" @click="openEditClient(record,index);"></a-icon>
+        <a-icon style="font-size: 24px;" type="edit" @click="openEditClient(record.id,index);"></a-icon>
     </a-tooltip>
     <a-tooltip>
         <template slot="title">{{ i18n "info" }}</template>
@@ -14,7 +14,7 @@
     </a-tooltip>
     <a-tooltip>
         <template slot="title">{{ i18n "pages.inbounds.resetTraffic" }}</template>
-        <a-icon style="font-size: 24px;" type="retweet" @click="resetClientTraffic(client,record,$event)" v-if="client.email != ''"></a-icon>
+        <a-icon style="font-size: 24px;" type="retweet" @click="resetClientTraffic(client,record,$event)" v-if="client.email.length > 0"></a-icon>
     </a-tooltip>
     <a-tooltip>
         <template slot="title"><span style="color: #FF4D4F"> {{ i18n "delete"}}</span></template>
