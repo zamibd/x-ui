@@ -1,17 +1,25 @@
 {{define "client_table"}}
 <template slot="actions" slot-scope="text, client, index">
-    <a-dropdown>
-        <a-icon @click="e => e.preventDefault()" type="menu"></a-icon>
-        <template #overlay>
-          <a-menu>
-            <a-menu-item v-if="record.hasLink()" @click="showQrcode(record,index);"><a-icon type="qrcode"></a-icon>{{ i18n "qrCode" }}</a-menu-item>
-            <a-menu-item @click="openEditClient(record,index);"><a-icon type="edit"></a-icon>{{ i18n "pages.client.edit" }}</a-menu-item>
-            <a-menu-item @click="showInfo(record,index);"><a-icon type="info-circle"></a-icon>{{ i18n "info" }}</a-menu-item>
-            <a-menu-item @click="resetClientTraffic(client,record,$event)" v-if="client.email != ''"><a-icon type="retweet"></a-icon>{{ i18n "pages.inbounds.resetTraffic" }}</a-menu-item>
-            <a-menu-item v-if="isRemovable(record.id)" @click="delClient(record.id,index)"><span style="color: #FF4D4F"><a-icon type="delete"></a-icon> {{ i18n "delete"}}</span></a-menu-item>
-          </a-menu>
-        </template>
-    </a-dropdown>
+    <a-tooltip>
+        <template slot="title">{{ i18n "qrCode" }}</template>
+        <a-icon style="font-size: 24px;" type="qrcode" v-if="record.hasLink()" @click="showQrcode(record,index);"></a-icon>
+    </a-tooltip>
+    <a-tooltip>
+        <template slot="title">{{ i18n "pages.client.edit" }}</template>
+        <a-icon style="font-size: 24px;" type="edit" @click="openEditClient(record,index);"></a-icon>
+    </a-tooltip>
+    <a-tooltip>
+        <template slot="title">{{ i18n "info" }}</template>
+        <a-icon style="font-size: 24px;" type="info-circle" @click="showInfo(record,index);"></a-icon>
+    </a-tooltip>
+    <a-tooltip>
+        <template slot="title">{{ i18n "pages.inbounds.resetTraffic" }}</template>
+        <a-icon style="font-size: 24px;" type="retweet" @click="resetClientTraffic(client,record,$event)" v-if="client.email != ''"></a-icon>
+    </a-tooltip>
+    <a-tooltip>
+        <template slot="title"><span style="color: #FF4D4F"> {{ i18n "delete"}}</span></template>
+        <a-icon style="font-size: 24px;" type="delete" v-if="isRemovable(record.id)" @click="delClient(record.id,index)"></a-icon>
+    </a-tooltip>
 </template>
 <template slot="client" slot-scope="text, client">
     [[ client.email ]]
