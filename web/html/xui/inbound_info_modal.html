@@ -58,12 +58,11 @@
     </table>
     <a-divider>{{ i18n "pages.inbounds.client" }}</a-divider>
     <table style="margin-bottom: 10px; width: 100%;">
-        <tr><th>[[ Object.keys(infoModal.clientSettings)[0] ]]</th><th>[[ Object.keys(infoModal.clientSettings)[1] ]]</th><th>[[ Object.keys(infoModal.clientSettings)[2] ]]</th></tr>
         <tr>
-            <td><a-tag color="green">[[ Object.values(infoModal.clientSettings)[0] ]]</a-tag></td>
-            <td><a-tag color="green">[[ Object.values(infoModal.clientSettings)[1] ]]</a-tag></td>
-            <td><a-tag color="green">[[ Object.values(infoModal.clientSettings)[2] ]]</a-tag></td>
+            <th v-for="col in Object.keys(infoModal.clientSettings).slice(0, 3)">[[ col ]]</th>
         </tr>
+        <tr>
+            <td v-for="col in Object.values(infoModal.clientSettings).slice(0, 3)"><a-tag color="green">[[ col ]]</a-tag></td>
     </table>
     <table style="margin-bottom: 10px; width: 100%;">
             <tr><th>{{ i18n "usage" }}</th><th>{{ i18n "pages.inbounds.totalFlow" }}</th><th>{{ i18n "pages.inbounds.expireDate" }}</th><th>{{ i18n "enable" }}</th></tr>    
@@ -119,18 +118,8 @@
             this.dbInbound = new DBInbound(dbInbound);
             this.link = dbInbound.genLink(index);
             this.clientSettings = Object.values(JSON.parse(this.inbound.settings).clients)[index];
-            this.clientStats = dbInbound.clientStats;
             this.isExpired = this.inbound.isExpiry(index);
-            if(dbInbound.clientStats.length > 0)
-            {
-                for (const key in dbInbound.clientStats) {
-                    if (Object.hasOwnProperty.call(dbInbound.clientStats, key)) {
-                        if(dbInbound.clientStats[key]['email'] == this.clientSettings.email)
-                            this.clientStats = dbInbound.clientStats[key];
-
-                    }
-                }
-            }
+            this.clientStats = this.dbInbound.clientStats.find(row => row.email === this.clientSettings.email);
             this.visible = true;
             infoModalApp.$nextTick(() => {
                 if (this.clipboard === null) {

@@ -8,7 +8,7 @@
         <a-switch v-model="dbInbound.enable"></a-switch>
     </a-form-item>
     <a-form-item label='{{ i18n "protocol" }}'>
-        <a-select v-model="inbound.protocol" style="width: 160px;">
+        <a-select v-model="inbound.protocol" style="width: 160px;" :disabled="isEdit">
             <a-select-option v-for="p in Protocols" :key="p" :value="p">[[ p ]]</a-select-option>
         </a-select>
     </a-form-item>

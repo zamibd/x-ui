@@ -127,6 +127,13 @@
 "clickOnQRcode" = "برای کپی بر روی کد تصویری کلیک کنید"
 "client" = "کاربر"
 
+[pages.client]
+"add" = "کاربر جدید"
+"edit" = "ویرایش کاربر"
+"submitAdd" = "اضافه کردن"
+"submitEdit" = "ذخیره تغییرات"
+"clientCount" = "تعداد کاربران"
+
 [pages.inbounds.toasts]
 "obtain" = "Obtain"
 

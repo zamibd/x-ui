@@ -5,8 +5,10 @@
         <template #overlay>
           <a-menu>
             <a-menu-item v-if="record.hasLink()" @click="showQrcode(record,index);"><a-icon type="qrcode"></a-icon>{{ i18n "qrCode" }}</a-menu-item>
+            <a-menu-item @click="openEditClient(record,index);"><a-icon type="edit"></a-icon>{{ i18n "pages.client.edit" }}</a-menu-item>
             <a-menu-item @click="showInfo(record,index);"><a-icon type="info-circle"></a-icon>{{ i18n "info" }}</a-menu-item>
             <a-menu-item @click="resetClientTraffic(client,record,$event)" v-if="client.email != ''"><a-icon type="retweet"></a-icon>{{ i18n "pages.inbounds.resetTraffic" }}</a-menu-item>
+            <a-menu-item v-if="isRemovable(record.id)" @click="delClient(record.id,index)"><span style="color: #FF4D4F"><a-icon type="delete"></a-icon> {{ i18n "delete"}}</span></a-menu-item>
           </a-menu>
         </template>
     </a-dropdown>

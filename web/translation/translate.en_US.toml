@@ -127,6 +127,13 @@
 "clickOnQRcode" = "Click on QR Code to Copy"
 "client" = "Client"
 
+[pages.client]
+"add" = "Add client"
+"edit" = "Edit client"
+"submitAdd" = "Add client"
+"submitEdit" = "Save changes"
+"clientCount" = "Number of clients"
+
 [pages.inbounds.toasts]
 "obtain" = "Obtain"
 

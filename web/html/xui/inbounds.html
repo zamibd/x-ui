@@ -44,7 +44,7 @@
                 <transition name="list" appear>
                     <a-card hoverable>
                         <div slot="title">
-                            <a-button type="primary" icon="plus" @click="openAddInbound"></a-button>
+                            <a-button type="primary" icon="plus" @click="openAddInbound">{{ i18n "pages.inbounds.addInbound" }}</a-button>
                         </div>
                         <a-input v-model.lazy="searchKey" placeholder="{{ i18n "search" }}" autofocus style="max-width: 300px"></a-input>
                         <a-table :columns="columns" :row-key="dbInbound => dbInbound.id"
@@ -64,6 +64,10 @@
                                         <a-menu-item key="edit">
                                             <a-icon type="edit"></a-icon>
                                             {{ i18n "edit" }}
+                                        </a-menu-item>
+                                        <a-menu-item v-if="dbInbound.clientStats.length>1" key="addClient">
+                                            <a-icon type="user"></a-icon>
+                                            {{ i18n "pages.client.add"}}
                                         </a-menu-item>
                                         <a-menu-item key="resetTraffic">
                                             <a-icon type="retweet"></a-icon> {{ i18n "pages.inbounds.resetTraffic" }}
@@ -124,15 +128,6 @@
                                 :row-key="client => client.id"
                                 :columns="innerTrojanColumns"
                                 :data-source="getInboundClients(record)"
-                                :pagination="false"
-                                >
-                                    {{template "client_table"}}
-                                </a-table>
-                                <a-table
-                                v-else
-                                :row-key="client => client.id"
-                                :columns="innerOneColumns"
-                                :data-source="record"
                                 :pagination="false"
                                 >
                                     {{template "client_table"}}
@@ -211,10 +206,6 @@
         { title: 'Password', width: 150, dataIndex: "password" },
     ];
 
-    const innerOneColumns = [
-        { title: '', width: 50, scopedSlots: { customRender: 'actions' } },
-    ];
-
     const app = new Vue({
         delimiters: ['[[', ']]'],
         el: '#app',
@@ -238,6 +229,7 @@
                     return;
                 }
                 this.setInbounds(msg.obj);
+                this.searchKey = '';
             },
             setInbounds(dbInbounds) {
                 this.inbounds.splice(0);
@@ -280,6 +272,9 @@
                         break;
                     case "edit":
                         this.openEditInbound(dbInbound.id);
+                        break;
+                    case "addClient":
+                        this.openAddClient(dbInbound)
                         break;
                     case "resetTraffic":
                         this.resetTraffic(dbInbound);
@@ -355,6 +350,71 @@
                 };
                 await this.submit(`/xui/inbound/update/${dbInbound.id}`, data, inModal);
             },
+            openAddClient(inbound) {
+                clientModal.show({
+                    title: '{{ i18n "pages.client.add"}}',
+                    okText: '{{ i18n "pages.client.submitAdd"}}',
+                    dbInbound: inbound,
+                    confirm: async (inbound, dbInbound, index) => {
+                        clientModal.loading();
+                        await this.addClient(inbound, dbInbound);
+                        clientModal.close();
+                    },
+                    isEdit: false
+                });
+            },
+            openEditClient(inbound, index) {
+                clientModal.show({
+                    title: '{{ i18n "pages.client.edit"}}',
+                    okText: '{{ i18n "pages.client.submitEdit"}}',
+                    dbInbound: inbound,
+                    index: index,
+                    confirm: async (inbound, dbInbound, index) => {
+                        clientModal.loading();
+                        await this.updateClient(inbound, dbInbound, index);
+                        clientModal.close();
+                    },
+                    isEdit: true
+                });
+            },
+            async addClient(inbound, dbInbound) {
+                const data = {
+                    id: dbInbound.id,
+                    up: dbInbound.up,
+                    down: dbInbound.down,
+                    total: dbInbound.total,
+                    remark: dbInbound.remark,
+                    enable: dbInbound.enable,
+                    expiryTime: dbInbound.expiryTime,
+
+                    listen: inbound.listen,
+                    port: inbound.port,
+                    protocol: inbound.protocol,
+                    settings: inbound.settings.toString(),
+                    streamSettings: inbound.stream.toString(),
+                    sniffing: inbound.canSniffing() ? inbound.sniffing.toString() : '{}',
+                };
+                await this.submit('/xui/inbound/addClient', data, clientModal);
+            },
+            async updateClient(inbound, dbInbound, index) {
+                const data = {
+                    id: dbInbound.id,
+                    up: dbInbound.up,
+                    down: dbInbound.down,
+                    total: dbInbound.total,
+                    remark: dbInbound.remark,
+                    enable: dbInbound.enable,
+                    expiryTime: dbInbound.expiryTime,
+
+                    listen: inbound.listen,
+                    port: inbound.port,
+                    protocol: inbound.protocol,
+                    settings: inbound.settings.toString(),
+                    streamSettings: inbound.stream.toString(),
+                    sniffing: inbound.canSniffing() ? inbound.sniffing.toString() : '{}',
+                };
+                await this.submit(`/xui/inbound/updateClient/${index}`, data, clientModal);
+            },
             resetTraffic(dbInbound) {
                 this.$confirm({
                     title: '{{ i18n "pages.inbounds.resetTraffic"}}',
@@ -376,6 +436,15 @@
                     okText: '{{ i18n "delete"}}',
                     cancelText: '{{ i18n "cancel"}}',
                     onOk: () => this.submit('/xui/inbound/del/' + dbInbound.id),
+                });
+            },
+            delClient(dbInboundId,index) {
+                this.$confirm({
+                    title: '{{ i18n "pages.inbounds.deleteInbound"}}',
+                    content: '{{ i18n "pages.inbounds.deleteInboundContent"}}',
+                    okText: '{{ i18n "delete"}}',
+                    cancelText: '{{ i18n "cancel"}}',
+                    onOk: () => this.submit('/xui/inbound/delClient/' + dbInboundId + '/' + index),
                 });
             },
             showQrcode(dbInbound, clientIndex) {
@@ -478,6 +547,9 @@
                 clientStats = dbInbound.clientStats ? dbInbound.clientStats.find(stats => stats.email === email) : null
                 return clientStats ? clientStats['enable'] : true
             },
+            isRemovable(dbInbound_id){
+                return this.getInboundClients(this.dbInbounds.find(row => row.id === dbInbound_id)).length > 1
+            }
         },
         watch: {
             searchKey: debounce(function (newVal) {
@@ -509,5 +581,6 @@
 {{template "qrcodeModal"}}
 {{template "textModal"}}
 {{template "inboundInfoModal"}}
+{{template "clientsModal"}}
 </body>
 </html>

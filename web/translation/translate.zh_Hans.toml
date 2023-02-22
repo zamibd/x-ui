@@ -127,6 +127,13 @@
 "clickOnQRcode" = "点击二维码复制"
 "client" = "客户"
 
+[pages.client]
+"add" = "添加客户端"
+"edit" = "编辑客户"
+"submitAdd" = "添加客户端"
+"submitEdit" = "保存修改"
+"clientCount" = "客户数量"
+
 [pages.inbounds.toasts]
 "obtain" = "获取"
 

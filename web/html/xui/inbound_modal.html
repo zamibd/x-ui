@@ -109,53 +109,18 @@
             isExpiry(index) {
                 return this.inbound.isExpiry(index)
             },
-            getUpStats(email) {
-                clientStats = this.inbound.clientStats
-                if(clientStats.length > 0)
-                {
-                    for (const key in clientStats) {
-                        if (Object.hasOwnProperty.call(clientStats, key)) {
-                            if(clientStats[key]['email'] == email)
-                                return clientStats[key]['up']
-
-                        }
-                    }
-                }
-            },
-            getDownStats(email) {
-                clientStats = this.inbound.clientStats
-                if(clientStats.length > 0)
-                {
-                    for (const key in clientStats) {
-                        if (Object.hasOwnProperty.call(clientStats, key)) {
-                            if(clientStats[key]['email'] == email)
-                                return clientStats[key]['down']
-
-                        }
-                    }
-                }
-            },
             isClientEnable(email) {
                 clientStats = this.dbInbound.clientStats ? this.dbInbound.clientStats.find(stats => stats.email === email) : null
                 return clientStats ? clientStats['enable'] : true
             },
-            getHeaderText(email) {
-                if(email == "")
-                    return "Add Client"
-                
-                return email + (this.isClientEnable(email) == true ? ' Active' : ' Deactive')
-            },
-            getHeaderStyle(email) {
-                return (this.isClientEnable(email) == true ? '' : 'deactive-client')
-            },
             getNewEmail(client) {
                 var chars = 'abcdefghijklmnopqrstuvwxyz1234567890';
                 var string = '';
-                var len = 6 + Math.floor(Math.random() * 5)
+                var len = 6 + Math.floor(Math.random() * 5);
                 for(var ii=0; ii<len; ii++){
                     string += chars[Math.floor(Math.random() * chars.length)];
                 }
-                client.email = string + "@gmail.com"
+                client.email = string;
             }
         },
     });
