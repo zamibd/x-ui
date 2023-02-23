@@ -33,7 +33,7 @@ xray panel supporting multi-protocol, **Multi-lang (English,Farsi,Chinese)**
 - Support one-click SSL certificate application and automatic renewal
 - For more advanced configuration items, please refer to the panel
 
-# Screenshoot from Inbouds page
+# Screenshot from Inbouds page
 
 ![inbounds](./media/inbounds.png)
 
@@ -154,7 +154,7 @@ x-ui v2-ui
 
 # T-Shoots:
 
-**If you ygrade from an old version or other forks, for enable traffic for users you should do :**
+**If you upgrade from an old version or other forks, for enable traffic for users you should do :**
 
 find this in config : 
 ``` json
