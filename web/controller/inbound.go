@@ -140,6 +140,9 @@ func (a *InboundController) addInboundClient(c *gin.Context) {
 		return
 	}
 	jsonMsg(c, "Client added", nil)
+	if err == nil {
+		a.xrayService.SetToNeedRestart()
+	}
 }
 
 func (a *InboundController) delInboundClient(c *gin.Context) {
@@ -161,6 +164,9 @@ func (a *InboundController) delInboundClient(c *gin.Context) {
 		return
 	}
 	jsonMsg(c, "Client deleted", nil)
+	if err == nil {
+		a.xrayService.SetToNeedRestart()
+	}
 }
 
 func (a *InboundController) updateInboundClient(c *gin.Context) {
@@ -183,6 +189,9 @@ func (a *InboundController) updateInboundClient(c *gin.Context) {
 		return
 	}
 	jsonMsg(c, "Client updated", nil)
+	if err == nil {
+		a.xrayService.SetToNeedRestart()
+	}
 }
 
 func (a *InboundController) resetClientTraffic(c *gin.Context) {
@@ -194,4 +203,7 @@ func (a *InboundController) resetClientTraffic(c *gin.Context) {
 		return
 	}
 	jsonMsg(c, "traffic reseted", nil)
+	if err == nil {
+		a.xrayService.SetToNeedRestart()
+	}
 }
