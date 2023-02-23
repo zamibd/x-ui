@@ -381,38 +381,14 @@
             async addClient(inbound, dbInbound) {
                 const data = {
                     id: dbInbound.id,
-                    up: dbInbound.up,
-                    down: dbInbound.down,
-                    total: dbInbound.total,
-                    remark: dbInbound.remark,
-                    enable: dbInbound.enable,
-                    expiryTime: dbInbound.expiryTime,
-
-                    listen: inbound.listen,
-                    port: inbound.port,
-                    protocol: inbound.protocol,
                     settings: inbound.settings.toString(),
-                    streamSettings: inbound.stream.toString(),
-                    sniffing: inbound.canSniffing() ? inbound.sniffing.toString() : '{}',
                 };
                 await this.submit('/xui/inbound/addClient', data, clientModal);
             },
             async updateClient(inbound, dbInbound, index) {
                 const data = {
                     id: dbInbound.id,
-                    up: dbInbound.up,
-                    down: dbInbound.down,
-                    total: dbInbound.total,
-                    remark: dbInbound.remark,
-                    enable: dbInbound.enable,
-                    expiryTime: dbInbound.expiryTime,
-
-                    listen: inbound.listen,
-                    port: inbound.port,
-                    protocol: inbound.protocol,
                     settings: inbound.settings.toString(),
-                    streamSettings: inbound.stream.toString(),
-                    sniffing: inbound.canSniffing() ? inbound.sniffing.toString() : '{}',
                 };
                 await this.submit(`/xui/inbound/updateClient/${index}`, data, clientModal);
             },
