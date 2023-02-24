@@ -363,8 +363,10 @@
                     isEdit: false
                 });
             },
-            openEditClient(dbInbound_id, index) {
-                dbInbound = this.dbInbounds.find(row => row.id === dbInbound_id);
+            openEditClient(dbInboundId, client) {
+                dbInbound = this.dbInbounds.find(row => row.id === dbInboundId);
+                clients = this.getInboundClients(dbInbound);
+                index = this.findIndexOfClient(clients, client);
                 clientModal.show({
                     title: '{{ i18n "pages.client.edit"}}',
                     okText: '{{ i18n "pages.client.submitEdit"}}',
@@ -377,6 +379,10 @@
                     },
                     isEdit: true
                 });
+            },
+            findIndexOfClient(clients,client) {
+                firstKey = Object.keys(client)[0];
+                return clients.findIndex(c => c[firstKey] === client[firstKey]);
             },
             async addClient(inbound, dbInbound) {
                 const data = {
@@ -415,7 +421,10 @@
                     onOk: () => this.submit('/xui/inbound/del/' + dbInbound.id),
                 });
             },
-            delClient(dbInboundId,index) {
+            delClient(dbInboundId,client) {
+                dbInbound = this.dbInbounds.find(row => row.id === dbInboundId);
+                clients = this.getInboundClients(dbInbound);
+                index = this.findIndexOfClient(clients, client);
                 this.$confirm({
                     title: '{{ i18n "pages.inbounds.deleteInbound"}}',
                     content: '{{ i18n "pages.inbounds.deleteInboundContent"}}',

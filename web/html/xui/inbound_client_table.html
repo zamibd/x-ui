@@ -6,7 +6,7 @@
     </a-tooltip>
     <a-tooltip>
         <template slot="title">{{ i18n "pages.client.edit" }}</template>
-        <a-icon style="font-size: 24px;" type="edit" @click="openEditClient(record.id,index);"></a-icon>
+        <a-icon style="font-size: 24px;" type="edit" @click="openEditClient(record.id,client);"></a-icon>
     </a-tooltip>
     <a-tooltip>
         <template slot="title">{{ i18n "info" }}</template>
@@ -18,7 +18,7 @@
     </a-tooltip>
     <a-tooltip>
         <template slot="title"><span style="color: #FF4D4F"> {{ i18n "delete"}}</span></template>
-        <a-icon style="font-size: 24px;" type="delete" v-if="isRemovable(record.id)" @click="delClient(record.id,index)"></a-icon>
+        <a-icon style="font-size: 24px;" type="delete" v-if="isRemovable(record.id)" @click="delClient(record.id,client)"></a-icon>
     </a-tooltip>
 </template>
 <template slot="client" slot-scope="text, client">
