@@ -7,6 +7,9 @@
 > **Disclaimer: This project is only for personal learning and communication, please do not use it for illegal purposes, please do not use it in a production environment**
 
 
+# Temporary downgrade to 0.2.4 due to fixing bugs
+Coming back soon with new features
+
 xray panel supporting multi-protocol, **Multi-lang (English,Farsi,Chinese)**
 
 | Features        | Enable?           |
