@@ -31,11 +31,6 @@
                 <a-select-option v-for="key in TLS_FLOW_CONTROL" :value="key">[[ key ]]</a-select-option>
             </a-select>
         </a-form-item>
-        <a-form-item v-if="inbound.tls" label="utls" layout="inline">
-                <a-select v-model="inbound.settings.vlesses[index].fingerprint" label="utls" style="width: 150px">
-                    <a-select-option v-for="key in UTLS_FINGERPRINT" :value="key">[[ key ]]</a-select-option>
-                </a-select>
-        </a-form-item>
         <a-form-item>
             <span slot="label">
                 <span >{{ i18n "pages.inbounds.totalFlow" }}</span>(GB)

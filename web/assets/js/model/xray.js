@@ -1412,12 +1412,12 @@ Inbound.VLESSSettings = class extends Inbound.Settings {
     }
 
     // decryption should be set to static value
-    static fromJson({clients, decryption, fallbacks}={}) {
+    static fromJson(json={}) {
         return new Inbound.VLESSSettings(
             Protocols.VLESS,
-            clients.map(client => Inbound.VLESSSettings.VLESS.fromJson(client)),
+            json.clients.map(client => Inbound.VLESSSettings.VLESS.fromJson(client)),
             'none',
-            Inbound.VLESSSettings.Fallback.fromJson(fallbacks),
+            Inbound.VLESSSettings.Fallback.fromJson(json.fallbacks),
         );
     }
 
@@ -1432,25 +1432,23 @@ Inbound.VLESSSettings = class extends Inbound.Settings {
 };
 Inbound.VLESSSettings.VLESS = class extends XrayCommonClass {
 
-    constructor(id=RandomUtil.randomUUID(), flow='', email=RandomUtil.randomText(), totalGB=0, fingerprint = UTLS_FINGERPRINT.UTLS_CHROME, expiryTime='') {
+    constructor(id=RandomUtil.randomUUID(), flow='', email=RandomUtil.randomText(), totalGB=0, expiryTime='') {
         super();
         this.id = id;
         this.flow = flow;
         this.email = email;
         this.totalGB = totalGB;
-        this.fingerprint = fingerprint;
         this.expiryTime = expiryTime;
 
     }
 
-    static fromJson({id, flow, email, totalGB, fingerprint, expiryTime} = {}) {
+    static fromJson(json={}) {
         return new Inbound.VLESSSettings.VLESS(
-          id,
-          flow,
-          email,
-          totalGB,
-          fingerprint,
-          expiryTime
+            json.id,
+            json.flow,
+            json.email,
+            json.totalGB,
+            json.expiryTime,
         );
       }
 
@@ -1547,13 +1545,12 @@ Inbound.TrojanSettings = class extends Inbound.Settings {
     }
 };
 Inbound.TrojanSettings.Trojan = class extends XrayCommonClass {
-    constructor(password=RandomUtil.randomSeq(10), flow='', email=RandomUtil.randomText(), totalGB=0, fingerprint = UTLS_FINGERPRINT.UTLS_CHROME, expiryTime='') {
+    constructor(password=RandomUtil.randomSeq(10), flow='', email=RandomUtil.randomText(), totalGB=0, expiryTime='') {
         super();
         this.password = password;
         this.flow = flow;
         this.email = email;
         this.totalGB = totalGB;
-        this.fingerprint = fingerprint;
         this.expiryTime = expiryTime;
     }
 
@@ -1563,19 +1560,17 @@ Inbound.TrojanSettings.Trojan = class extends XrayCommonClass {
             flow: this.flow,
             email: this.email,
             totalGB: this.totalGB,
-            fingerprint: this.fingerprint,
             expiryTime: this.expiryTime,
         };
     }
 
-    static fromJson({password, flow, email, totalGB, fingerprint, expiryTime} = {}) {
+    static fromJson(json = {}) {
         return new Inbound.TrojanSettings.Trojan(
-            password,
-            flow,
-            email,
-            totalGB,
-            fingerprint,
-            expiryTime,
+            json.password,
+            json.flow,
+            json.email,
+            json.totalGB,
+            json.expiryTime,
 
         );
     }

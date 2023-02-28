@@ -21,11 +21,6 @@
     <a-form-item label="id" v-if="inbound.protocol === Protocols.VMESS || inbound.protocol === Protocols.VLESS">
         <a-input v-model.trim="client.id"></a-input>
     </a-form-item>
-    <a-form-item v-if="inbound.tls" label="utls" layout="inline">
-            <a-select v-model="client.fingerprint" label="utls" style="width: 150px">
-                <a-select-option v-for="key in UTLS_FINGERPRINT" :value="key">[[ key ]]</a-select-option>
-            </a-select>
-    </a-form-item>
     <a-form-item label='{{ i18n "additional" }} ID' v-if="inbound.protocol === Protocols.VMESS">
         <a-input type="number" v-model.number="client.alterId"></a-input>
     </a-form-item>
