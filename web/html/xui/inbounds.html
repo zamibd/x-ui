@@ -423,15 +423,30 @@
             },
             delClient(dbInboundId,client) {
                 dbInbound = this.dbInbounds.find(row => row.id === dbInboundId);
-                clients = this.getInboundClients(dbInbound);
+                newDbInbound = new DBInbound(dbInbound);
+                inbound = newDbInbound.toInbound();
+                clients = this.getClients(dbInbound.protocol, inbound.settings);
                 index = this.findIndexOfClient(clients, client);
+                clients.splice(index, 1);
+                const data = {
+                    id: dbInboundId,
+                    settings: inbound.settings.toString(),
+                };
                 this.$confirm({
                     title: '{{ i18n "pages.inbounds.deleteInbound"}}',
                     content: '{{ i18n "pages.inbounds.deleteInboundContent"}}',
                     okText: '{{ i18n "delete"}}',
                     cancelText: '{{ i18n "cancel"}}',
-                    onOk: () => this.submit('/xui/inbound/delClient/' + dbInboundId + '/' + index),
+                    onOk: () => this.submit('/xui/inbound/delClient/' + client.email, data),
                 });
+            },
+            getClients(protocol, clientSettings) {
+                switch(protocol){
+                    case Protocols.VMESS: return clientSettings.vmesses;
+                    case Protocols.VLESS: return clientSettings.vlesses;
+                    case Protocols.TROJAN: return clientSettings.trojans;
+                    default: return null;
+                }
             },
             showQrcode(dbInbound, clientIndex) {
                 const link = dbInbound.genLink(clientIndex);
