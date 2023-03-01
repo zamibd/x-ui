@@ -134,7 +134,9 @@ func (s *InboundService) AddInbound(inbound *model.Inbound) (*model.Inbound, err
 
 	err = db.Save(inbound).Error
 	if err == nil {
-		s.AddClientStat(inbound.Id, &clients[0])
+		for _, client := range clients {
+			s.AddClientStat(inbound.Id, &client)
+		}
 	}
 	return inbound, err
 }

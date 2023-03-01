@@ -351,10 +351,11 @@
                 await this.submit(`/xui/inbound/update/${dbInbound.id}`, data, inModal);
             },
             openAddClient(inbound) {
+                dbInbound = this.dbInbounds.find(row => row.id === inbound.id);
                 clientModal.show({
                     title: '{{ i18n "pages.client.add"}}',
                     okText: '{{ i18n "pages.client.submitAdd"}}',
-                    dbInbound: inbound,
+                    dbInbound: dbInbound,
                     confirm: async (inbound, dbInbound, index) => {
                         clientModal.loading();
                         await this.addClient(inbound, dbInbound);
