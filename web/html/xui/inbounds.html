@@ -499,7 +499,7 @@
             isTrafficExhausted(dbInbound, email) {
                 if(email.length == 0) return false
                 clientStats = dbInbound.clientStats.find(stats => stats.email === email)
-                return clientStats.down + clientStats.up > clientStats.total
+                return clientStats ? clientStats.down + clientStats.up > clientStats.total : false
             },
             isClientEnabled(dbInbound, email) {
                 clientStats = dbInbound.clientStats ? dbInbound.clientStats.find(stats => stats.email === email) : null

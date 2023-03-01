@@ -154,8 +154,6 @@ func (a *InboundController) delInboundClient(c *gin.Context) {
 		return
 	}
 
-	logger.Error("email: " + email + " ID: " + strconv.Itoa(inbound.Id) + " Settings: " + inbound.Settings)
-
 	err = a.inboundService.DelInboundClient(inbound, email)
 	if err != nil {
 		jsonMsg(c, "something worng!", err)
