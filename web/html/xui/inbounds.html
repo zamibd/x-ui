@@ -38,6 +38,12 @@
                                 {{ i18n "pages.inbounds.inboundCount" }}:
                                 <a-tag color="green">[[ dbInbounds.length ]]</a-tag>
                             </a-col>
+                            <a-col :xs="24" :sm="24" :lg="12">
+                                {{ i18n "clients" }}:
+                                <a-tag color="green">[[ total.clients ]]</a-tag>
+                                <a-tag color="blue">{{ i18n "enabled" }} [[ total.active ]]</a-tag>
+                                <a-tag color="red">{{ i18n "disabled" }} [[ total.deactive ]]</a-tag>
+                            </a-col>
                         </a-row>
                     </a-card>
                 </transition>
@@ -520,13 +526,32 @@
         computed: {
             total() {
                 let down = 0, up = 0;
-                for (let i = 0; i < this.dbInbounds.length; ++i) {
-                    down += this.dbInbounds[i].down;
-                    up += this.dbInbounds[i].up;
-                }
+                let clients = 0, active = 0, deactive = 0;
+                this.dbInbounds.forEach(dbInbound => {
+                    down += dbInbound.down;
+                    up += dbInbound.up;
+                    inbound = dbInbound.toInbound();
+                    clients = this.getClients(dbInbound.protocol, inbound.settings);
+                    if(clients){
+                        if(dbInbound.enable){
+                            isClientEnable = false;
+                            clients.forEach(client => {
+                                isClientEnable = client.email == "" ? true: this.isClientEnabled(dbInbound,client.email);
+                                isClientEnable ? active++ : deactive++;
+                            });
+                        } else {
+                            deactive += clients.length;
+                        }
+                    } else {
+                        dbInbound.enable ? active++ : deactive++;
+                    }
+                });
                 return {
                     down: down,
                     up: up,
+                    clients: active + deactive,
+                    active: active,
+                    deactive: deactive,
                 };
             }
         },
