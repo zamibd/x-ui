@@ -472,11 +472,11 @@ func (s *InboundService) DelClientStat(tx *gorm.DB, email string) error {
 	return tx.Where("email = ?", email).Delete(xray.ClientTraffic{}).Error
 }
 
-func (s *InboundService) ResetClientTraffic(clientEmail string) error {
+func (s *InboundService) ResetClientTraffic(id int, clientEmail string) error {
 	db := database.GetDB()
 
 	result := db.Model(xray.ClientTraffic{}).
-		Where("email = ?", clientEmail).
+		Where("inbound_id = ? and email = ?", id, clientEmail).
 		Updates(map[string]interface{}{"enable": true, "up": 0, "down": 0})
 
 	err := result.Error

@@ -474,28 +474,14 @@
                     return dbInbound.toInbound().settings.trojans
                 }
             },
-            resetClientTraffic(client,inbound) {
+            resetClientTraffic(client,dbInbound_Id) {
                 this.$confirm({
                     title: '{{ i18n "pages.inbounds.resetTraffic"}}',
                     content: '{{ i18n "pages.inbounds.resetTrafficContent"}}',
                     okText: '{{ i18n "reset"}}',
                     cancelText: '{{ i18n "cancel"}}',
-                    onOk: () => {
-                        this.resetClTraffic(client,inbound);
-                    },
-                });
-            },
-            async resetClTraffic(client,inbound) {
-                const msg = await HttpUtil.post('/xui/inbound/resetClientTraffic/'+ client.email);
-                if (!msg.success) {
-                    return;
-                }
-                clientStats = inbound.clientStats.find(stats => stats.email == client.email)
-                if(clientStats.length > 0)
-                {
-                    clientStats.up = 0
-                    clientStats.down = 0
-                }
+                    onOk: () => this.submit('/xui/inbound/' + dbInbound_Id + '/resetClientTraffic/'+ client.email),
+                })
             },
             isExpiry(dbInbound, index) {
                 return dbInbound.toInbound().isExpiry(index)

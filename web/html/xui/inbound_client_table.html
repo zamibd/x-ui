@@ -14,7 +14,7 @@
     </a-tooltip>
     <a-tooltip>
         <template slot="title">{{ i18n "pages.inbounds.resetTraffic" }}</template>
-        <a-icon style="font-size: 24px;" type="retweet" @click="resetClientTraffic(client,record)" v-if="client.email.length > 0"></a-icon>
+        <a-icon style="font-size: 24px;" type="retweet" @click="resetClientTraffic(client,record.id)" v-if="client.email.length > 0"></a-icon>
     </a-tooltip>
     <a-tooltip>
         <template slot="title"><span style="color: #FF4D4F"> {{ i18n "delete"}}</span></template>

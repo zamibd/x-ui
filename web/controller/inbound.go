@@ -34,7 +34,7 @@ func (a *InboundController) initRouter(g *gin.RouterGroup) {
 	g.POST("/addClient/", a.addInboundClient)
 	g.POST("/delClient/:email", a.delInboundClient)
 	g.POST("/updateClient/:index", a.updateInboundClient)
-	g.POST("/resetClientTraffic/:email", a.resetClientTraffic)
+	g.POST("/:id/resetClientTraffic/:email", a.resetClientTraffic)
 
 }
 
@@ -193,9 +193,14 @@ func (a *InboundController) updateInboundClient(c *gin.Context) {
 }
 
 func (a *InboundController) resetClientTraffic(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		jsonMsg(c, I18n(c, "pages.inbounds.revise"), err)
+		return
+	}
 	email := c.Param("email")
 
-	err := a.inboundService.ResetClientTraffic(email)
+	err = a.inboundService.ResetClientTraffic(id, email)
 	if err != nil {
 		jsonMsg(c, "something worng!", err)
 		return
