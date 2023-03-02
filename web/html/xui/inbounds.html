@@ -77,6 +77,10 @@
                                                 <a-icon type="user"></a-icon>
                                                 {{ i18n "pages.client.add"}}
                                             </a-menu-item>
+                                            <a-menu-item key="addBulkClient">
+                                                <a-icon type="team"></a-icon>
+                                                {{ i18n "pages.client.bulk"}}
+                                            </a-menu-item>
                                             <a-menu-item key="export">
                                                 <a-icon type="export"></a-icon>
                                                 {{ i18n "pages.inbounds.export"}}
@@ -113,7 +117,7 @@
                                 <template v-else>{{ i18n "none" }}</template>
                             </template>
                             <template slot="enable" slot-scope="text, dbInbound">
-                                <a-switch v-model="dbInbound.enable" @change="switchEnable(dbInbound)"></a-switch>
+                                <a-switch v-model="dbInbound.enable" @change="switchEnable(dbInbound.id)"></a-switch>
                             </template>
                             <template slot="expiryTime" slot-scope="text, dbInbound">
                                 <template v-if="dbInbound.expiryTime > 0">
@@ -283,20 +287,23 @@
                     case "qrcode":
                         this.showQrcode(dbInbound);
                         break;
-                    case "export":
-                        this.inboundLinks(dbInbound.id);
-                        break;
                     case "edit":
                         this.openEditInbound(dbInbound.id);
                         break;
                     case "addClient":
-                        this.openAddClient(dbInbound)
+                        this.openAddClient(dbInbound.id)
+                        break;
+                    case "addBulkClient":
+                        this.openAddBulkClient(dbInbound.id)
+                        break;
+                    case "export":
+                        this.inboundLinks(dbInbound.id);
                         break;
                     case "resetTraffic":
-                        this.resetTraffic(dbInbound);
+                        this.resetTraffic(dbInbound.id);
                         break;
                     case "delete":
-                        this.delInbound(dbInbound);
+                        this.delInbound(dbInbound.id);
                         break;
                 }
             },
@@ -313,8 +320,8 @@
                     isEdit: false
                 });
             },
-            openEditInbound(dbInbound_id) {
-                dbInbound = this.dbInbounds.find(row => row.id === dbInbound_id);
+            openEditInbound(dbInboundId) {
+                dbInbound = this.dbInbounds.find(row => row.id === dbInboundId);
                 const inbound = dbInbound.toInbound();
                 inModal.show({
                     title: '{{ i18n "pages.inbounds.modifyInbound"}}',
@@ -366,8 +373,8 @@
                 };
                 await this.submit(`/xui/inbound/update/${dbInbound.id}`, data, inModal);
             },
-            openAddClient(inbound) {
-                dbInbound = this.dbInbounds.find(row => row.id === inbound.id);
+            openAddClient(dbInboundId) {
+                dbInbound = this.dbInbounds.find(row => row.id === dbInboundId);
                 clientModal.show({
                     title: '{{ i18n "pages.client.add"}}',
                     okText: '{{ i18n "pages.client.submitAdd"}}',
@@ -378,6 +385,19 @@
                         clientModal.close();
                     },
                     isEdit: false
+                });
+            },
+            openAddBulkClient(dbInboundId) {
+                dbInbound = this.dbInbounds.find(row => row.id === dbInboundId);
+                clientsBulkModal.show({
+                    title: '{{ i18n "pages.client.bulk"}} ' + dbInbound.remark,
+                    okText: '{{ i18n "pages.client.bulk"}}',
+                    dbInbound: dbInbound,
+                    confirm: async (inbound, dbInbound) => {
+                        clientsBulkModal.loading();
+                        await this.addClient(inbound, dbInbound);
+                        clientsBulkModal.close();
+                    },
                 });
             },
             openEditClient(dbInboundId, client) {
@@ -406,16 +426,17 @@
                     id: dbInbound.id,
                     settings: inbound.settings.toString(),
                 };
-                await this.submit('/xui/inbound/addClient', data, clientModal);
+                await this.submit('/xui/inbound/addClient', data);
             },
             async updateClient(inbound, dbInbound, index) {
                 const data = {
                     id: dbInbound.id,
                     settings: inbound.settings.toString(),
                 };
-                await this.submit(`/xui/inbound/updateClient/${index}`, data, clientModal);
+                await this.submit(`/xui/inbound/updateClient/${index}`, data);
             },
-            resetTraffic(dbInbound) {
+            resetTraffic(dbInboundId) {
+                dbInbound = this.dbInbounds.find(row => row.id === dbInboundId);
                 this.$confirm({
                     title: '{{ i18n "pages.inbounds.resetTraffic"}}',
                     content: '{{ i18n "pages.inbounds.resetTrafficContent"}}',
@@ -429,13 +450,13 @@
                     },
                 });
             },
-            delInbound(dbInbound) {
+            delInbound(dbInboundId) {
                 this.$confirm({
                     title: '{{ i18n "pages.inbounds.deleteInbound"}}',
                     content: '{{ i18n "pages.inbounds.deleteInboundContent"}}',
                     okText: '{{ i18n "delete"}}',
                     cancelText: '{{ i18n "cancel"}}',
-                    onOk: () => this.submit('/xui/inbound/del/' + dbInbound.id),
+                    onOk: () => this.submit('/xui/inbound/del/' + dbInboundId),
                 });
             },
             delClient(dbInboundId,client) {
@@ -472,11 +493,12 @@
             showInfo(dbInbound, index) {
                 infoModal.show(dbInbound, index);
             },
-            switchEnable(dbInbound) {
-                this.submit(`/xui/inbound/update/${dbInbound.id}`, dbInbound);
+            switchEnable(dbInboundId) {
+                dbInbound = this.dbInbounds.find(row => row.id === dbInboundId);
+                this.submit(`/xui/inbound/update/${dbInboundId}`, dbInbound);
             },
-            async submit(url, data, modal) {
-                const msg = await HttpUtil.postWithModal(url, data, modal);
+            async submit(url, data) {
+                const msg = await HttpUtil.postWithModal(url, data);
                 if (msg.success) {
                     await this.getDBInbounds();
                 }
@@ -490,13 +512,13 @@
                     return dbInbound.toInbound().settings.trojans
                 }
             },
-            resetClientTraffic(client,dbInbound_Id) {
+            resetClientTraffic(client,dbInboundId) {
                 this.$confirm({
                     title: '{{ i18n "pages.inbounds.resetTraffic"}}',
                     content: '{{ i18n "pages.inbounds.resetTrafficContent"}}',
                     okText: '{{ i18n "reset"}}',
                     cancelText: '{{ i18n "cancel"}}',
-                    onOk: () => this.submit('/xui/inbound/' + dbInbound_Id + '/resetClientTraffic/'+ client.email),
+                    onOk: () => this.submit('/xui/inbound/' + dbInboundId + '/resetClientTraffic/'+ client.email),
                 })
             },
             isExpiry(dbInbound, index) {
@@ -586,5 +608,6 @@
 {{template "textModal"}}
 {{template "inboundInfoModal"}}
 {{template "clientsModal"}}
+{{template "clientsBulkModal"}}
 </body>
 </html>

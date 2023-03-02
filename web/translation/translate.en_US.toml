@@ -134,6 +134,7 @@
 "submitAdd" = "Add client"
 "submitEdit" = "Save changes"
 "clientCount" = "Number of clients"
+"bulk" = "Add bulk"
 
 [pages.inbounds.toasts]
 "obtain" = "Obtain"

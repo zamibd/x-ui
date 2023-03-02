@@ -251,10 +251,20 @@ func (s *InboundService) AddInboundClient(inbound *model.Inbound) error {
 		return err
 	}
 
+	oldClients, err := s.getClients(oldInbound)
+	if err != nil {
+		return err
+	}
+
 	oldInbound.Settings = inbound.Settings
 
 	if len(clients[len(clients)-1].Email) > 0 {
 		s.AddClientStat(inbound.Id, &clients[len(clients)-1])
+	}
+	for i := len(oldClients); i < len(clients); i++ {
+		if len(clients[i].Email) > 0 {
+			s.AddClientStat(inbound.Id, &clients[i])
+		}
 	}
 	db := database.GetDB()
 	return db.Save(oldInbound).Error

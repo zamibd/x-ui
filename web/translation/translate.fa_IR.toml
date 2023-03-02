@@ -134,6 +134,7 @@
 "submitAdd" = "اضافه کردن"
 "submitEdit" = "ذخیره تغییرات"
 "clientCount" = "تعداد کاربران"
+"bulk" = "انبوه سازی"
 
 [pages.inbounds.toasts]
 "obtain" = "Obtain"
