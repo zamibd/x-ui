@@ -1,6 +1,6 @@
 {{define "clientsBulkModal"}}
 <a-modal id="client-bulk-modal" v-model="clientsBulkModal.visible" :title="clientsBulkModal.title" @ok="clientsBulkModal.ok"
-         :closable="true" :mask-closable="false"
+         :confirm-loading="clientsBulkModal.confirmLoading" :closable="true" :mask-closable="false"
          :ok-text="clientsBulkModal.okText" cancel-text='{{ i18n "close" }}'>
     <a-form layout="inline">
         <a-form-item>
@@ -38,6 +38,7 @@
 
     const clientsBulkModal = {
         visible: false,
+        confirmLoading: false,
         title: '',
         okText: '',
         confirm: null,
@@ -92,7 +93,7 @@
             clientsBulkModal.confirmLoading = loading;
         },
     };
-    
+
     const clientsBulkModalApp = new Vue({
         delimiters: ['[[', ']]'],
         el: '#client-bulk-modal',
