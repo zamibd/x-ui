@@ -68,9 +68,10 @@ type Setting struct {
 
 type Client struct {
 	ID         string `json:"id"`
+	Password   string `json:"password"`
+	Flow       string `json:"flow"`
 	AlterIds   uint16 `json:"alterId"`
 	Email      string `json:"email"`
-	Security   string `json:"security"`
 	TotalGB    int64  `json:"totalGB" form:"totalGB"`
 	ExpiryTime int64  `json:"expiryTime" form:"expiryTime"`
 }
