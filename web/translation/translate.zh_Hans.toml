@@ -126,6 +126,7 @@
 "keyContent" = "密钥内容"
 "clickOnQRcode" = "点击二维码复制"
 "client" = "客户"
+"export" = "导出链接"
 
 [pages.client]
 "add" = "添加客户端"

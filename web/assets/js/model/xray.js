@@ -1236,6 +1236,22 @@ class Inbound extends XrayCommonClass {
         }
     }
 
+    genInboundLinks(address = '', remark = '') {
+        let link = '';
+        switch (this.protocol) {
+            case Protocols.VMESS:
+            case Protocols.VLESS:
+            case Protocols.TROJAN:
+                JSON.parse(this.settings).clients.forEach((_,index) => {
+                    link += this.genLink(address, remark, index) + '\r\n';
+                });
+                return link;
+            case Protocols.SHADOWSOCKS:
+                return (this.genSSLink(address, remark) + '\r\n');
+            default: return '';
+        }
+    }
+
     static fromJson(json={}) {
         return new Inbound(
             json.port,

@@ -126,6 +126,7 @@
 "keyContent" = "Key content"
 "clickOnQRcode" = "Click on QR Code to Copy"
 "client" = "Client"
+"export" = "Export links"
 
 [pages.client]
 "add" = "Add client"

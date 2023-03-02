@@ -126,6 +126,7 @@
 "keyContent" = "محتوای Private.key"
 "clickOnQRcode" = "برای کپی بر روی کد تصویری کلیک کنید"
 "client" = "کاربر"
+"export" = "استخراج لینک‌ها"
 
 [pages.client]
 "add" = "کاربر جدید"
