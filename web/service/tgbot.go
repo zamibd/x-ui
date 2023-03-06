@@ -3,6 +3,8 @@ package service
 import (
 	"fmt"
 	"os"
+	"strconv"
+	"strings"
 	"time"
 	"x-ui/logger"
 	"x-ui/util/common"
@@ -11,7 +13,7 @@ import (
 )
 
 var bot *tgbotapi.BotAPI
-var tgBotid int
+var adminIds []int64
 var isRunning bool
 
 var numericKeyboard = tgbotapi.NewInlineKeyboardMarkup(
@@ -43,10 +45,19 @@ func (t *Tgbot) Start() error {
 		return err
 	}
 
-	tgBotid, err = t.settingService.GetTgBotChatId()
+	tgBotid, err := t.settingService.GetTgBotChatId()
 	if err != nil {
 		logger.Warning("Get GetTgBotChatId failed:", err)
 		return err
+	}
+
+	for _, adminId := range strings.Split(tgBotid, ",") {
+		id, err := strconv.Atoi(adminId)
+		if err != nil {
+			logger.Warning("Failed to get IDs from GetTgBotChatId:", err)
+			return err
+		}
+		adminIds = append(adminIds, int64(id))
 	}
 
 	bot, err = tgbotapi.NewBotAPI(tgBottoken)
@@ -58,7 +69,7 @@ func (t *Tgbot) Start() error {
 
 	// listen for TG bot income messages
 	if !isRunning {
-		logger.Info("Telegram receiver starting")
+		logger.Info("Starting Telegram receiver ...")
 		go t.OnReceive()
 		isRunning = true
 	}
@@ -72,8 +83,9 @@ func (t *Tgbot) IsRunnging() bool {
 
 func (t *Tgbot) Stop() {
 	bot.StopReceivingUpdates()
-	logger.Info("Send Kill to Telegram listener ...")
+	logger.Info("Stop Telegram receiver ...")
 	isRunning = false
+	adminIds = nil
 }
 
 func (t *Tgbot) OnReceive() {
@@ -84,7 +96,6 @@ func (t *Tgbot) OnReceive() {
 
 	for update := range updates {
 		if update.Message == nil {
-
 			if update.CallbackQuery != nil {
 				// Respond to the callback query, telling Telegram to show the user
 				// a message with the data received.
@@ -142,10 +153,18 @@ func (t *Tgbot) OnReceive() {
 	}
 }
 
-func (t *Tgbot) SendMsgToTgbot(msg string) {
-	info := tgbotapi.NewMessage(int64(tgBotid), msg)
-	//msg.ReplyToMessageID = int(tgBotid)
-	bot.Send(info)
+func (t *Tgbot) SendMsgToTgbot(tgid int64, msg string) {
+	info := tgbotapi.NewMessage(tgid, msg)
+	_, err := bot.Send(info)
+	if err != nil {
+		logger.Warning("Error sending telegram message :", err)
+	}
+}
+
+func (t *Tgbot) SendMsgToTgbotAdmins(msg string) {
+	for _, adminId := range adminIds {
+		t.SendMsgToTgbot(adminId, msg)
+	}
 }
 
 func (t *Tgbot) UserLoginNotify(username string, ip string, time string, status LoginStatus) {
@@ -168,7 +187,7 @@ func (t *Tgbot) UserLoginNotify(username string, ip string, time string, status 
 	msg += fmt.Sprintf("Time:%s\r\n", time)
 	msg += fmt.Sprintf("Username:%s\r\n", username)
 	msg += fmt.Sprintf("IP:%s\r\n", ip)
-	t.SendMsgToTgbot(msg)
+	t.SendMsgToTgbotAdmins(msg)
 }
 
 func (t *Tgbot) getClientUsage(id string) string {

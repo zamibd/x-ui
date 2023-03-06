@@ -198,7 +198,7 @@
 "telegramBotEnableDesc" = "重启面板生效"
 "telegramToken" = "电报机器人TOKEN"
 "telegramTokenDesc" = "重启面板生效"
-"telegramChatId" = "电报机器人ChatId"
+"telegramChatId" = "以逗号分隔的多个 chatID 重启面板生效"
 "telegramChatIdDesc" = "重启面板生效"
 "telegramNotifyTime" = "电报机器人通知时间"
 "telegramNotifyTimeDesc" = "采用Crontab定时格式,重启面板生效"

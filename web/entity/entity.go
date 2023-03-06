@@ -34,7 +34,7 @@ type AllSetting struct {
 	WebBasePath        string `json:"webBasePath" form:"webBasePath"`
 	TgBotEnable        bool   `json:"tgBotEnable" form:"tgBotEnable"`
 	TgBotToken         string `json:"tgBotToken" form:"tgBotToken"`
-	TgBotChatId        int    `json:"tgBotChatId" form:"tgBotChatId"`
+	TgBotChatId        string `json:"tgBotChatId" form:"tgBotChatId"`
 	TgRunTime          string `json:"tgRunTime" form:"tgRunTime"`
 	XrayTemplateConfig string `json:"xrayTemplateConfig" form:"xrayTemplateConfig"`
 

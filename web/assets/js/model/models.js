@@ -172,7 +172,7 @@ class AllSetting {
         this.webBasePath = "/";
         this.tgBotEnable = false;
         this.tgBotToken = "";
-        this.tgBotChatId = 0;
+        this.tgBotChatId = "";
         this.tgRunTime = "";
         this.xrayTemplateConfig = "";
 

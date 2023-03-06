@@ -18,10 +18,8 @@ const (
 )
 
 type StatsNotifyJob struct {
-	enable         bool
 	xrayService    service.XrayService
 	inboundService service.InboundService
-	settingService service.SettingService
 	tgbotService   service.Tgbot
 }
 
@@ -80,10 +78,10 @@ func (j *StatsNotifyJob) Run() {
 	for _, inbound := range inbouds {
 		info += fmt.Sprintf("Node name:%s\r\nPort:%d\r\nUpload↑:%s\r\nDownload↓:%s\r\nTotal:%s\r\n", inbound.Remark, inbound.Port, common.FormatTraffic(inbound.Up), common.FormatTraffic(inbound.Down), common.FormatTraffic((inbound.Up + inbound.Down)))
 		if inbound.ExpiryTime == 0 {
-			info += fmt.Sprintf("Expire date:unlimited\r\n \r\n")
+			info += "Expire date:unlimited\r\n \r\n"
 		} else {
 			info += fmt.Sprintf("Expire date:%s\r\n \r\n", time.Unix((inbound.ExpiryTime/1000), 0).Format("2006-01-02 15:04:05"))
 		}
 	}
-	j.tgbotService.SendMsgToTgbot(info)
+	j.tgbotService.SendMsgToTgbotAdmins(info)
 }

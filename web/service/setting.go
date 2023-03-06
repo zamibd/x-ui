@@ -31,7 +31,7 @@ var defaultValueMap = map[string]string{
 	"timeLocation":       "Asia/Tehran",
 	"tgBotEnable":        "false",
 	"tgBotToken":         "",
-	"tgBotChatId":        "0",
+	"tgBotChatId":        "",
 	"tgRunTime":          "",
 }
 
@@ -202,12 +202,12 @@ func (s *SettingService) SetTgBotToken(token string) error {
 	return s.setString("tgBotToken", token)
 }
 
-func (s *SettingService) GetTgBotChatId() (int, error) {
-	return s.getInt("tgBotChatId")
+func (s *SettingService) GetTgBotChatId() (string, error) {
+	return s.getString("tgBotChatId")
 }
 
-func (s *SettingService) SetTgBotChatId(chatId int) error {
-	return s.setInt("tgBotChatId", chatId)
+func (s *SettingService) SetTgBotChatId(chatIds string) error {
+	return s.setString("tgBotChatId", chatIds)
 }
 
 func (s *SettingService) SetTgbotenabled(value bool) error {
