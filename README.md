@@ -80,7 +80,7 @@ docker run -itd --network=host \
     -v $PWD/db/:/etc/x-ui/ \
     -v $PWD/cert/:/root/cert/ \
     --name x-ui --restart=unless-stopped \
-    alireza0/x-ui:latest
+    alireza7/x-ui:latest
 ```
 
 > Build your own image
