@@ -41,8 +41,7 @@ type AllSetting struct {
 	TgTrafficDiff      int    `json:"tgTrafficDiff" form:"tgTrafficDiff"`
 	TgCpu              int    `json:"tgCpu" form:"tgCpu"`
 	XrayTemplateConfig string `json:"xrayTemplateConfig" form:"xrayTemplateConfig"`
-
-	TimeLocation string `json:"timeLocation" form:"timeLocation"`
+	TimeLocation       string `json:"timeLocation" form:"timeLocation"`
 }
 
 func (s *AllSetting) CheckValid() error {
