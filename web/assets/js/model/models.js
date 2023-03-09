@@ -173,7 +173,11 @@ class AllSetting {
         this.tgBotEnable = false;
         this.tgBotToken = "";
         this.tgBotChatId = "";
-        this.tgRunTime = "";
+        this.tgRunTime = "@daily";
+        this.tgBotBackup = false;
+        this.tgExpireDiff = "";
+        this.tgTrafficDiff = "";
+        this.tgCpu = "";
         this.xrayTemplateConfig = "";
 
         this.timeLocation = "Asia/Tehran";

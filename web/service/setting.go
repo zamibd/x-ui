@@ -33,6 +33,10 @@ var defaultValueMap = map[string]string{
 	"tgBotToken":         "",
 	"tgBotChatId":        "",
 	"tgRunTime":          "",
+	"tgBotBackup":        "false",
+	"tgExpireDiff":       "",
+	"tgTrafficDiff":      "",
+	"tgCpu":              "",
 }
 
 type SettingService struct {
@@ -224,6 +228,38 @@ func (s *SettingService) SetTgbotRuntime(time string) error {
 
 func (s *SettingService) GetTgbotRuntime() (string, error) {
 	return s.getString("tgRunTime")
+}
+
+func (s *SettingService) SetTgBotBackup(value bool) error {
+	return s.setBool("tgBotBackup", value)
+}
+
+func (s *SettingService) GetTgBotBackup() (bool, error) {
+	return s.getBool("tgBotBackup")
+}
+
+func (s *SettingService) SetTgExpireDiff(value int) error {
+	return s.setInt("tgExpireDiff", value)
+}
+
+func (s *SettingService) GetTgExpireDiff() (int, error) {
+	return s.getInt("tgExpireDiff")
+}
+
+func (s *SettingService) SetTgTrafficDiff(value int) error {
+	return s.setInt("tgTrafficDiff", value)
+}
+
+func (s *SettingService) GetTgTrafficDiff() (int, error) {
+	return s.getInt("tgTrafficDiff")
+}
+
+func (s *SettingService) SetTgCpu(value int) error {
+	return s.setInt("tgCpu", value)
+}
+
+func (s *SettingService) GetTgCpu() (int, error) {
+	return s.getInt("tgCpu")
 }
 
 func (s *SettingService) GetPort() (int, error) {

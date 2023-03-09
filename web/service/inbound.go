@@ -514,3 +514,17 @@ func (s *InboundService) GetClientTrafficTgBot(tguname string) (traffic []*xray.
 	}
 	return traffics, err
 }
+
+func (s *InboundService) GetClientTrafficByEmail(email string) (traffic []*xray.ClientTraffic, err error) {
+	db := database.GetDB()
+	var traffics []*xray.ClientTraffic
+
+	err = db.Model(xray.ClientTraffic{}).Where("email like ?", "%"+email+"%").Find(&traffics).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			logger.Warning(err)
+			return nil, err
+		}
+	}
+	return traffics, err
+}

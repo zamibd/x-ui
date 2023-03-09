@@ -36,6 +36,10 @@ type AllSetting struct {
 	TgBotToken         string `json:"tgBotToken" form:"tgBotToken"`
 	TgBotChatId        string `json:"tgBotChatId" form:"tgBotChatId"`
 	TgRunTime          string `json:"tgRunTime" form:"tgRunTime"`
+	TgBotBackup        bool   `json:"tgBotBackup" form:"tgBotBackup"`
+	TgExpireDiff       int    `json:"tgExpireDiff" form:"tgExpireDiff"`
+	TgTrafficDiff      int    `json:"tgTrafficDiff" form:"tgTrafficDiff"`
+	TgCpu              int    `json:"tgCpu" form:"tgCpu"`
 	XrayTemplateConfig string `json:"xrayTemplateConfig" form:"xrayTemplateConfig"`
 
 	TimeLocation string `json:"timeLocation" form:"timeLocation"`
