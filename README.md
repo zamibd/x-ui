@@ -6,10 +6,6 @@
 [![License](https://img.shields.io/badge/license-GPL%20V3-blue.svg?longCache=true)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 > **Disclaimer: This project is only for personal learning and communication, please do not use it for illegal purposes, please do not use it in a production environment**
 
-
-# Temporary downgrade to 0.2.4 due to fixing bugs
-Coming back soon with new features
-
 xray panel supporting multi-protocol, **Multi-lang (English,Farsi,Chinese)**
 
 | Features        | Enable?           |
@@ -84,7 +80,7 @@ docker run -itd --network=host \
     -v $PWD/db/:/etc/x-ui/ \
     -v $PWD/cert/:/root/cert/ \
     --name x-ui --restart=unless-stopped \
-    alireza0/x-ui:latest
+    alireza7/x-ui:latest
 ```
 
 > Build your own image
