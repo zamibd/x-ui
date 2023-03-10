@@ -325,6 +325,13 @@ func (s *Server) startTask() {
 			logger.Warning("Add NewStatsNotifyJob error", err)
 			return
 		}
+
+		// Check CPU load and alarm to TgBot if threshold passes
+		cpuThreshold, err := s.settingService.GetTgCpu()
+		if (err == nil) && (cpuThreshold > 0) {
+			s.cron.AddJob("@every 10s", job.NewCheckCpuJob())
+		}
+
 	} else {
 		s.cron.Remove(entry)
 	}

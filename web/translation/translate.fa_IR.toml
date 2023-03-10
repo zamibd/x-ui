@@ -74,7 +74,7 @@
 "xraySwitchClickDesk" = "لطفا با دقت انتخاب کنید ، در صورت انتخاب اشتباه امکان قطعی سیستم وجود دارد ."
 "operationHours" = "ساعت فعال"
 "operationHoursDesc" = "ساعت فعال بعد از شروع سیستم"
-"systemLoad" = "سرعت لود سیستم"
+"systemLoad" = "بار روی سیستم"
 "connectionCount" = "تعداد کانکشن ها"
 "connectionCountDesc" = "تعداد کانکشن ها برای کل شبکه"
 "upSpeed" = "سرعت آپلود در حال حاضر سیستم"

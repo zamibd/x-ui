@@ -12,9 +12,8 @@ const (
 )
 
 type StatsNotifyJob struct {
-	xrayService    service.XrayService
-	inboundService service.InboundService
-	tgbotService   service.Tgbot
+	xrayService  service.XrayService
+	tgbotService service.Tgbot
 }
 
 func NewStatsNotifyJob() *StatsNotifyJob {
