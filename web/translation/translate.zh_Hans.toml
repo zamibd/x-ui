@@ -135,6 +135,11 @@
 "submitEdit" = "保存修改"
 "clientCount" = "客户数量"
 "bulk" = "批量创建"
+"method" = "方法"
+"first" = "第一"
+"last" = "最后"
+"prefix" = "前缀"
+"postfix" = "后缀"
 
 [pages.inbounds.toasts]
 "obtain" = "获取"

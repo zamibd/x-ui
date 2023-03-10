@@ -135,6 +135,11 @@
 "submitEdit" = "Save changes"
 "clientCount" = "Number of clients"
 "bulk" = "Add bulk"
+"method" = "Method"
+"first" = "First"
+"last" = "Last"
+"prefix" = "Prefix"
+"postfix" = "postfix"
 
 [pages.inbounds.toasts]
 "obtain" = "Obtain"

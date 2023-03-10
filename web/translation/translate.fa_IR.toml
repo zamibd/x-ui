@@ -135,6 +135,11 @@
 "submitEdit" = "ذخیره تغییرات"
 "clientCount" = "تعداد کاربران"
 "bulk" = "انبوه سازی"
+"method" = "روش"
+"first" = "از"
+"last" = "تا"
+"prefix" = "پیشوند"
+"postfix" = "پسوند"
 
 [pages.inbounds.toasts]
 "obtain" = "Obtain"
