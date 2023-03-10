@@ -3,7 +3,34 @@
          :confirm-loading="clientsBulkModal.confirmLoading" :closable="true" :mask-closable="false"
          :ok-text="clientsBulkModal.okText" cancel-text='{{ i18n "close" }}'>
     <a-form layout="inline">
-        <a-form-item>
+        <a-form-item label='Method'>
+            <a-select v-model="clientsBulkModal.emailMethod" buttonStyle="solid" style="width: 350px">
+                <a-select-option :value="0">Random</a-select-option>
+                <a-select-option :value="1">Random_Prefix</a-select-option>
+                <a-select-option :value="2">Random_Prefix+Num</a-select-option>
+                <a-select-option :value="3">Random_Prefix+Num+Postfix</a-select-option>
+                <a-select-option :value="4">Random_Prefix+Num@Telegram Username</a-select-option>
+            </a-select>
+        </a-form-item><br />
+        <a-form-item v-if="clientsBulkModal.emailMethod>1">
+            <span slot="label">First</span>
+            <a-input-number v-model="clientsBulkModal.firstNum" :min="1"></a-input-number>
+        </a-form-item>
+        <a-form-item v-if="clientsBulkModal.emailMethod>1">
+            <span slot="label">Last</span>
+            <a-input-number v-model="clientsBulkModal.lastNum" :min="clientsBulkModal.firstNum"></a-input-number>
+        </a-form-item>
+        <a-form-item v-if="clientsBulkModal.emailMethod>0">
+            <span slot="label">Prefix</span>
+            <a-input v-model="clientsBulkModal.emailPrefix" style="width: 120px"></a-input>
+        </a-form-item>
+        <a-form-item v-if="clientsBulkModal.emailMethod>2">
+            <span slot="label" v-if="clientsBulkModal.emailMethod == 4">tg_uname</span>
+            <span slot="label" v-else>Postfix</span>
+            <a-input v-model="clientsBulkModal.emailPostfix" style="width: 120px"></a-input>
+        </a-form-item>
+
+        <a-form-item v-if="clientsBulkModal.emailMethod < 2">
             <span slot="label">{{ i18n "pages.client.clientCount" }}</span>
             <a-input-number v-model="clientsBulkModal.quantity" :min="1" :max="100"></a-input-number>
         </a-form-item>
@@ -48,9 +75,26 @@
         quantity: 1,
         totalGB: 0,
         expiryTime: '',
+        emailMethod: 0,
+        firstNum: 0,
+        lastNum: 1,
+        emailPrefix: "",
+        emailPostfix: "",
         ok() {
-            for (let i = 0; i < clientsBulkModal.quantity; i++) {
+            method=clientsBulkModal.emailMethod;
+            if(method>1){
+                start=clientsBulkModal.firstNum;
+                end=clientsBulkModal.lastNum + 1;
+            } else {
+                start=0;
+                end=clientsBulkModal.quantity;
+            }
+            prefix = (method>0 && clientsBulkModal.emailPrefix.length>0) ? "_" + clientsBulkModal.emailPrefix : "";
+            useNum=(method>1);
+            postfix = (method>2 && clientsBulkModal.emailPostfix.length>0) ? (method == 4 ? "@" : "") + clientsBulkModal.emailPostfix : "";
+            for (let i = start; i < end; i++) {
                 newClient = clientsBulkModal.newClient(clientsBulkModal.dbInbound.protocol);
+                newClient.email += useNum ? prefix + i.toString() + postfix : prefix + postfix;
                 newClient._totalGB = clientsBulkModal.totalGB;
                 newClient._expiryTime = clientsBulkModal.expiryTime;
                 clientsBulkModal.clients.push(newClient);
