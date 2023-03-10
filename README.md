@@ -15,7 +15,8 @@ xray panel supporting multi-protocol, **Multi-lang (English,Farsi,Chinese)**
 | Inbound Multi User | :heavy_check_mark: |
 | Multi User Traffic & Expiration time | :heavy_check_mark: |
 | REST API | :heavy_check_mark: |
-| Telegram BOT | :heavy_check_mark: |
+| Telegram BOT (admin + clients) | :heavy_check_mark: |
+| Backup database using Telegram BOT | :heavy_check_mark: |
 
 **If you think this project is helpful to you, you may wish to give a** :star2: 
 
@@ -105,7 +106,7 @@ ln -s /snap/bin/certbot /usr/bin/certbot
 certbot certonly --standalone --register-unsafely-without-email --non-interactive --agree-tos -d <Your Domain Name>
 ```
 
-## Tg robot use (under development, temporarily unavailable)
+## Tg robot use
 
 > This feature and tutorial are provided by [FranzKafkaYu](https://github.com/FranzKafkaYu)
 
@@ -115,7 +116,10 @@ Set the robot-related parameters in the panel background, including:
 - Tg Robot Token
 - Tg Robot ChatId
 - Tg robot cycle runtime, in crontab syntax
-
+- Tg robot Expiration threshold
+- Tg robot Traffic threshold
+- Tg robot Enable send backup in cycle runtime
+- Tg robot Enable CPU usage alarm threshold
 
 Reference syntax:
 
@@ -123,14 +127,21 @@ Reference syntax:
 - @hourly // hourly notification
 - @daily // Daily notification (00:00 in the morning)
 - @every 8h // notify every 8 hours
-- TG notification content:
 
-- Node traffic usage
-- Panel login reminder
-- Node expiration reminder
-- Traffic warning reminder
+### Telegram Bot Features
 
-More features are planned...
+- Report periodic
+- Login notification
+- CPU threshold notification
+- Threshold for Expiration time and Traffic to report in advance
+- Support client report if client's telegram username is added to the end of `email` like 'test123@telegram_username'
+- Menu based bot
+- Search client by email
+- Check all inbounds
+- Check server status
+- Check Exhausted users
+- Receive backup by request and in periodic reports
+
 
 
 ## suggestion system
