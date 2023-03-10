@@ -86,6 +86,12 @@
                                                 {{ i18n "pages.inbounds.export"}}
                                             </a-menu-item>
                                         </template>
+                                        <template v-else>
+                                            <a-menu-item key="showInfo">
+                                                <a-icon type="info-circle"></a-icon>
+                                                {{ i18n "info"}}
+                                            </a-menu-item>
+                                        </template>
                                         <a-menu-item key="resetTraffic">
                                             <a-icon type="retweet"></a-icon> {{ i18n "pages.inbounds.resetTraffic" }}
                                         </a-menu-item>
@@ -286,6 +292,9 @@
                 switch (action.key) {
                     case "qrcode":
                         this.showQrcode(dbInbound);
+                        break;
+                    case "showInfo":
+                        this.showInfo(dbInbound);
                         break;
                     case "edit":
                         this.openEditInbound(dbInbound.id);

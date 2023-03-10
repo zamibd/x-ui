@@ -43,7 +43,7 @@
             </template>
             </table>
         </td></tr>
-            <tr colspan="2">
+            <tr colspan="2" v-if="dbInbound.hasLink()">
                 <td v-if="inbound.tls">
                     tls: <a-tag color="green">{{ i18n "enabled" }}</a-tag><br />
                     tls {{ i18n "domainName" }}: <a-tag :color="inbound.serverName ? 'green' : 'orange'">[[ inbound.serverName ? inbound.serverName : '' ]]</a-tag>
@@ -56,6 +56,7 @@
             </td>
         </tr>
     </table>
+    <template v-if="infoModal.clientSettings">
     <a-divider>{{ i18n "pages.inbounds.client" }}</a-divider>
     <table style="margin-bottom: 10px; width: 100%;">
         <tr>
@@ -92,6 +93,67 @@
             </td>
         </tr>
     </table>
+    </template>
+    <template v-else>
+        <a-divider></a-divider>
+        <table v-if="inbound.protocol == Protocols.SHADOWSOCKS" style="margin-bottom: 10px; width: 100%;">
+            <tr>
+                <th>{{ i18n "encryption" }}</th>
+                <th>{{ i18n "password" }}</th>
+                <th>{{ i18n "pages.inbounds.network" }}</th>
+            </tr><tr>
+                <td><a-tag color="green">[[ inbound.settings.method ]]</a-tag></td>
+                <td><a-tag color="blue">[[ inbound.settings.password ]]</a-tag></td>
+                <td><a-tag color="green">[[ inbound.settings.network ]]</a-tag></td>
+            </tr>
+        </table>
+        <table v-if="inbound.protocol == Protocols.DOKODEMO" style="margin-bottom: 10px; width: 100%;">
+            <tr>
+                <th>{{ i18n "pages.inbounds.targetAddress" }}</th>
+                <th>{{ i18n "pages.inbounds.destinationPort" }}</th>
+                <th>{{ i18n "pages.inbounds.network" }}</th>
+                <th>FollowRedirect</th>
+            </tr><tr>
+                <td><a-tag color="green">[[ inbound.settings.address ]]</a-tag></td>
+                <td><a-tag color="blue">[[ inbound.settings.port ]]</a-tag></td>
+                <td><a-tag color="green">[[ inbound.settings.network ]]</a-tag></td>
+                <td><a-tag color="blue">[[ inbound.settings.followRedirect ]]</a-tag></td>
+            </tr>
+        </table>
+        </table>
+        <table v-if="inbound.protocol == Protocols.SOCKS" style="margin-bottom: 10px; width: 100%;">
+            <tr>
+                <th>{{ i18n "password" }} Auth</th>
+                <th>{{ i18n "pages.inbounds.enable" }} udp</th>
+                <th>IP</th>
+            </tr><tr>
+                <td><a-tag color="green">[[ inbound.settings.auth ]]</a-tag></td>
+                <td><a-tag color="blue">[[ inbound.settings.udp]]</a-tag></td>
+                <td><a-tag color="green">[[ inbound.settings.ip ]]</a-tag></td>
+            </tr><tr v-if="inbound.settings.auth == 'password'">
+                <td> </td>
+                <td>{{ i18n "username" }}</td>
+                <td>{{ i18n "password" }}</td>
+            </tr><tr v-for="account,index in inbound.settings.accounts">
+                <td><a-tag color="green">[[ index ]]</a-tag></td>
+                <td><a-tag color="blue">[[ account.user ]]</a-tag></td>
+                <td><a-tag color="green">[[ account.pass ]]</a-tag></td>
+            </tr>
+        </table>
+        </table>
+        <table v-if="inbound.protocol == Protocols.HTTP" style="margin-bottom: 10px; width: 100%;">
+            <tr>
+                <th> </th>
+                <th>{{ i18n "username" }}</th>
+                <th>{{ i18n "password" }}</th>
+            </tr><tr v-for="account,index in inbound.settings.accounts">
+                <td><a-tag color="green">[[ index ]]</a-tag></td>
+                <td><a-tag color="blue">[[ account.user ]]</a-tag></td>
+                <td><a-tag color="green">[[ account.pass ]]</a-tag></td>
+            </tr>
+        </table>
+        </table>
+    </template>
     <div v-if="dbInbound.hasLink()">
         <a-divider>URL</a-divider>
         <p>[[ infoModal.link ]]</p>
@@ -104,22 +166,24 @@
         visible: false,
         inbound: new Inbound(),
         dbInbound: new DBInbound(),
+        settings: null,
         clientSettings: new Inbound.Settings(),
         clientStats: [],
         upStats: 0,
         downStats: 0,
         clipboard: null,
         link: null,
-        index: 0,
+        index: null,
         isExpired: false,
-        show(dbInbound, index=0) {
+        show(dbInbound, index) {
             this.index = index;
             this.inbound = dbInbound.toInbound();
             this.dbInbound = new DBInbound(dbInbound);
             this.link = dbInbound.genLink(index);
-            this.clientSettings = Object.values(JSON.parse(this.inbound.settings).clients)[index];
+            this.settings = JSON.parse(this.inbound.settings);
+            this.clientSettings = this.settings.clients ? Object.values(this.settings.clients)[index] : null;
             this.isExpired = this.inbound.isExpiry(index);
-            this.clientStats = this.dbInbound.clientStats.find(row => row.email === this.clientSettings.email);
+            this.clientStats = this.settings.clients ? this.dbInbound.clientStats.find(row => row.email === this.clientSettings.email) : [];
             this.visible = true;
             infoModalApp.$nextTick(() => {
                 if (this.clipboard === null) {
@@ -147,22 +211,13 @@
                 return this.infoModal.inbound;
             },
             get isEnable() {
-                if(infoModal.clientStats){
+                if(infoModal.clientStats.length){
                     return infoModal.clientStats.enable;
                 }
-                return true;
+                return infoModal.dbInbound.isEnable;
             }
         },
         methods: {
-            setQrCode(elmentId,index) {
-                content = infoModal.inbound.genLink(infoModal.dbInbound.address,infoModal.dbInbound.remark,index)
-
-                new QRious({
-                        element: document.querySelector('#'+elmentId),
-                        size: 260,
-                        value: content,
-                    });
-            },
             copyTextToClipboard(elmentId,content) {
                 this.infoModal.clipboard = new ClipboardJS('#' + elmentId, {
                         text: () => content,
