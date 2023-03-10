@@ -119,28 +119,28 @@ func (t *Tgbot) answerCommand(message *tgbotapi.Message, chatId int64, isAdmin b
 	case "help":
 		msg = "This bot is providing you some specefic data from the server.\n\n Please choose:"
 	case "start":
-		msg = "Hello <i>" + message.From.FirstName + "</i> :)"
+		msg = "Hello <i>" + message.From.FirstName + "</i> 👋"
 		if isAdmin {
 			hostname, _ := os.Hostname()
 			msg += "\nWelcome to <b>" + hostname + "</b> management bot"
 		}
 		msg += "\n\nI can do some magics for you, please choose:"
 	case "status":
-		msg = "bot is ok."
+		msg = "bot is ok ✅"
 	case "usage":
 		if isAdmin {
 			t.searchClient(chatId, message.CommandArguments())
 		} else {
-			msg = "Insufficient privilege"
+			msg = "🚫 Insufficient privilege"
 		}
 	default:
-		msg = "Unknown command"
+		msg = "❗ Unknown command"
 	}
 	t.SendAnswer(chatId, msg, isAdmin)
 }
 
 func (t *Tgbot) aswerChat(message string, chatId int64, isAdmin bool) {
-	t.SendAnswer(chatId, "Unknown message", isAdmin)
+	t.SendAnswer(chatId, "❗ Unknown message", isAdmin)
 }
 
 func (t *Tgbot) asnwerCallback(callbackQuery *tgbotapi.CallbackQuery, isAdmin bool) {
@@ -210,7 +210,7 @@ func (t *Tgbot) SendAnswer(chatId int64, msg string, isAdmin bool) {
 
 func (t *Tgbot) SendMsgToTgbot(tgid int64, msg string) {
 	var allMessages []string
-	limit := 1000
+	limit := 2000
 	// paging message if it is big
 	if len(msg) > limit {
 		messages := strings.Split(msg, "\r\n \r\n")
@@ -246,7 +246,7 @@ func (t *Tgbot) SendMsgToTgbotAdmins(msg string) {
 func (t *Tgbot) SendReport() {
 	runTime, err := t.settingService.GetTgbotRuntime()
 	if err == nil && len(runTime) > 0 {
-		t.SendMsgToTgbotAdmins("Scheduled reports: " + runTime + "\r\nDate-Time: " + time.Now().Format("2006-01-02 15:04:05"))
+		t.SendMsgToTgbotAdmins("🕰 Scheduled reports: " + runTime + "\r\nDate-Time: " + time.Now().Format("2006-01-02 15:04:05"))
 	}
 	info := t.getServerUsage()
 	t.SendMsgToTgbotAdmins(info)
@@ -268,14 +268,14 @@ func (t *Tgbot) getServerUsage() string {
 		logger.Error("get hostname error:", err)
 		name = ""
 	}
-	info = fmt.Sprintf("Hostname:%s\r\n", name)
+	info = fmt.Sprintf("💻 Hostname: %s\r\n", name)
 	//get ip address
 	var ip string
 	var ipv6 string
 	netInterfaces, err := net.Interfaces()
 	if err != nil {
 		logger.Error("net.Interfaces failed, err:", err.Error())
-		info += "IP: Unknown\r\n \r\n"
+		info += "🌐 IP: Unknown\r\n \r\n"
 	} else {
 		for i := 0; i < len(netInterfaces); i++ {
 			if (netInterfaces[i].Flags & net.FlagUp) != 0 {
@@ -292,18 +292,18 @@ func (t *Tgbot) getServerUsage() string {
 				}
 			}
 		}
-		info += fmt.Sprintf("IP:%s\r\nIPv6:%s\r\n", ip, ipv6)
+		info += fmt.Sprintf("🌐IP: %s\r\n🌐IPv6: %s\r\n", ip, ipv6)
 	}
 
 	// get latest status of server
 	t.lastStatus = t.serverService.GetStatus(t.lastStatus)
-	info += fmt.Sprintf("Server Uptime: %d days\r\n", int(t.lastStatus.Uptime/86400))
-	info += fmt.Sprintf("Server Load: %.1f, %.1f, %.1f\r\n", t.lastStatus.Loads[0], t.lastStatus.Loads[1], t.lastStatus.Loads[2])
-	info += fmt.Sprintf("Server Memory: %s/%s\r\n", common.FormatTraffic(int64(t.lastStatus.Mem.Current)), common.FormatTraffic(int64(t.lastStatus.Mem.Total)))
-	info += fmt.Sprintf("TcpCount: %d\r\n", t.lastStatus.TcpCount)
-	info += fmt.Sprintf("UdpCount: %d\r\n", t.lastStatus.UdpCount)
-	info += fmt.Sprintf("Total traffic: %s: ↑%s,↓%s\r\n", common.FormatTraffic(int64(t.lastStatus.NetTraffic.Sent+t.lastStatus.NetTraffic.Recv)), common.FormatTraffic(int64(t.lastStatus.NetTraffic.Sent)), common.FormatTraffic(int64(t.lastStatus.NetTraffic.Recv)))
-	info += fmt.Sprintf("Xray status: %s", t.lastStatus.Xray.State)
+	info += fmt.Sprintf("🔌Server Uptime: %d days\r\n", int(t.lastStatus.Uptime/86400))
+	info += fmt.Sprintf("📈Server Load: %.1f, %.1f, %.1f\r\n", t.lastStatus.Loads[0], t.lastStatus.Loads[1], t.lastStatus.Loads[2])
+	info += fmt.Sprintf("📋Server Memory: %s/%s\r\n", common.FormatTraffic(int64(t.lastStatus.Mem.Current)), common.FormatTraffic(int64(t.lastStatus.Mem.Total)))
+	info += fmt.Sprintf("🔹TcpCount: %d\r\n", t.lastStatus.TcpCount)
+	info += fmt.Sprintf("🔸UdpCount: %d\r\n", t.lastStatus.UdpCount)
+	info += fmt.Sprintf("🚦Traffic: %s (↑%s,↓%s)\r\n", common.FormatTraffic(int64(t.lastStatus.NetTraffic.Sent+t.lastStatus.NetTraffic.Recv)), common.FormatTraffic(int64(t.lastStatus.NetTraffic.Sent)), common.FormatTraffic(int64(t.lastStatus.NetTraffic.Recv)))
+	info += fmt.Sprintf("ℹXray status: %s", t.lastStatus.Xray.State)
 
 	return info
 }
@@ -317,17 +317,17 @@ func (t *Tgbot) UserLoginNotify(username string, ip string, time string, status 
 	// Get hostname
 	name, err := os.Hostname()
 	if err != nil {
-		fmt.Println("get hostname error:", err)
+		logger.Warning("get hostname error:", err)
 		return
 	}
 	if status == LoginSuccess {
-		msg = fmt.Sprintf("Successfully logged-in to the panel\r\nHostname:%s\r\n", name)
+		msg = fmt.Sprintf("✅ Successfully logged-in to the panel\r\nHostname:%s\r\n", name)
 	} else if status == LoginFail {
-		msg = fmt.Sprintf("Login to the panel was unsuccessful\r\nHostname:%s\r\n", name)
+		msg = fmt.Sprintf("❗ Login to the panel was unsuccessful\r\nHostname:%s\r\n", name)
 	}
-	msg += fmt.Sprintf("Time:%s\r\n", time)
-	msg += fmt.Sprintf("Username:%s\r\n", username)
-	msg += fmt.Sprintf("IP:%s\r\n", ip)
+	msg += fmt.Sprintf("⏰ Time:%s\r\n", time)
+	msg += fmt.Sprintf("🆔 Username:%s\r\n", username)
+	msg += fmt.Sprintf("🌐 IP:%s\r\n", ip)
 	t.SendMsgToTgbotAdmins(msg)
 }
 
@@ -337,14 +337,15 @@ func (t *Tgbot) getInboundUsages() string {
 	inbouds, err := t.inboundService.GetAllInbounds()
 	if err != nil {
 		logger.Warning("GetAllInbounds run failed:", err)
-		info += "Failed to get inbounds"
+		info += "❌ Failed to get inbounds"
 	} else {
 		// NOTE:If there no any sessions here,need to notify here
 		// TODO:Sub-node push, automatic conversion format
 		for _, inbound := range inbouds {
-			info += fmt.Sprintf("Inbound:%s\r\nPort:%d\r\nTraffic: %s (↑%s,↓%s)\r\n", inbound.Remark, inbound.Port, common.FormatTraffic((inbound.Up + inbound.Down)), common.FormatTraffic(inbound.Up), common.FormatTraffic(inbound.Down))
+			info += fmt.Sprintf("📍Inbound:%s\r\nPort:%d\r\n", inbound.Remark, inbound.Port)
+			info += fmt.Sprintf("Traffic: %s (↑%s,↓%s)\r\n", common.FormatTraffic((inbound.Up + inbound.Down)), common.FormatTraffic(inbound.Up), common.FormatTraffic(inbound.Down))
 			if inbound.ExpiryTime == 0 {
-				info += "Expire date:unlimited\r\n \r\n"
+				info += "Expire date: ♾ Unlimited\r\n \r\n"
 			} else {
 				info += fmt.Sprintf("Expire date:%s\r\n \r\n", time.Unix((inbound.ExpiryTime/1000), 0).Format("2006-01-02 15:04:05"))
 			}
@@ -357,7 +358,7 @@ func (t *Tgbot) getClientUsage(chatId int64, tgUserName string) {
 	traffics, err := t.inboundService.GetClientTrafficTgBot(tgUserName)
 	if err != nil {
 		logger.Warning(err)
-		msg := "Something went wrong!"
+		msg := "❌ Something went wrong!"
 		t.SendMsgToTgbot(chatId, msg)
 		return
 	}
@@ -368,13 +369,13 @@ func (t *Tgbot) getClientUsage(chatId int64, tgUserName string) {
 	for _, traffic := range traffics {
 		expiryTime := ""
 		if traffic.ExpiryTime == 0 {
-			expiryTime = "unlimited"
+			expiryTime = "♾Unlimited"
 		} else {
 			expiryTime = time.Unix((traffic.ExpiryTime / 1000), 0).Format("2006-01-02 15:04:05")
 		}
 		total := ""
 		if traffic.Total == 0 {
-			total = "unlimited"
+			total = "♾Unlimited"
 		} else {
 			total = common.FormatTraffic((traffic.Total))
 		}
@@ -390,7 +391,7 @@ func (t *Tgbot) searchClient(chatId int64, email string) {
 	traffics, err := t.inboundService.GetClientTrafficByEmail(email)
 	if err != nil {
 		logger.Warning(err)
-		msg := "Something went wrong!"
+		msg := "❌ Something went wrong!"
 		t.SendMsgToTgbot(chatId, msg)
 		return
 	}
@@ -402,13 +403,13 @@ func (t *Tgbot) searchClient(chatId int64, email string) {
 	for _, traffic := range traffics {
 		expiryTime := ""
 		if traffic.ExpiryTime == 0 {
-			expiryTime = "unlimited"
+			expiryTime = "♾Unlimited"
 		} else {
 			expiryTime = time.Unix((traffic.ExpiryTime / 1000), 0).Format("2006-01-02 15:04:05")
 		}
 		total := ""
 		if traffic.Total == 0 {
-			total = "unlimited"
+			total = "♾Unlimited"
 		} else {
 			total = common.FormatTraffic((traffic.Total))
 		}
@@ -462,31 +463,31 @@ func (t *Tgbot) getExhausted() string {
 			disabledInbounds = append(disabledInbounds, *inbound)
 		}
 	}
-	output += fmt.Sprintf("Exhausted Inbounds count:\r\nDisabled: %d\r\nExhaust soon: %d\r\n \r\n", len(disabledInbounds), len(exhaustedInbounds))
+	output += fmt.Sprintf("Exhausted Inbounds count:\r\n🛑 Disabled: %d\r\n🔜 Exhaust soon: %d\r\n \r\n", len(disabledInbounds), len(exhaustedInbounds))
 	if len(disabledInbounds)+len(exhaustedInbounds) > 0 {
 		output += "Exhausted Inbounds:\r\n"
 		for _, inbound := range exhaustedInbounds {
-			output += fmt.Sprintf("Inbound:%s\r\nPort:%d\r\nTraffic: %s (↑%s,↓%s)\r\n", inbound.Remark, inbound.Port, common.FormatTraffic((inbound.Up + inbound.Down)), common.FormatTraffic(inbound.Up), common.FormatTraffic(inbound.Down))
+			output += fmt.Sprintf("📍Inbound:%s\r\nPort:%d\r\nTraffic: %s (↑%s,↓%s)\r\n", inbound.Remark, inbound.Port, common.FormatTraffic((inbound.Up + inbound.Down)), common.FormatTraffic(inbound.Up), common.FormatTraffic(inbound.Down))
 			if inbound.ExpiryTime == 0 {
-				output += "Expire date:unlimited\r\n \r\n"
+				output += "Expire date: ♾Unlimited\r\n \r\n"
 			} else {
 				output += fmt.Sprintf("Expire date:%s\r\n \r\n", time.Unix((inbound.ExpiryTime/1000), 0).Format("2006-01-02 15:04:05"))
 			}
 		}
 	}
-	output += fmt.Sprintf("Exhausted Clients count:\r\nDisabled: %d\r\nExhaust soon: %d\r\n \r\n", len(disabledClients), len(exhaustedClients))
+	output += fmt.Sprintf("Exhausted Clients count:\r\n🛑 Disabled: %d\r\n🔜 Exhaust soon: %d\r\n \r\n", len(disabledClients), len(exhaustedClients))
 	if len(disabledClients)+len(exhaustedClients) > 0 {
 		output += "Exhausted Clients:\r\n"
 		for _, traffic := range exhaustedClients {
 			expiryTime := ""
 			if traffic.ExpiryTime == 0 {
-				expiryTime = "unlimited"
+				expiryTime = "♾Unlimited"
 			} else {
 				expiryTime = time.Unix((traffic.ExpiryTime / 1000), 0).Format("2006-01-02 15:04:05")
 			}
 			total := ""
 			if traffic.Total == 0 {
-				total = "unlimited"
+				total = "♾Unlimited"
 			} else {
 				total = common.FormatTraffic((traffic.Total))
 			}
