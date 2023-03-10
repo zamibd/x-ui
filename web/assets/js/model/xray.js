@@ -1685,11 +1685,12 @@ Inbound.ShadowsocksSettings = class extends Inbound.Settings {
 };
 
 Inbound.DokodemoSettings = class extends Inbound.Settings {
-    constructor(protocol, address, port, network='tcp,udp') {
+    constructor(protocol, address, port, network='tcp,udp', followRedirect=false) {
         super(protocol);
         this.address = address;
         this.port = port;
         this.network = network;
+        this.followRedirect = followRedirect;
     }
 
     static fromJson(json={}) {
@@ -1698,6 +1699,7 @@ Inbound.DokodemoSettings = class extends Inbound.Settings {
             json.address,
             json.port,
             json.network,
+            json.followRedirect,
         );
     }
 
@@ -1706,6 +1708,7 @@ Inbound.DokodemoSettings = class extends Inbound.Settings {
             address: this.address,
             port: this.port,
             network: this.network,
+            followRedirect: this.followRedirect,
         };
     }
 };

@@ -13,5 +13,9 @@
             <a-select-option value="udp">udp</a-select-option>
         </a-select>
     </a-form-item>
+    <a-form-item label="FollowRedirect">
+        <a-switch v-model="inbound.settings.followRedirect"></a-switch>
+    </a-form-item>
+    <pre>[[inbound]]</pre>
 </a-form>
 {{end}}
