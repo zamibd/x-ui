@@ -128,7 +128,11 @@ func (t *Tgbot) answerCommand(message *tgbotapi.Message, chatId int64, isAdmin b
 	case "status":
 		msg = "bot is ok."
 	case "usage":
-		t.searchClient(chatId, message.CommandArguments())
+		if isAdmin {
+			t.searchClient(chatId, message.CommandArguments())
+		} else {
+			msg = "Insufficient privilege"
+		}
 	default:
 		msg = "Unknown command"
 	}
