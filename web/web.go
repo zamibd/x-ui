@@ -88,7 +88,7 @@ type Server struct {
 
 	xrayService    service.XrayService
 	settingService service.SettingService
-	inboundService service.InboundService
+	tgbotService   service.Tgbot
 
 	cron *cron.Cron
 
@@ -325,8 +325,13 @@ func (s *Server) startTask() {
 			logger.Warning("Add NewStatsNotifyJob error", err)
 			return
 		}
-		// listen for TG bot income messages
-		go job.NewStatsNotifyJob().OnReceive()
+
+		// Check CPU load and alarm to TgBot if threshold passes
+		cpuThreshold, err := s.settingService.GetTgCpu()
+		if (err == nil) && (cpuThreshold > 0) {
+			s.cron.AddJob("@every 10s", job.NewCheckCpuJob())
+		}
+
 	} else {
 		s.cron.Remove(entry)
 	}
@@ -403,6 +408,12 @@ func (s *Server) Start() (err error) {
 		s.httpServer.Serve(listener)
 	}()
 
+	isTgbotenabled, err := s.settingService.GetTgbotenabled()
+	if (err == nil) && (isTgbotenabled) {
+		tgBot := s.tgbotService.NewTgbot()
+		tgBot.Start()
+	}
+
 	return nil
 }
 
@@ -411,6 +422,9 @@ func (s *Server) Stop() error {
 	s.xrayService.StopXray()
 	if s.cron != nil {
 		s.cron.Stop()
+	}
+	if s.tgbotService.IsRunnging() {
+		s.tgbotService.Stop()
 	}
 	var err1 error
 	var err2 error

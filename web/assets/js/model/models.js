@@ -172,8 +172,12 @@ class AllSetting {
         this.webBasePath = "/";
         this.tgBotEnable = false;
         this.tgBotToken = "";
-        this.tgBotChatId = 0;
-        this.tgRunTime = "";
+        this.tgBotChatId = "";
+        this.tgRunTime = "@daily";
+        this.tgBotBackup = false;
+        this.tgExpireDiff = "";
+        this.tgTrafficDiff = "";
+        this.tgCpu = "";
         this.xrayTemplateConfig = "";
 
         this.timeLocation = "Asia/Tehran";
