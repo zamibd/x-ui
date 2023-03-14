@@ -10,24 +10,18 @@ cur_dir=$(pwd)
 # check root
 [[ $EUID -ne 0 ]] && echo -e "${red}Fatal error：${plain} Please run this script with root privilege \n " && exit 1
 
-# check os
-if [[ -f /etc/redhat-release ]]; then
-    release="centos"
-elif cat /etc/issue | grep -Eqi "debian"; then
-    release="debian"
-elif cat /etc/issue | grep -Eqi "ubuntu"; then
-    release="ubuntu"
-elif cat /etc/issue | grep -Eqi "centos|red hat|redhat"; then
-    release="centos"
-elif cat /proc/version | grep -Eqi "debian"; then
-    release="debian"
-elif cat /proc/version | grep -Eqi "ubuntu"; then
-    release="ubuntu"
-elif cat /proc/version | grep -Eqi "centos|red hat|redhat"; then
-    release="centos"
+# Check OS and set release variable
+if [[ -f /etc/os-release ]]; then
+    source /etc/os-release
+    release=$ID
+elif [[ -f /usr/lib/os-release ]]; then
+    source /usr/lib/os-release
+    release=$ID
 else
-    echo -e "${red} Check system OS failed, please contact the author! ${plain}\n" && exit 1
+    echo "Failed to check the system OS, please contact the author!" >&2
+    exit 1
 fi
+echo "The OS release is: $release"
 
 arch=$(arch)
 
@@ -35,46 +29,46 @@ if [[ $arch == "x86_64" || $arch == "x64" || $arch == "amd64" ]]; then
     arch="amd64"
 elif [[ $arch == "aarch64" || $arch == "arm64" ]]; then
     arch="arm64"
-elif [[ $arch == "s390x" ]]; then
-    arch="s390x"
 else
     arch="amd64"
-    echo -e "${red} Fail to check system arch, will use default arch: ${arch}${plain}"
+    echo -e "${red} Failed to check system arch, will use default arch: ${arch}${plain}"
 fi
 
 echo "arch: ${arch}"
 
 if [ $(getconf WORD_BIT) != '32' ] && [ $(getconf LONG_BIT) != '64' ]; then
-    echo "x-ui dosen't support 32-bit(x86) system, please use 64 bit operating system(x86_64) instead,if there is something wrong, plz let me know"
+    echo "x-ui dosen't support 32-bit(x86) system, please use 64 bit operating system(x86_64) instead, if there is something wrong, please get in touch with me!"
     exit -1
 fi
 
 os_version=""
+os_version=$(grep -i version_id /etc/os-release | cut -d \" -f2 | cut -d . -f1)
 
-# os version
-if [[ -f /etc/os-release ]]; then
-    os_version=$(awk -F'[= ."]' '/VERSION_ID/{print $3}' /etc/os-release)
-fi
-if [[ -z "$os_version" && -f /etc/lsb-release ]]; then
-    os_version=$(awk -F'[= ."]+' '/DISTRIB_RELEASE/{print $2}' /etc/lsb-release)
-fi
-
-if [[ x"${release}" == x"centos" ]]; then
-    if [[ ${os_version} -le 6 ]]; then
-        echo -e "${red} Please use CentOS 7 or higher version ${plain}\n" && exit 1
-    fi
-elif [[ x"${release}" == x"ubuntu" ]]; then
-    if [[ ${os_version} -lt 16 ]]; then
-        echo -e "${red} Please use Ubuntu 16 or higher version ${plain}\n" && exit 1
-    fi
-elif [[ x"${release}" == x"debian" ]]; then
+if [[ "${release}" == "centos" ]]; then
     if [[ ${os_version} -lt 8 ]]; then
-        echo -e "${red} Please use Debian 8 or higher version ${plain}\n" && exit 1
+        echo -e "${red} Please use CentOS 8 or higher ${plain}\n" && exit 1
     fi
+elif [[ "${release}" ==  "ubuntu" ]]; then
+    if [[ ${os_version} -lt 20 ]]; then
+        echo -e "${red}please use Ubuntu 20 or higher version！${plain}\n" && exit 1
+    fi
+
+elif [[ "${release}" == "fedora" ]]; then
+    if [[ ${os_version} -lt 36 ]]; then
+        echo -e "${red}please use Fedora 36 or higher version！${plain}\n" && exit 1
+    fi
+
+elif [[ "${release}" == "debian" ]]; then
+    if [[ ${os_version} -lt 10 ]]; then
+        echo -e "${red} Please use Debian 10 or higher ${plain}\n" && exit 1
+    fi
+else
+    echo -e "${red}Failed to check the OS version, please contact the author!${plain}" && exit 1
 fi
+
 
 install_base() {
-    if [[ x"${release}" == x"centos" ]]; then
+    if [[ "${release}" == "centos" ]]; then
         yum install wget curl tar -y
     else
         apt install wget curl tar -y
