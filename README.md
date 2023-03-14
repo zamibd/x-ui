@@ -149,6 +149,7 @@ Reference syntax:
 - CentOS 7+
 - Ubuntu 16+
 - Debian 8+
+- Fedora 36+
 
 # common problem
 
