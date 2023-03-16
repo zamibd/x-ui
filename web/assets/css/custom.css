@@ -150,3 +150,31 @@
     color:rgb(255, 255, 255) !important;
     background-color: rgb(255, 127, 127);
 }
+
+.ant-card-dark {
+    color: hsla(0,0%,100%,.65);
+    background-color: #001529;
+    border-color:rgba(0,0,0,.09);
+}
+
+.ant-card-dark:hover {
+    border-color: #e8e8e8;
+}
+
+.ant-card-dark .ant-table-thead th {
+    color: hsla(0,0%,100%,.65);
+    background-color: #000000;
+}
+
+.ant-card-dark .ant-table-tbody tr td {
+    color: hsla(0,0%,100%,.65);
+}
+
+.ant-card-dark .ant-table-tbody>tr:hover:not(.ant-table-expanded-row):not(.ant-table-row-selected)>td {
+    background-color: #004488;
+}
+
+.ant-card-dark tbody .ant-table-expanded-row {
+    color: hsla(0,0%,100%,.65);
+    background-color: #023366; 
+}
