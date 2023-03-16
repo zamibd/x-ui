@@ -11,11 +11,15 @@
     .ant-col-sm-24 {
         margin-top: 10px;
     }
+
+    .ant-table-row-expand-icon {
+        color: rgba(0,0,0,.65);
+    }
 </style>
 <body>
 <a-layout id="app" v-cloak>
     {{ template "commonSider" . }}
-    <a-layout id="content-layout">
+    <a-layout id="content-layout" :style="siderDrawer.isDarkTheme ? bgDarkStyle : ''">
         <a-layout-content>
             <a-spin :spinning="spinning" :delay="500" tip="loading">
                 <transition name="list" appear>
@@ -24,7 +28,7 @@
                     </a-tag>
                 </transition>
                 <transition name="list" appear>
-                    <a-card hoverable style="margin-bottom: 20px;">
+                    <a-card hoverable style="margin-bottom: 20px;" :class="siderDrawer.isDarkTheme ? darkClass : ''">
                         <a-row>
                             <a-col :xs="24" :sm="24" :lg="12">
                                 {{ i18n "pages.inbounds.totalDownUp" }}:
@@ -48,7 +52,7 @@
                     </a-card>
                 </transition>
                 <transition name="list" appear>
-                    <a-card hoverable>
+                    <a-card hoverable :class="siderDrawer.isDarkTheme ? darkClass : ''">
                         <div slot="title">
                             <a-button type="primary" icon="plus" @click="openAddInbound">{{ i18n "pages.inbounds.addInbound" }}</a-button>
                             <a-button type="primary" icon="export" @click="exportAllLinks">{{ i18n "pages.inbounds.export" }}</a-button>
