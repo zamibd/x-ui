@@ -48,7 +48,7 @@
         </span>
         <a-input-number v-model="client._totalGB" :min="0"></a-input-number>
         <template v-if="isEdit && clientStats">
-            {{ i18n "usage" }}: 
+            <span>{{ i18n "usage" }}:</span>
             <a-tag :color="statsColor">
                 [[ sizeFormat(clientStats.up) ]] / 
                 [[ sizeFormat(clientStats.down) ]]
