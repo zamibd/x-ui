@@ -528,3 +528,42 @@ func (s *InboundService) GetClientTrafficByEmail(email string) (traffic []*xray.
 	}
 	return traffics, err
 }
+
+func (s *InboundService) SearchClientTraffic(query string) (traffic *xray.ClientTraffic, err error) {
+	db := database.GetDB()
+	inbound := &model.Inbound{}
+	traffic = &xray.ClientTraffic{}
+
+	err = db.Model(model.Inbound{}).Where("settings like ?", "%\""+query+"\"%").First(inbound).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			logger.Warning(err)
+			return nil, err
+		}
+	}
+	traffic.InboundId = inbound.Id
+
+	// get settings clients
+	settings := map[string][]model.Client{}
+	json.Unmarshal([]byte(inbound.Settings), &settings)
+	clients := settings["clients"]
+	for _, client := range clients {
+		if client.ID == query && client.Email != "" {
+			traffic.Email = client.Email
+			break
+		}
+		if client.Password == query && client.Email != "" {
+			traffic.Email = client.Email
+			break
+		}
+	}
+	if traffic.Email == "" {
+		return nil, err
+	}
+	err = db.Model(xray.ClientTraffic{}).Where("email = ?", traffic.Email).First(traffic).Error
+	if err != nil {
+		logger.Warning(err)
+		return nil, err
+	}
+	return traffic, err
+}

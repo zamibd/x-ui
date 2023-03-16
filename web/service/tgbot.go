@@ -131,7 +131,7 @@ func (t *Tgbot) answerCommand(message *tgbotapi.Message, chatId int64, isAdmin b
 		if isAdmin {
 			t.searchClient(chatId, message.CommandArguments())
 		} else {
-			msg = "🚫 Insufficient privilege"
+			t.searchForClient(chatId, message.CommandArguments())
 		}
 	default:
 		msg = "❗ Unknown command"
@@ -162,6 +162,8 @@ func (t *Tgbot) asnwerCallback(callbackQuery *tgbotapi.CallbackQuery, isAdmin bo
 		t.sendBackup(callbackQuery.From.ID)
 	case "client_traffic":
 		t.getClientUsage(callbackQuery.From.ID, callbackQuery.From.UserName)
+	case "client_commands":
+		t.SendMsgToTgbot(callbackQuery.From.ID, "To search for statistics, just use folowing command:\r\n \r\n<code>/usage [UID|Passowrd]</code>\r\n \r\nUse UID for vmess and vless and Password for Trojan.")
 	case "commands":
 		t.SendMsgToTgbot(callbackQuery.From.ID, "To search for a client email, just use folowing command:\r\n \r\n<code>/usage email</code>")
 	}
@@ -193,6 +195,7 @@ func (t *Tgbot) SendAnswer(chatId int64, msg string, isAdmin bool) {
 	var numericKeyboardClient = tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
 			tgbotapi.NewInlineKeyboardButtonData("Get Usage", "client_traffic"),
+			tgbotapi.NewInlineKeyboardButtonData("Commands", "client_commands"),
 		),
 	)
 	msgConfig := tgbotapi.NewMessage(chatId, msg)
@@ -418,6 +421,37 @@ func (t *Tgbot) searchClient(chatId int64, email string) {
 			total, expiryTime)
 		t.SendMsgToTgbot(chatId, output)
 	}
+}
+
+func (t *Tgbot) searchForClient(chatId int64, query string) {
+	traffic, err := t.inboundService.SearchClientTraffic(query)
+	if err != nil {
+		logger.Warning(err)
+		msg := "❌ Something went wrong!"
+		t.SendMsgToTgbot(chatId, msg)
+		return
+	}
+	if traffic == nil {
+		msg := "No result!"
+		t.SendMsgToTgbot(chatId, msg)
+		return
+	}
+	expiryTime := ""
+	if traffic.ExpiryTime == 0 {
+		expiryTime = "♾Unlimited"
+	} else {
+		expiryTime = time.Unix((traffic.ExpiryTime / 1000), 0).Format("2006-01-02 15:04:05")
+	}
+	total := ""
+	if traffic.Total == 0 {
+		total = "♾Unlimited"
+	} else {
+		total = common.FormatTraffic((traffic.Total))
+	}
+	output := fmt.Sprintf("💡 Active: %t\r\n📧 Email: %s\r\n🔼 Upload↑: %s\r\n🔽 Download↓: %s\r\n🔄 Total: %s / %s\r\n📅 Expire in: %s\r\n",
+		traffic.Enable, traffic.Email, common.FormatTraffic(traffic.Up), common.FormatTraffic(traffic.Down), common.FormatTraffic((traffic.Up + traffic.Down)),
+		total, expiryTime)
+	t.SendMsgToTgbot(chatId, output)
 }
 
 func (t *Tgbot) getExhausted() string {
