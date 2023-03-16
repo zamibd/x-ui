@@ -1,6 +1,7 @@
 {{define "clientsBulkModal"}}
 <a-modal id="client-bulk-modal" v-model="clientsBulkModal.visible" :title="clientsBulkModal.title" @ok="clientsBulkModal.ok"
          :confirm-loading="clientsBulkModal.confirmLoading" :closable="true" :mask-closable="false"
+         :class="siderDrawer.isDarkTheme ? darkClass : ''"
          :ok-text="clientsBulkModal.okText" cancel-text='{{ i18n "close" }}'>
     <a-form layout="inline">
         <a-form-item label='{{ i18n "pages.client.method" }}'>
