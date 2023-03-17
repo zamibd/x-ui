@@ -328,7 +328,7 @@
                     },
                 });
             },
-	//here add stop xray function
+	        //here add stop xray function
             async stopXrayService() {
                 this.loading(true);
                 const msg = await HttpUtil.post('server/stopXrayService');
@@ -337,7 +337,7 @@
                     return;
                 }
             },
-        //here add restart xray function
+            //here add restart xray function
             async restartXrayService() {
                 this.loading(true);
                 const msg = await HttpUtil.post('server/restartXrayService');
