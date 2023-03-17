@@ -11,6 +11,10 @@
     .ant-col-sm-24 {
         margin-top: 10px;
     }
+
+    .ant-card-dark h2 {
+        color: hsla(0,0%,100%,.65);
+    }
 </style>
 <body>
 <a-layout id="app" v-cloak>
@@ -170,6 +174,7 @@
     </a-layout>
     <a-modal id="version-modal" v-model="versionModal.visible" title='{{ i18n "pages.index.xraySwitch" }}'
              :closable="true" @ok="() => versionModal.visible = false"
+             :class="siderDrawer.isDarkTheme ? darkClass : ''"
              ok-text='{{ i18n "confirm" }}' cancel-text='{{ i18n "cancel"}}'>
         <h2>{{ i18n "pages.index.xraySwitchClick"}}</h2>
         <h2>{{ i18n "pages.index.xraySwitchClickDesk"}}</h2>
@@ -311,6 +316,7 @@
                     title: '{{ i18n "pages.index.xraySwitchVersionDialog"}}',
                     content: '{{ i18n "pages.index.xraySwitchVersionDialogDesc"}}' + ` ${version}?`,
                     okText: '{{ i18n "confirm"}}',
+                    class: siderDrawer.isDarkTheme ? darkClass : '',
                     cancelText: '{{ i18n "cancel"}}',
                     onOk: async () => {
                         versionModal.hide();
