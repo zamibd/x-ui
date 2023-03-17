@@ -257,3 +257,13 @@
 .ant-card-dark .ant-calendar-next-month-btn-day .ant-calendar-date {
     color: hsla(0,0%,100%,.30);
 }
+
+.ant-drawer-dark {
+    color: hsla(0,0%,100%,.65);
+}
+
+.ant-drawer-dark .ant-drawer-wrapper-body,
+.ant-drawer-dark .drawer-handle {
+    background-color: #001529;
+    border: 1px solid hsla(0,0%,100%,.30);
+}
