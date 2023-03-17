@@ -319,12 +319,18 @@ func (s *InboundService) UpdateInboundClient(inbound *model.Inbound, index int) 
 
 	if len(clients[index].Email) > 0 {
 		if len(oldClients[index].Email) > 0 {
-			s.UpdateClientStat(oldClients[index].Email, &clients[index])
+			err = s.UpdateClientStat(oldClients[index].Email, &clients[index])
+			if err != nil {
+				return err
+			}
 		} else {
 			s.AddClientStat(inbound.Id, &clients[index])
 		}
 	} else {
-		s.DelClientStat(db, oldClients[index].Email)
+		err = s.DelClientStat(db, oldClients[index].Email)
+		if err != nil {
+			return err
+		}
 	}
 	return db.Save(oldInbound).Error
 }
