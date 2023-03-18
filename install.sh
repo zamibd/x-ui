@@ -45,12 +45,12 @@ os_version=""
 os_version=$(grep -i version_id /etc/os-release | cut -d \" -f2 | cut -d . -f1)
 
 if [[ "${release}" == "centos" ]]; then
-    if [[ ${os_version} -lt 8 ]]; then
+    if [[ ${os_version} -lt 7 ]]; then
         echo -e "${red} Please use CentOS 8 or higher ${plain}\n" && exit 1
     fi
 elif [[ "${release}" ==  "ubuntu" ]]; then
-    if [[ ${os_version} -lt 20 ]]; then
-        echo -e "${red}please use Ubuntu 20 or higher version！${plain}\n" && exit 1
+    if [[ ${os_version} -lt 18 ]]; then
+        echo -e "${red}please use Ubuntu 18 or higher version！${plain}\n" && exit 1
     fi
 
 elif [[ "${release}" == "fedora" ]]; then
@@ -59,8 +59,8 @@ elif [[ "${release}" == "fedora" ]]; then
     fi
 
 elif [[ "${release}" == "debian" ]]; then
-    if [[ ${os_version} -lt 10 ]]; then
-        echo -e "${red} Please use Debian 10 or higher ${plain}\n" && exit 1
+    if [[ ${os_version} -lt 8 ]]; then
+        echo -e "${red} Please use Debian 8 or higher ${plain}\n" && exit 1
     fi
 else
     echo -e "${red}Failed to check the OS version, please contact the author!${plain}" && exit 1
