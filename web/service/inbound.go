@@ -402,7 +402,6 @@ func (s *InboundService) AddClientTraffic(traffics []*xray.ClientTraffic) (err e
 		if err != nil {
 			if err == gorm.ErrRecordNotFound {
 				logger.Warning(err, traffic.Email)
-
 			}
 			continue
 		}
@@ -430,7 +429,6 @@ func (s *InboundService) AddClientTraffic(traffics []*xray.ClientTraffic) (err e
 			logger.Warning("AddClientTraffic update data ", err)
 			continue
 		}
-
 	}
 	return
 }
