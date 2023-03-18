@@ -1,6 +1,7 @@
 {{define "clientsModal"}}
 <a-modal id="client-modal" v-model="clientModal.visible" :title="clientModal.title" @ok="clientModal.ok"
          :confirm-loading="clientModal.confirmLoading" :closable="true" :mask-closable="false"
+         :class="siderDrawer.isDarkTheme ? darkClass : ''"
          :ok-text="clientModal.okText" cancel-text='{{ i18n "close" }}'>
     {{template "form/client"}}
 </a-modal>

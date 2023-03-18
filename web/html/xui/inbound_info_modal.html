@@ -3,6 +3,7 @@
     v-model="infoModal.visible" title='{{ i18n "pages.inbounds.details"}}'
     :closable="true"
     :mask-closable="true"
+    :class="siderDrawer.isDarkTheme ? darkClass : ''"
     :footer="null"
     width="600px"
     >
@@ -211,7 +212,7 @@
                 return this.infoModal.inbound;
             },
             get isEnable() {
-                if(infoModal.clientStats.length){
+                if(infoModal.clientStats){
                     return infoModal.clientStats.enable;
                 }
                 return infoModal.dbInbound.isEnable;

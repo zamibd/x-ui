@@ -11,11 +11,15 @@
     .ant-col-sm-24 {
         margin-top: 10px;
     }
+
+    .ant-table-row-expand-icon {
+        color: rgba(0,0,0,.65);
+    }
 </style>
 <body>
 <a-layout id="app" v-cloak>
     {{ template "commonSider" . }}
-    <a-layout id="content-layout">
+    <a-layout id="content-layout" :style="siderDrawer.isDarkTheme ? bgDarkStyle : ''">
         <a-layout-content>
             <a-spin :spinning="spinning" :delay="500" tip="loading">
                 <transition name="list" appear>
@@ -24,7 +28,7 @@
                     </a-tag>
                 </transition>
                 <transition name="list" appear>
-                    <a-card hoverable style="margin-bottom: 20px;">
+                    <a-card hoverable style="margin-bottom: 20px;" :class="siderDrawer.isDarkTheme ? darkClass : ''">
                         <a-row>
                             <a-col :xs="24" :sm="24" :lg="12">
                                 {{ i18n "pages.inbounds.totalDownUp" }}:
@@ -48,7 +52,7 @@
                     </a-card>
                 </transition>
                 <transition name="list" appear>
-                    <a-card hoverable>
+                    <a-card hoverable :class="siderDrawer.isDarkTheme ? darkClass : ''">
                         <div slot="title">
                             <a-button type="primary" icon="plus" @click="openAddInbound">{{ i18n "pages.inbounds.addInbound" }}</a-button>
                             <a-button type="primary" icon="export" @click="exportAllLinks">{{ i18n "pages.inbounds.export" }}</a-button>
@@ -63,7 +67,7 @@
                             <template slot="action" slot-scope="text, dbInbound">
                                 <a-dropdown :trigger="['click']">
                                     <a-icon @click="e => e.preventDefault()" type="menu"></a-icon>
-                                    <a-menu slot="overlay" @click="a => clickAction(a, dbInbound)">
+                                    <a-menu slot="overlay" @click="a => clickAction(a, dbInbound)" :theme="siderDrawer.theme" style="border: 1px solid rgba(255, 255, 255, 0.65);">
                                         <a-menu-item v-if="dbInbound.isSS" key="qrcode">
                                             <a-icon type="qrcode"></a-icon>
                                             {{ i18n "qrCode" }}
@@ -195,11 +199,11 @@
         title: '{{ i18n "pages.inbounds.port" }}',
         align: 'center',
         dataIndex: "port",
-        width: 30,
+        width: 50,
     }, {
         title: '{{ i18n "pages.inbounds.traffic" }}↑|↓',
         align: 'center',
-        width: 150,
+        width: 120,
         scopedSlots: { customRender: 'traffic' },
     }, {
         title: '{{ i18n "pages.inbounds.transportConfig" }}',
@@ -214,19 +218,19 @@
     }];
 
     const innerColumns = [
-        { title: '{{ i18n "pages.inbounds.operate" }}', width: 60, scopedSlots: { customRender: 'actions' } },
+        { title: '{{ i18n "pages.inbounds.operate" }}', width: 80, scopedSlots: { customRender: 'actions' } },
         { title: '{{ i18n "pages.inbounds.client" }}', width: 80, scopedSlots: { customRender: 'client' } },
-        { title: '{{ i18n "pages.inbounds.traffic" }}↑|↓', width: 80, scopedSlots: { customRender: 'traffic' } },
+        { title: '{{ i18n "pages.inbounds.traffic" }}↑|↓', width: 70, scopedSlots: { customRender: 'traffic' } },
         { title: '{{ i18n "pages.inbounds.expireDate" }}', width: 70, scopedSlots: { customRender: 'expiryTime' } },
-        { title: 'UID', width: 150, dataIndex: "id" },
+        { title: 'UID', width: 120, dataIndex: "id" },
     ];
 
     const innerTrojanColumns = [
-        { title: '{{ i18n "pages.inbounds.operate" }}', width: 60, scopedSlots: { customRender: 'actions' } },
+        { title: '{{ i18n "pages.inbounds.operate" }}', width: 80, scopedSlots: { customRender: 'actions' } },
         { title: '{{ i18n "pages.inbounds.client" }}', width: 80, scopedSlots: { customRender: 'client' } },
-        { title: '{{ i18n "pages.inbounds.traffic" }}↑|↓', width: 80, scopedSlots: { customRender: 'traffic' } },
+        { title: '{{ i18n "pages.inbounds.traffic" }}↑|↓', width: 70, scopedSlots: { customRender: 'traffic' } },
         { title: '{{ i18n "pages.inbounds.expireDate" }}', width: 70, scopedSlots: { customRender: 'expiryTime' } },
-        { title: 'Password', width: 150, dataIndex: "password" },
+        { title: 'Password', width: 120, dataIndex: "password" },
     ];
 
     const app = new Vue({
@@ -451,6 +455,7 @@
                 this.$confirm({
                     title: '{{ i18n "pages.inbounds.resetTraffic"}}',
                     content: '{{ i18n "pages.inbounds.resetTrafficContent"}}',
+                    class: siderDrawer.isDarkTheme ? darkClass : '',
                     okText: '{{ i18n "reset"}}',
                     cancelText: '{{ i18n "cancel"}}',
                     onOk: () => {
@@ -465,6 +470,7 @@
                 this.$confirm({
                     title: '{{ i18n "pages.inbounds.deleteInbound"}}',
                     content: '{{ i18n "pages.inbounds.deleteInboundContent"}}',
+                    class: siderDrawer.isDarkTheme ? darkClass : '',
                     okText: '{{ i18n "delete"}}',
                     cancelText: '{{ i18n "cancel"}}',
                     onOk: () => this.submit('/xui/inbound/del/' + dbInboundId),
@@ -484,6 +490,7 @@
                 this.$confirm({
                     title: '{{ i18n "pages.inbounds.deleteInbound"}}',
                     content: '{{ i18n "pages.inbounds.deleteInboundContent"}}',
+                    class: siderDrawer.isDarkTheme ? darkClass : '',
                     okText: '{{ i18n "delete"}}',
                     cancelText: '{{ i18n "cancel"}}',
                     onOk: () => this.submit('/xui/inbound/delClient/' + client.email, data),
@@ -527,6 +534,7 @@
                 this.$confirm({
                     title: '{{ i18n "pages.inbounds.resetTraffic"}}',
                     content: '{{ i18n "pages.inbounds.resetTrafficContent"}}',
+                    class: siderDrawer.isDarkTheme ? darkClass : '',
                     okText: '{{ i18n "reset"}}',
                     cancelText: '{{ i18n "cancel"}}',
                     onOk: () => this.submit('/xui/inbound/' + dbInboundId + '/resetClientTraffic/'+ client.email),

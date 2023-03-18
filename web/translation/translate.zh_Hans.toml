@@ -69,6 +69,8 @@
 "memory" = "内存"
 "hard" = "硬盘"
 "xrayStatus" = "xray 状态"
+"stopXray" = "停止 Xray"
+"restartXray" = "重启 Xray"
 "xraySwitch" = "切换版本"
 "xraySwitchClick" = "点击你想切换的版本"
 "xraySwitchClickDesk" = "请谨慎选择，旧版本可能配置不兼容"
