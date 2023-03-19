@@ -105,8 +105,6 @@ func (t *Tgbot) OnReceive() {
 		} else {
 			if update.Message.IsCommand() {
 				t.answerCommand(update.Message, chatId, isAdmin)
-			} else {
-				t.aswerChat(update.Message.Text, chatId, isAdmin)
 			}
 		}
 	}
@@ -137,10 +135,6 @@ func (t *Tgbot) answerCommand(message *tgbotapi.Message, chatId int64, isAdmin b
 		msg = "❗ Unknown command"
 	}
 	t.SendAnswer(chatId, msg, isAdmin)
-}
-
-func (t *Tgbot) aswerChat(message string, chatId int64, isAdmin bool) {
-	t.SendAnswer(chatId, "❗ Unknown message", isAdmin)
 }
 
 func (t *Tgbot) asnwerCallback(callbackQuery *tgbotapi.CallbackQuery, isAdmin bool) {
