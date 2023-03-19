@@ -267,3 +267,55 @@
     background-color: #001529;
     border: 1px solid hsla(0,0%,100%,.30);
 }
+
+.ant-card-dark .ant-tag-blue {
+    color: #188fffa0;
+    background-color: #061c2c;
+    border-color: #91d5ffa0;
+}
+
+.ant-card-dark .ant-tag-green {
+    color: #52c41aa0;
+    background-color: #192c06;
+    border-color: #b7eb8fa0;
+}
+
+.ant-card-dark .ant-tag-cyan {
+    color: #13c2c2a0;
+    background-color: #052b25;
+    border-color: #87e8dea0;
+}
+
+.ant-card-dark .ant-tag-red {
+    color: #f5222da0;
+    background-color: #210503;
+    border-color: #ffa39ea0;
+}
+
+.ant-card-dark .ant-tag-orange {
+    color: #fa8c16a0;
+    background-color: #2d2106;
+    border-color: #ffd591a0;
+}
+
+.ant-card-dark .ant-table-row-expand-icon {
+    background: none;
+}
+
+.ant-card-dark .ant-switch-checked {
+    background-color: #0c61b0;
+}
+
+.ant-card-dark .ant-btn {
+    color: hsla(0,0%,100%,.65);
+    background: none;
+    border: 1px solid hsla(0,0%,100%,.65);
+}
+
+.ant-card-dark .ant-btn-primary {
+    color:  hsla(0,0%,100%,.65);
+    background-color: #073763;
+    border-color: #1890ff;
+    text-shadow: 0 -1px 0 rgba(0,0,0,.12);
+    box-shadow: 0 2px 0 rgba(0,0,0,.045);
+}
