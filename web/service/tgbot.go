@@ -131,6 +131,12 @@ func (t *Tgbot) answerCommand(message *tgbotapi.Message, chatId int64, isAdmin b
 		} else {
 			t.searchForClient(chatId, message.CommandArguments())
 		}
+	case "inbound":
+		if isAdmin {
+			t.searchInbound(chatId, message.CommandArguments())
+		} else {
+			msg = "❗ Unknown command"
+		}
 	default:
 		msg = "❗ Unknown command"
 	}
@@ -159,7 +165,7 @@ func (t *Tgbot) asnwerCallback(callbackQuery *tgbotapi.CallbackQuery, isAdmin bo
 	case "client_commands":
 		t.SendMsgToTgbot(callbackQuery.From.ID, "To search for statistics, just use folowing command:\r\n \r\n<code>/usage [UID|Passowrd]</code>\r\n \r\nUse UID for vmess and vless and Password for Trojan.")
 	case "commands":
-		t.SendMsgToTgbot(callbackQuery.From.ID, "To search for a client email, just use folowing command:\r\n \r\n<code>/usage email</code>")
+		t.SendMsgToTgbot(callbackQuery.From.ID, "Search for a client email:\r\n<code>/usage email</code>\r\n \r\nSearch for inbounds (with client stats):\r\n<code>/inbound [remark]</code>")
 	}
 }
 
@@ -414,6 +420,45 @@ func (t *Tgbot) searchClient(chatId int64, email string) {
 			traffic.Enable, traffic.Email, common.FormatTraffic(traffic.Up), common.FormatTraffic(traffic.Down), common.FormatTraffic((traffic.Up + traffic.Down)),
 			total, expiryTime)
 		t.SendMsgToTgbot(chatId, output)
+	}
+}
+
+func (t *Tgbot) searchInbound(chatId int64, remark string) {
+	inbouds, err := t.inboundService.SearchInbounds(remark)
+	if err != nil {
+		logger.Warning(err)
+		msg := "❌ Something went wrong!"
+		t.SendMsgToTgbot(chatId, msg)
+		return
+	}
+	for _, inbound := range inbouds {
+		info := ""
+		info += fmt.Sprintf("📍Inbound:%s\r\nPort:%d\r\n", inbound.Remark, inbound.Port)
+		info += fmt.Sprintf("Traffic: %s (↑%s,↓%s)\r\n", common.FormatTraffic((inbound.Up + inbound.Down)), common.FormatTraffic(inbound.Up), common.FormatTraffic(inbound.Down))
+		if inbound.ExpiryTime == 0 {
+			info += "Expire date: ♾ Unlimited\r\n \r\n"
+		} else {
+			info += fmt.Sprintf("Expire date:%s\r\n \r\n", time.Unix((inbound.ExpiryTime/1000), 0).Format("2006-01-02 15:04:05"))
+		}
+		t.SendMsgToTgbot(chatId, info)
+		for _, traffic := range inbound.ClientStats {
+			expiryTime := ""
+			if traffic.ExpiryTime == 0 {
+				expiryTime = "♾Unlimited"
+			} else {
+				expiryTime = time.Unix((traffic.ExpiryTime / 1000), 0).Format("2006-01-02 15:04:05")
+			}
+			total := ""
+			if traffic.Total == 0 {
+				total = "♾Unlimited"
+			} else {
+				total = common.FormatTraffic((traffic.Total))
+			}
+			output := fmt.Sprintf("💡 Active: %t\r\n📧 Email: %s\r\n🔼 Upload↑: %s\r\n🔽 Download↓: %s\r\n🔄 Total: %s / %s\r\n📅 Expire in: %s\r\n",
+				traffic.Enable, traffic.Email, common.FormatTraffic(traffic.Up), common.FormatTraffic(traffic.Down), common.FormatTraffic((traffic.Up + traffic.Down)),
+				total, expiryTime)
+			t.SendMsgToTgbot(chatId, output)
+		}
 	}
 }
 

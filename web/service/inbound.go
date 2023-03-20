@@ -571,3 +571,13 @@ func (s *InboundService) SearchClientTraffic(query string) (traffic *xray.Client
 	}
 	return traffic, err
 }
+
+func (s *InboundService) SearchInbounds(query string) ([]*model.Inbound, error) {
+	db := database.GetDB()
+	var inbounds []*model.Inbound
+	err := db.Model(model.Inbound{}).Preload("ClientStats").Where("remark like ?", "%"+query+"%").Find(&inbounds).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, err
+	}
+	return inbounds, nil
+}
