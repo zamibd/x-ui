@@ -537,4 +537,10 @@ func (t *Tgbot) sendBackup(chatId int64) {
 	if err != nil {
 		logger.Warning("Error in uploading backup: ", err)
 	}
+	file = tgbotapi.FilePath(xray.GetConfigPath())
+	msg = tgbotapi.NewDocument(chatId, file)
+	_, err = bot.Send(msg)
+	if err != nil {
+		logger.Warning("Error in uploading config.json: ", err)
+	}
 }
