@@ -40,10 +40,16 @@ xray panel supporting multi-protocol, **Multi-lang (English,Farsi,Chinese)**
 ![inbounds](./media/inbounds.png)
 ![Dark inbounds](./media/inbounds-dark.png)
 
-# Install & Upgrade
+# Install & Upgrade to latest version
 
 ```
 bash <(curl -Ls https://raw.githubusercontent.com/alireza0/x-ui/master/install.sh)
+```
+
+## Install custom version
+To install your desired version you can add the version to the end of install command. Example for ver `0.4.0`:
+```
+bash <(curl -Ls https://raw.githubusercontent.com/alireza0/x-ui/master/install.sh) 0.4.0
 ```
 
 ## Manual install & upgrade
