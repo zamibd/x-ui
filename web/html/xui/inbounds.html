@@ -114,11 +114,11 @@
                                 </template>
                                 <a-tag v-else color="green">{{ i18n "unlimited" }}</a-tag>
                             </template>
-                            <template slot="stream" slot-scope="text, dbInbound, index">
+                            <template slot="stream" slot-scope="text, dbInbound">
                                 <template v-if="dbInbound.isVMess || dbInbound.isVLess || dbInbound.isTrojan || dbInbound.isSS">
-                                    <a-tag color="green">[[ inbounds[index].stream.network ]]</a-tag>
-                                    <a-tag v-if="inbounds[index].stream.isTls" color="blue">tls</a-tag>
-                                    <a-tag v-if="inbounds[index].stream.isXTls" color="blue">xtls</a-tag>
+                                    <a-tag color="green">[[ dbInbound.toInbound().stream.network ]]</a-tag>
+                                    <a-tag v-if="dbInbound.toInbound().stream.isTls" color="blue">tls</a-tag>
+                                    <a-tag v-if="dbInbound.toInbound().stream.isXTls" color="blue">xtls</a-tag>
                                 </template>
                                 <template v-else>{{ i18n "none" }}</template>
                             </template>
