@@ -575,9 +575,9 @@ TlsStreamSettings.Cert = class extends XrayCommonClass {
 };
 
 TlsStreamSettings.Settings = class extends XrayCommonClass {
-    constructor(insecure = false, fingerprint = '', serverName = '') {
+    constructor(allowInsecure = false, fingerprint = '', serverName = '') {
         super();
-        this.inSecure = insecure;
+        this.allowInsecure = allowInsecure;
         this.fingerprint = fingerprint;
         this.serverName = serverName;
     }
@@ -590,7 +590,7 @@ TlsStreamSettings.Settings = class extends XrayCommonClass {
     }
     toJson() {
         return {
-            allowInsecure: this.inSecure,
+            allowInsecure: this.allowInsecure,
             fingerprint: this.fingerprint,
             serverName: this.serverName,
         };
