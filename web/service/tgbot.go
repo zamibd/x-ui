@@ -126,10 +126,14 @@ func (t *Tgbot) answerCommand(message *tgbotapi.Message, chatId int64, isAdmin b
 	case "status":
 		msg = "bot is ok ✅"
 	case "usage":
-		if isAdmin {
-			t.searchClient(chatId, message.CommandArguments())
+		if len(message.CommandArguments()) > 1 {
+			if isAdmin {
+				t.searchClient(chatId, message.CommandArguments())
+			} else {
+				t.searchForClient(chatId, message.CommandArguments())
+			}
 		} else {
-			t.searchForClient(chatId, message.CommandArguments())
+			msg = "❗Please provide a text for search!"
 		}
 	case "inbound":
 		if isAdmin {
