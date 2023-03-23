@@ -95,7 +95,6 @@ const UTLS_FINGERPRINT = {
 const ALPN_OPTION = {
     H2: "h2",
     HTTP1: "http/1.1",
-    BOTH: "h2,http/1.1",
 };
 
 Object.freeze(Protocols);
@@ -1092,7 +1091,6 @@ class Inbound extends XrayCommonClass {
         const type = this.stream.network;
         const params = new Map();
         params.set("type", this.stream.network);
-        params.set("security", this.stream.security);
         switch (type) {
             case "tcp":
                 const tcp = this.stream.tcp;
@@ -1139,8 +1137,12 @@ class Inbound extends XrayCommonClass {
         }
 
         if (this.tls) {
+            params.set("security", "tls");
             params.set("fp" , this.stream.tls.settings[0]['fingerprint']);
-            params.set("alpn", this.stream.tls.alpn[0]);
+            params.set("alpn", this.stream.tls.alpn);
+            if(this.stream.tls.settings[0].allowInsecure){
+                params.set("allowInsecure", "1");
+            }
             if (!ObjectUtil.isEmpty(this.stream.tls.server)) {
                 address = this.stream.tls.server;
 			}
@@ -1153,6 +1155,11 @@ class Inbound extends XrayCommonClass {
         }
 
         if (this.xtls) {
+            params.set("security", "tls");
+            params.set("alpn", this.stream.tls.alpn);
+            if(this.stream.tls.settings[0].allowInsecure){
+                params.set("allowInsecure", "1");
+            }
             if (!ObjectUtil.isEmpty(this.stream.tls.server)) {
                 address = this.stream.tls.server;
             }
@@ -1188,7 +1195,6 @@ class Inbound extends XrayCommonClass {
         const type = this.stream.network;
         const params = new Map();
         params.set("type", this.stream.network);
-        params.set("security", this.stream.security);
         switch (type) {
             case "tcp":
                 const tcp = this.stream.tcp;
@@ -1235,8 +1241,12 @@ class Inbound extends XrayCommonClass {
         }
 
         if (this.tls) {
+            params.set("security", "tls");
             params.set("fp" , this.stream.tls.settings[0]['fingerprint']);
-            params.set("alpn", this.stream.tls.alpn[0]);
+            params.set("alpn", this.stream.tls.alpn);
+            if(this.stream.tls.settings[0].allowInsecure){
+                params.set("allowInsecure", "1");
+            }
             if (!ObjectUtil.isEmpty(this.stream.tls.server)) {
                 address = this.stream.tls.server;
             }
@@ -1246,6 +1256,11 @@ class Inbound extends XrayCommonClass {
         }
 
 		if (this.xtls) {
+            params.set("security", "tls");
+            params.set("alpn", this.stream.tls.alpn);
+            if(this.stream.tls.settings[0].allowInsecure){
+                params.set("allowInsecure", "1");
+            }
             if (!ObjectUtil.isEmpty(this.stream.tls.server)) {
                 address = this.stream.tls.server;
 			}
