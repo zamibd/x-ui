@@ -276,6 +276,7 @@ func (t *Tgbot) getServerUsage() string {
 		name = ""
 	}
 	info = fmt.Sprintf("💻 Hostname: %s\r\n", name)
+	info += fmt.Sprintf("🚀X-UI Version: %s\r\n", config.GetVersion())
 	//get ip address
 	var ip string
 	var ipv6 string
