@@ -7,51 +7,50 @@ import (
 	"strings"
 	"x-ui/database"
 	"x-ui/database/model"
-	"x-ui/xray"
+	"x-ui/logger"
 
 	"github.com/goccy/go-json"
 	"gorm.io/gorm"
 )
 
 type SubService struct {
-	address string
+	address        string
+	inboundService InboundService
 }
 
 func (s *SubService) GetSubs(subId string, host string) ([]string, error) {
 	s.address = host
 	var result []string
-	traffics, err := s.getTrafficsBySubId(subId)
+	inbounds, err := s.getInboundsBySubId(subId)
 	if err != nil {
 		return nil, err
 	}
-	for _, traffic := range traffics {
-		inbound, err := s.getInbound(traffic.InboundId)
+	for _, inbound := range inbounds {
+		clients, err := s.inboundService.getClients(inbound)
 		if err != nil {
-			return nil, err
+			logger.Error("SubService - GetSub: Unable to get clients from inbound")
 		}
-		result = append(result, s.getLink(inbound, traffic.Email))
+		if clients == nil {
+			continue
+		}
+		for _, client := range clients {
+			if client.SubID == subId {
+				link := s.getLink(inbound, client.Email)
+				result = append(result, link)
+			}
+		}
 	}
 	return result, nil
 }
 
-func (s *SubService) getTrafficsBySubId(subId string) ([]*xray.ClientTraffic, error) {
+func (s *SubService) getInboundsBySubId(subId string) ([]*model.Inbound, error) {
 	db := database.GetDB()
-	var traffics []*xray.ClientTraffic
-	err := db.Model(xray.ClientTraffic{}).Where("sub_id = ?", subId).Find(&traffics).Error
+	var inbounds []*model.Inbound
+	err := db.Model(model.Inbound{}).Where("settings like ?", fmt.Sprintf(`%%"subId": "%s"%%`, subId)).Find(&inbounds).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
 	}
-	return traffics, nil
-}
-
-func (s *SubService) getInbound(id int) (*model.Inbound, error) {
-	db := database.GetDB()
-	inbound := &model.Inbound{}
-	err := db.Model(model.Inbound{}).First(inbound, id).Error
-	if err != nil {
-		return nil, err
-	}
-	return inbound, nil
+	return inbounds, nil
 }
 
 func (s *SubService) getLink(inbound *model.Inbound, email string) string {
@@ -144,9 +143,7 @@ func (s *SubService) genVmessLink(inbound *model.Inbound, email string) string {
 		}
 	}
 
-	settings := map[string][]model.Client{}
-	json.Unmarshal([]byte(inbound.Settings), &settings)
-	clients := settings["clients"]
+	clients, _ := s.inboundService.getClients(inbound)
 	clientIndex := -1
 	for i, client := range clients {
 		if client.Email == email {
@@ -183,9 +180,7 @@ func (s *SubService) genVlessLink(inbound *model.Inbound, email string) string {
 	}
 	var stream map[string]interface{}
 	json.Unmarshal([]byte(inbound.StreamSettings), &stream)
-	settings := map[string][]model.Client{}
-	json.Unmarshal([]byte(inbound.Settings), &settings)
-	clients := settings["clients"]
+	clients, _ := s.inboundService.getClients(inbound)
 	clientIndex := -1
 	for i, client := range clients {
 		if client.Email == email {
@@ -333,9 +328,7 @@ func (s *SubService) genTrojanLink(inbound *model.Inbound, email string) string 
 	}
 	var stream map[string]interface{}
 	json.Unmarshal([]byte(inbound.StreamSettings), &stream)
-	settings := map[string][]model.Client{}
-	json.Unmarshal([]byte(inbound.Settings), &settings)
-	clients := settings["clients"]
+	clients, _ := s.inboundService.getClients(inbound)
 	clientIndex := -1
 	for i, client := range clients {
 		if client.Email == email {

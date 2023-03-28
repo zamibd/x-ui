@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"encoding/base64"
 	"x-ui/web/service"
 
 	"github.com/gin-gonic/gin"
@@ -35,6 +36,6 @@ func (a *SUBController) subs(c *gin.Context) {
 	if err != nil {
 		c.String(400, "Error!")
 	} else {
-		c.String(200, result)
+		c.String(200, base64.StdEncoding.EncodeToString([]byte(result)))
 	}
 }
