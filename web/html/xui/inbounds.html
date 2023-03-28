@@ -214,7 +214,8 @@
     }];
 
     const innerColumns = [
-        { title: '{{ i18n "pages.inbounds.operate" }}', width: 80, scopedSlots: { customRender: 'actions' } },
+        { title: '{{ i18n "pages.inbounds.operate" }}', width: 70, scopedSlots: { customRender: 'actions' } },
+        { title: '{{ i18n "pages.inbounds.enable" }}', width: 30, scopedSlots: { customRender: 'enable' } },
         { title: '{{ i18n "pages.inbounds.client" }}', width: 80, scopedSlots: { customRender: 'client' } },
         { title: '{{ i18n "pages.inbounds.traffic" }}↑|↓', width: 70, scopedSlots: { customRender: 'traffic' } },
         { title: '{{ i18n "pages.inbounds.expireDate" }}', width: 70, scopedSlots: { customRender: 'expiryTime' } },
@@ -222,7 +223,8 @@
     ];
 
     const innerTrojanColumns = [
-        { title: '{{ i18n "pages.inbounds.operate" }}', width: 80, scopedSlots: { customRender: 'actions' } },
+        { title: '{{ i18n "pages.inbounds.operate" }}', width: 70, scopedSlots: { customRender: 'actions' } },
+        { title: '{{ i18n "pages.inbounds.enable" }}', width: 30, scopedSlots: { customRender: 'enable' } },
         { title: '{{ i18n "pages.inbounds.client" }}', width: 80, scopedSlots: { customRender: 'client' } },
         { title: '{{ i18n "pages.inbounds.traffic" }}↑|↓', width: 70, scopedSlots: { customRender: 'traffic' } },
         { title: '{{ i18n "pages.inbounds.expireDate" }}', width: 70, scopedSlots: { customRender: 'expiryTime' } },
@@ -510,6 +512,16 @@
             switchEnable(dbInboundId) {
                 dbInbound = this.dbInbounds.find(row => row.id === dbInboundId);
                 this.submit(`/xui/inbound/update/${dbInboundId}`, dbInbound);
+            },
+            async switchEnableClient(dbInboundId, client) {
+                this.loading()
+                dbInbound = this.dbInbounds.find(row => row.id === dbInboundId);
+                inbound = dbInbound.toInbound();
+                clients = this.getClients(dbInbound.protocol, inbound.settings);
+                index = this.findIndexOfClient(clients, client);
+                clients[index].enable = ! clients[index].enable
+                await this.updateClient(inbound, dbInbound, index);
+                this.loading(false);
             },
             async submit(url, data) {
                 const msg = await HttpUtil.postWithModal(url, data);

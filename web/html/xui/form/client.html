@@ -15,6 +15,9 @@
         </span>
         <a-input v-model.trim="client.email"></a-input>
     </a-form-item>
+    <a-form-item label="{{ i18n "pages.inbounds.enable" }}">
+        <a-switch v-model="client.enable"></a-switch>
+    </a-form-item>
     <a-form-item label="password" v-if="inbound.protocol === Protocols.TROJAN">
         <a-input v-model.trim="client.password"></a-input>
     </a-form-item>
