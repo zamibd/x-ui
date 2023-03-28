@@ -1431,13 +1431,15 @@ Inbound.VmessSettings = class extends Inbound.Settings {
     }
 };
 Inbound.VmessSettings.Vmess = class extends XrayCommonClass {
-    , subId='') {
+    constructor(id=RandomUtil.randomUUID(), alterId=0, email=RandomUtil.randomText(), totalGB=0, expiryTime=0, enable=true, tgId='', subId='') {
         super();
         this.id = id;
         this.alterId = alterId;
         this.email = email;
         this.totalGB = totalGB;
         this.expiryTime = expiryTime;
+        this.enable = enable;
+        this.tgId = tgId;
         this.subId = subId;
     }
 
@@ -1448,6 +1450,8 @@ Inbound.VmessSettings.Vmess = class extends XrayCommonClass {
             json.email,
             json.totalGB,
             json.expiryTime,
+            json.enable,
+            json.tgId,
             json.subId,
         );
     }
@@ -1514,14 +1518,15 @@ Inbound.VLESSSettings = class extends Inbound.Settings {
 
 };
 Inbound.VLESSSettings.VLESS = class extends XrayCommonClass {
-
-    , subId='') {
+    constructor(id=RandomUtil.randomUUID(), flow='', email=RandomUtil.randomText(), totalGB=0, expiryTime=0, enable=true, tgId='', subId='') {
         super();
         this.id = id;
         this.flow = flow;
         this.email = email;
         this.totalGB = totalGB;
         this.expiryTime = expiryTime;
+        this.enable = enable;
+        this.tgId = tgId;
         this.subId = subId;
     }
 
@@ -1532,6 +1537,8 @@ Inbound.VLESSSettings.VLESS = class extends XrayCommonClass {
             json.email,
             json.totalGB,
             json.expiryTime,
+            json.enable,
+            json.tgId,
             json.subId,
         );
       }
@@ -1629,13 +1636,15 @@ Inbound.TrojanSettings = class extends Inbound.Settings {
     }
 };
 Inbound.TrojanSettings.Trojan = class extends XrayCommonClass {
-    , subId='') {
+    constructor(password=RandomUtil.randomSeq(10), flow='', email=RandomUtil.randomText(), totalGB=0, expiryTime=0, enable=true, tgId='', subId='') {
         super();
         this.password = password;
         this.flow = flow;
         this.email = email;
         this.totalGB = totalGB;
         this.expiryTime = expiryTime;
+        this.enable = enable;
+        this.tgId = tgId;
         this.subId = subId;
     }
 
@@ -1646,6 +1655,8 @@ Inbound.TrojanSettings.Trojan = class extends XrayCommonClass {
             email: this.email,
             totalGB: this.totalGB,
             expiryTime: this.expiryTime,
+            enable: this.enable,
+            tgId: this.tgId,
             subId: this.subId,
         };
     }
@@ -1657,6 +1668,8 @@ Inbound.TrojanSettings.Trojan = class extends XrayCommonClass {
             json.email,
             json.totalGB,
             json.expiryTime,
+            json.enable,
+            json.tgId,
             json.subId,
         );
     }
