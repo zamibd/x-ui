@@ -84,15 +84,16 @@ func (s *XrayService) GetXrayConfig() (*xray.Config, error) {
 		clients, ok := settings["clients"].([]interface{})
 		if ok {
 			// check users active or not
-
 			clientStats := inbound.ClientStats
 			for _, clientTraffic := range clientStats {
 
+				indexDecrease := 0
 				for index, client := range clients {
 					c := client.(map[string]interface{})
 					if c["email"] == clientTraffic.Email {
 						if !clientTraffic.Enable {
-							clients = RemoveIndex(clients, index)
+							clients = RemoveIndex(clients, index-indexDecrease)
+							indexDecrease++
 							logger.Info("Remove Inbound User", c["email"], "due the expire or traffic limit")
 
 						}
@@ -101,6 +102,29 @@ func (s *XrayService) GetXrayConfig() (*xray.Config, error) {
 				}
 
 			}
+
+			// clear client config for additional parameters
+			indexDecrease := 0
+			for index, client := range clients {
+
+				c := client.(map[string]interface{})
+
+				// remove disabled clients
+				if c["enable"] != nil {
+					if enable, ok := c["enable"].(bool); ok && !enable {
+						clients = RemoveIndex(clients, index-indexDecrease)
+						indexDecrease++
+						continue
+					}
+				}
+				for key := range c {
+					if key != "email" && key != "id" && key != "password" && key != "flow" && key != "alterId" {
+						delete(c, key)
+					}
+				}
+				clients[index-indexDecrease] = interface{}(c)
+			}
+
 			settings["clients"] = clients
 			modifiedSettings, err := json.Marshal(settings)
 			if err != nil {
