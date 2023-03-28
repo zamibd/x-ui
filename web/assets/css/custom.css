@@ -156,6 +156,12 @@
     padding:16px;
 }
 
+.ant-table-expand-icon-th,
+.ant-table-row-expand-icon-cell {
+    width: 30px;
+    min-width: 30px;
+}
+
 .ant-menu-dark,
 .ant-menu-dark .ant-menu-sub,
 .ant-layout-header,
