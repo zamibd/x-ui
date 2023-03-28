@@ -74,5 +74,4 @@ type Client struct {
 	Email      string `json:"email"`
 	TotalGB    int64  `json:"totalGB" form:"totalGB"`
 	ExpiryTime int64  `json:"expiryTime" form:"expiryTime"`
-	SubID      string `json:"subId" from:"subId"`
 }

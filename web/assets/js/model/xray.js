@@ -1431,14 +1431,13 @@ Inbound.VmessSettings = class extends Inbound.Settings {
     }
 };
 Inbound.VmessSettings.Vmess = class extends XrayCommonClass {
-    , subId='') {
+    constructor(id=RandomUtil.randomUUID(), alterId=0, email=RandomUtil.randomText(), totalGB=0, expiryTime='') {
         super();
         this.id = id;
         this.alterId = alterId;
         this.email = email;
         this.totalGB = totalGB;
         this.expiryTime = expiryTime;
-        this.subId = subId;
     }
 
     static fromJson(json={}) {
@@ -1448,7 +1447,7 @@ Inbound.VmessSettings.Vmess = class extends XrayCommonClass {
             json.email,
             json.totalGB,
             json.expiryTime,
-            json.subId,
+
         );
     }
     get _expiryTime() {
@@ -1515,14 +1514,14 @@ Inbound.VLESSSettings = class extends Inbound.Settings {
 };
 Inbound.VLESSSettings.VLESS = class extends XrayCommonClass {
 
-    , subId='') {
+    constructor(id=RandomUtil.randomUUID(), flow='', email=RandomUtil.randomText(), totalGB=0, expiryTime='') {
         super();
         this.id = id;
         this.flow = flow;
         this.email = email;
         this.totalGB = totalGB;
         this.expiryTime = expiryTime;
-        this.subId = subId;
+
     }
 
     static fromJson(json={}) {
@@ -1532,7 +1531,6 @@ Inbound.VLESSSettings.VLESS = class extends XrayCommonClass {
             json.email,
             json.totalGB,
             json.expiryTime,
-            json.subId,
         );
       }
 
@@ -1629,14 +1627,13 @@ Inbound.TrojanSettings = class extends Inbound.Settings {
     }
 };
 Inbound.TrojanSettings.Trojan = class extends XrayCommonClass {
-    , subId='') {
+    constructor(password=RandomUtil.randomSeq(10), flow='', email=RandomUtil.randomText(), totalGB=0, expiryTime='') {
         super();
         this.password = password;
         this.flow = flow;
         this.email = email;
         this.totalGB = totalGB;
         this.expiryTime = expiryTime;
-        this.subId = subId;
     }
 
     toJson() {
@@ -1646,7 +1643,6 @@ Inbound.TrojanSettings.Trojan = class extends XrayCommonClass {
             email: this.email,
             totalGB: this.totalGB,
             expiryTime: this.expiryTime,
-            subId: this.subId,
         };
     }
 
@@ -1657,7 +1653,7 @@ Inbound.TrojanSettings.Trojan = class extends XrayCommonClass {
             json.email,
             json.totalGB,
             json.expiryTime,
-            json.subId,
+
         );
     }
 
