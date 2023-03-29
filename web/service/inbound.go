@@ -505,11 +505,27 @@ func (s *InboundService) ResetClientTraffic(id int, clientEmail string) error {
 	}
 	return nil
 }
-func (s *InboundService) GetClientTrafficTgBot(tguname string) (traffic []*xray.ClientTraffic, err error) {
+func (s *InboundService) GetClientTrafficTgBot(tguname string) ([]*xray.ClientTraffic, error) {
 	db := database.GetDB()
+	var inbounds []*model.Inbound
+	err := db.Model(model.Inbound{}).Where("settings like ?", fmt.Sprintf(`%%"tgId": "%s"%%`, tguname)).Find(&inbounds).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, err
+	}
+	var emails []string
+	for _, inbound := range inbounds {
+		clients, err := s.getClients(inbound)
+		if err != nil {
+			logger.Error("Unable to get clients from inbound")
+		}
+		for _, client := range clients {
+			if client.TgID == tguname {
+				emails = append(emails, client.Email)
+			}
+		}
+	}
 	var traffics []*xray.ClientTraffic
-
-	err = db.Model(xray.ClientTraffic{}).Where("email like ?", "%@"+tguname).Find(&traffics).Error
+	err = db.Model(xray.ClientTraffic{}).Where("email IN ?", emails).Find(&traffics).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			logger.Warning(err)
