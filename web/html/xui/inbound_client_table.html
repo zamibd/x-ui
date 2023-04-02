@@ -26,7 +26,7 @@
 </template>   
 <template slot="client" slot-scope="text, client">
     [[ client.email ]]
-    <a-tag v-if="!isClientEnabled(record, client.email)" color="red">{{ i18n "disabled" }}</a-tag>
+    <a-tag v-if="!isClientEnabled(record, client.email)" color="red">{{ i18n "depleted" }}</a-tag>
 </template>                                    
 <template slot="traffic" slot-scope="text, client">
     <a-tag color="blue">[[ sizeFormat(getUpStats(record, client.email)) ]] / [[ sizeFormat(getDownStats(record, client.email)) ]]</a-tag>

@@ -160,7 +160,7 @@ func (t *Tgbot) asnwerCallback(callbackQuery *tgbotapi.CallbackQuery, isAdmin bo
 		t.SendMsgToTgbot(callbackQuery.From.ID, t.getServerUsage())
 	case "inbounds":
 		t.SendMsgToTgbot(callbackQuery.From.ID, t.getInboundUsages())
-	case "exhausted_soon":
+	case "deplete_soon":
 		t.SendMsgToTgbot(callbackQuery.From.ID, t.getExhausted())
 	case "get_backup":
 		t.sendBackup(callbackQuery.From.ID)
@@ -190,7 +190,7 @@ func (t *Tgbot) SendAnswer(chatId int64, msg string, isAdmin bool) {
 		),
 		tgbotapi.NewInlineKeyboardRow(
 			tgbotapi.NewInlineKeyboardButtonData("Get Inbounds", "inbounds"),
-			tgbotapi.NewInlineKeyboardButtonData("Exhausted soon", "exhausted_soon"),
+			tgbotapi.NewInlineKeyboardButtonData("Deplete soon", "deplete_soon"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
 			tgbotapi.NewInlineKeyboardButtonData("Commands", "commands"),
@@ -507,11 +507,11 @@ func (t *Tgbot) getExhausted() string {
 	var disabledInbounds []model.Inbound
 	var disabledClients []xray.ClientTraffic
 	output := ""
-	TrafficThreshold, err := t.settingService.GetTgTrafficDiff()
+	TrafficThreshold, err := t.settingService.GetTrafficDiff()
 	if err == nil && TrafficThreshold > 0 {
 		trDiff = int64(TrafficThreshold) * 1073741824
 	}
-	ExpireThreshold, err := t.settingService.GetTgExpireDiff()
+	ExpireThreshold, err := t.settingService.GetExpireDiff()
 	if err == nil && ExpireThreshold > 0 {
 		exDiff = int64(ExpireThreshold) * 84600000
 	}
@@ -541,7 +541,7 @@ func (t *Tgbot) getExhausted() string {
 			disabledInbounds = append(disabledInbounds, *inbound)
 		}
 	}
-	output += fmt.Sprintf("Exhausted Inbounds count:\r\n🛑 Disabled: %d\r\n🔜 Exhaust soon: %d\r\n \r\n", len(disabledInbounds), len(exhaustedInbounds))
+	output += fmt.Sprintf("Exhausted Inbounds count:\r\n🛑 Disabled: %d\r\n🔜 Deplete soon: %d\r\n \r\n", len(disabledInbounds), len(exhaustedInbounds))
 	if len(exhaustedInbounds) > 0 {
 		output += "Exhausted Inbounds:\r\n"
 		for _, inbound := range exhaustedInbounds {
@@ -553,7 +553,7 @@ func (t *Tgbot) getExhausted() string {
 			}
 		}
 	}
-	output += fmt.Sprintf("Exhausted Clients count:\r\n🛑 Disabled: %d\r\n🔜 Exhaust soon: %d\r\n \r\n", len(disabledClients), len(exhaustedClients))
+	output += fmt.Sprintf("Exhausted Clients count:\r\n🛑 Exhausted: %d\r\n🔜 Deplete soon: %d\r\n \r\n", len(disabledClients), len(exhaustedClients))
 	if len(exhaustedClients) > 0 {
 		output += "Exhausted Clients:\r\n"
 		for _, traffic := range exhaustedClients {
