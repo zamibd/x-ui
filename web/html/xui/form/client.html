@@ -30,7 +30,7 @@
     <a-form-item label="Subscription" v-if="client.email">
         <a-input v-model.trim="client.subId"></a-input>
     </a-form-item>
-    <a-form-item label="Telegram ID" v-if="client.email">
+    <a-form-item label="Telegram Username" v-if="client.email">
         <a-input v-model.trim="client.tgId"></a-input>
     </a-form-item>
     <a-form-item v-if="inbound.xtls" label="flow">
