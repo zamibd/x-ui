@@ -141,6 +141,8 @@
 "resetAllClientTraffics" = "重置客户端流量"
 "resetAllClientTrafficTitle" = "重置所有客户端流量"
 "resetAllClientTrafficContent" = "您确定要重置此入站客户端的所有流量吗？"
+"Email" = "电子邮件"
+"EmailDesc" = "电子邮件必须完全唯"
 
 [pages.client]
 "add" = "添加客户端"

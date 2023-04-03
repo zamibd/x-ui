@@ -141,6 +141,8 @@
 "resetAllClientTraffics" = "Reset Clients Traffic"
 "resetAllClientTrafficTitle" = "Reset all clients traffic"
 "resetAllClientTrafficContent" = "Are you sure to reset all traffics of this inbound's clients ?"
+"Email" = "Email"
+"EmailDesc" = "The Email Must Be Completely Unique"
 
 [pages.client]
 "add" = "Add client"
@@ -194,7 +196,7 @@
 "panelPortDesc" = "Restart the panel to take effect"
 "publicKeyPath" = "Panel certificate public key file path"
 "publicKeyPathDesc" = "Fill in an absolute path starting with '/', restart the panel to take effect"
-"privateKeyPath" = "Panel certificate key file path"
+"privateKeyPath" = "Panel certificate private key file path"
 "privateKeyPathDesc" = "Fill in an absolute path starting with '/', restart the panel to take effect"
 "panelUrlPath" = "panel url root path"
 "panelUrlPathDesc" = "Must start with '/' and end with '/', restart the panel to take effect"
