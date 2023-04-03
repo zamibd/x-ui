@@ -18,6 +18,8 @@ xray panel supporting multi-protocol, **Multi-lang (English,Farsi,Chinese)**
 | REST API | :heavy_check_mark: |
 | Telegram BOT (admin + clients) | :heavy_check_mark: |
 | Backup database using Telegram BOT | :heavy_check_mark: |
+| Subscription link | :heavy_check_mark: |
+| Calculate expire date on first usage | :heavy_check_mark: |
 
 **If you think this project is helpful to you, you may wish to give a** :star2: 
 
@@ -31,14 +33,43 @@ xray panel supporting multi-protocol, **Multi-lang (English,Farsi,Chinese)**
 - Support for configuring more transport configurations
 - Traffic statistics, limit traffic, limit expiration time
 - Customizable xray configuration templates
+- Support subscription ( multi ) link
+- Detect users which are expiring or exceed traffic limit soon
 - Support https access panel (self-provided domain name + ssl certificate)
 - Support one-click SSL certificate application and automatic renewal
 - For more advanced configuration items, please refer to the panel
+
+## API routes
+<details>
+  <summary>Click for details</summary>
+- `/login` with `PUSH` user data: `{username: '', password: ''}` for login
+- `/xui/API/inbounds` base for following actions:
+| Method | Path      | Action |
+| :----- |:---------:| ------:|
+|	GET | "/" | Get all inbounds |
+| GET | "/get/:id" | Get inbound with inbound.id |
+| POST | "/add" | Add inbound |
+| POST | "/del/:id" | Delete Inbound |
+| POST | "/update/:id" | Update Inbound |
+| POST | "/addClient/" | Add Client to inbound |
+| POST | "/delClient/:email" | Delete Client |
+| POST | "/updateClient/:index" | Update Client |
+| POST | "/:id/resetClientTraffic/:email" | Reset Client's Traffic |
+| POST | "/resetAllTraffics" | Reset traffics of all inbounds |
+| POST | "/resetAllClientTraffics/:id" | Reset traffics of all clients in an inbound |
+</details>
 
 # Screenshot from Inbouds page
 
 ![inbounds](./media/inbounds.png)
 ![Dark inbounds](./media/inbounds-dark.png)
+
+## suggestion system
+
+- CentOS 8+
+- Ubuntu 20+
+- Debian 8+
+- Fedora 36+
 
 # Install & Upgrade to latest version
 
@@ -100,6 +131,8 @@ docker build -t x-ui .
 ```
 
 ## SSL certificate application
+<details>
+  <summary>Click for details</summary>
 
 ### Cloudflare
 
@@ -114,8 +147,11 @@ ln -s /snap/bin/certbot /usr/bin/certbot
 
 certbot certonly --standalone --register-unsafely-without-email --non-interactive --agree-tos -d <Your Domain Name>
 ```
+</details>
 
 ## Tg robot use
+<details>
+  <summary>Click for details</summary>
 
 > This feature and tutorial are provided by [FranzKafkaYu](https://github.com/FranzKafkaYu)
 
@@ -133,6 +169,7 @@ Set the robot-related parameters in the panel background, including:
 Reference syntax:
 
 - 30 * * * * * //Notify at the 30s of each point
+- 0 */10 * * * * //Notify at the first second of each 10 minutes
 - @hourly // hourly notification
 - @daily // Daily notification (00:00 in the morning)
 - @every 8h // notify every 8 hours
@@ -143,26 +180,19 @@ Reference syntax:
 - Login notification
 - CPU threshold notification
 - Threshold for Expiration time and Traffic to report in advance
-- Support client report if client's telegram username is added to the end of `email` like 'test123@telegram_username'
+- Support client report menu if client's telegram username added to the user's configurations
 - Support telegram traffic report searched with UID (VMESS/VLESS) or Password (TROJAN) - anonymously
 - Menu based bot
 - Search client by email ( only admin )
 - Check all inbounds
 - Check server status
-- Check Exhausted users
+- Check depleted users
 - Receive backup by request and in periodic reports
+</details>
 
-
-
-## suggestion system
-
-- CentOS 7+
-- Ubuntu 16+
-- Debian 8+
-- Fedora 36+
-
-# common problem
-
+# Common problem
+<details>
+  <summary>Click for details</summary>
 ## Migrating from v2-ui
 
 First install the latest version of x-ui on the server where v2-ui is installed, and then use the following command to migrate, which will migrate the native v2-ui `All inbound account data` to x-ui，`Panel settings and username passwords are not migrated`
@@ -192,7 +222,6 @@ find this in config :
     },
 ```
 
-
 **the final output is like :**
 ```json
   "policy": {
@@ -211,6 +240,7 @@ find this in config :
   "routing": {
 ```
  restart panel
+</details>
 
 # a special thanks to
 - [HexaSoftwareTech](https://github.com/HexaSoftwareTech/)

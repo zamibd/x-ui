@@ -8,7 +8,7 @@ plain='\033[0m'
 cur_dir=$(pwd)
 
 # check root
-[[ $EUID -ne 0 ]] && echo -e "${red}Fatal error：${plain} Please run this script with root privilege \n " && exit 1
+[[ $EUID -ne 0 ]] && echo -e "${red}Fatal error: ${plain} Please run this script with root privilege \n " && exit 1
 
 # Check OS and set release variable
 if [[ -f /etc/os-release ]]; then
@@ -47,17 +47,17 @@ os_version=""
 os_version=$(grep -i version_id /etc/os-release | cut -d \" -f2 | cut -d . -f1)
 
 if [[ "${release}" == "centos" ]]; then
-    if [[ ${os_version} -lt 7 ]]; then
-        echo -e "${red} Please use CentOS 7 or higher ${plain}\n" && exit 1
+    if [[ ${os_version} -lt 8 ]]; then
+        echo -e "${red} Please use CentOS 8 or higher ${plain}\n" && exit 1
     fi
 elif [[ "${release}" ==  "ubuntu" ]]; then
-    if [[ ${os_version} -lt 18 ]]; then
-        echo -e "${red}please use Ubuntu 18 or higher version！${plain}\n" && exit 1
+    if [[ ${os_version} -lt 20 ]]; then
+        echo -e "${red}please use Ubuntu 20 or higher version! ${plain}\n" && exit 1
     fi
 
 elif [[ "${release}" == "fedora" ]]; then
     if [[ ${os_version} -lt 36 ]]; then
-        echo -e "${red}please use Fedora 36 or higher version！${plain}\n" && exit 1
+        echo -e "${red}please use Fedora 36 or higher version! ${plain}\n" && exit 1
     fi
 
 elif [[ "${release}" == "debian" ]]; then

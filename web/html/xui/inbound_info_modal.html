@@ -104,11 +104,11 @@
     <table v-if="infoModal.clientSettings.subId + infoModal.clientSettings.tgId" style="margin-bottom: 10px;">
         <tr v-if="infoModal.clientSettings.subId">
             <td>Subscription link</td>
-            <td><a :href="[[ infoModal.subBase + infoModal.clientSettings.subId ]]" target="_blank">[[ infoModal.subBase + infoModal.clientSettings.subId ]]</a></td>
+            <td><a :href="[[ subBase + infoModal.clientSettings.subId ]]" target="_blank">[[ subBase + infoModal.clientSettings.subId ]]</a></td>
         </tr>
         <tr v-if="infoModal.clientSettings.tgId">
             <td>Telegram Username</td>
-            <td><a :href="[[ infoModal.tgBase + infoModal.clientSettings.tgId ]]" target="_blank">@[[ infoModal.clientSettings.tgId ]]</a></td>
+            <td><a :href="[[ tgBase + infoModal.clientSettings.tgId ]]" target="_blank">@[[ infoModal.clientSettings.tgId ]]</a></td>
         </tr>
     </table>
     </template>
@@ -192,8 +192,6 @@
         link: null,
         index: null,
         isExpired: false,
-        subBase: window.location.protocol + "//" + window.location.hostname + "/sub/",
-        tgBase: "https://t.me/",
         show(dbInbound, index) {
             this.index = index;
             this.inbound = dbInbound.toInbound();
@@ -240,8 +238,13 @@
                     return infoModal.clientSettings.enable;
                 }
                 return infoModal.dbInbound.isEnable;
-            }
-
+            },
+            get subBase() {
+                return window.location.protocol + "//" + window.location.hostname + (window.location.port ? ":" + window.location.port:"") + "/sub/";
+            },
+            get tgBase() {
+                return "https://t.me/"
+            },
         },
         methods: {
             copyTextToClipboard(elmentId,content) {
