@@ -65,7 +65,13 @@
             </a-tag>
         </template>
     </a-form-item>
-    <a-form-item>
+    <a-form-item label="Delayed start">
+        <a-switch v-model="clientModal.delayedStart" @click="client._expiryTime=0"></a-switch>
+    </a-form-item>
+    <a-form-item label="Expire after first call (days)" v-if="clientModal.delayedStart">
+        <a-input type="number" v-model.number="delayedExpireDays" :min="0"></a-input>
+    </a-form-item>
+    <a-form-item v-else>
         <span slot="label">
             <span >{{ i18n "pages.inbounds.expireDate" }}</span>
             <a-tooltip>
