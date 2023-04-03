@@ -534,6 +534,36 @@ func (s *InboundService) ResetClientTraffic(id int, clientEmail string) error {
 	}
 	return nil
 }
+
+func (s *InboundService) ResetAllClientTraffics(id int) error {
+	db := database.GetDB()
+
+	result := db.Model(xray.ClientTraffic{}).
+		Where("inbound_id = ?", id).
+		Updates(map[string]interface{}{"enable": true, "up": 0, "down": 0})
+
+	err := result.Error
+
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *InboundService) ResetAllTraffics() error {
+	db := database.GetDB()
+
+	result := db.Model(model.Inbound{}).
+		Updates(map[string]interface{}{"up": 0, "down": 0})
+
+	err := result.Error
+
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *InboundService) GetClientTrafficTgBot(tguname string) ([]*xray.ClientTraffic, error) {
 	db := database.GetDB()
 	var inbounds []*model.Inbound

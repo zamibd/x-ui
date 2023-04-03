@@ -132,6 +132,15 @@
 "clickOnQRcode" = "برای کپی بر روی کد تصویری کلیک کنید"
 "client" = "کاربر"
 "export" = "استخراج لینک‌ها"
+"Clone" = "کلون"
+"cloneInbound" = "ایجاد"
+"cloneInboundContent" = "همه موارد این سرویس بجز پورت ، ای پی و کلاینت ها روی کلون اعمال خواهند شد"
+"resetAllTraffic" = "ریست ترافیک کل سرویس ها"
+"resetAllTrafficTitle" = "ریست ترافیک کل سرویس ها"
+"resetAllTrafficContent" = "آیا مطمئن هستید که میخواهید تمام ترافیک سرویس ها را ریست کنید؟"
+"resetAllClientTraffics" = "ریست ترافیک کاربران"
+"resetAllClientTrafficTitle" = "ریست ترافیک کل کاربران"
+"resetAllClientTrafficContent" = "آیا مطمئن هستید که میخواهید تمام ترافیک کاربران این سرویس را ریست کنید؟"
 
 [pages.client]
 "add" = "کاربر جدید"
