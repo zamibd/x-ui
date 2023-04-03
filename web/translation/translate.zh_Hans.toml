@@ -145,6 +145,9 @@
 "last" = "最后"
 "prefix" = "前缀"
 "postfix" = "后缀"
+"delayedStart" = "首次使用后开始"
+"expireDays" = "过期天数"
+"days" = "天"
 
 [pages.inbounds.toasts]
 "obtain" = "获取"
