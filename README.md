@@ -40,13 +40,13 @@ xray panel supporting multi-protocol, **Multi-lang (English,Farsi,Chinese)**
 - For more advanced configuration items, please refer to the panel
 
 ## API routes
-<details>
-  <summary>Click for details</summary>
+
 - `/login` with `PUSH` user data: `{username: '', password: ''}` for login
 - `/xui/API/inbounds` base for following actions:
-| Method | Path      | Action |
-| :----- |:---------:| ------:|
-|	GET | "/" | Get all inbounds |
+
+| Method | Path | Action |
+| ------------- | ------------- | ------------- |
+| GET | "/" | Get all inbounds |
 | GET | "/get/:id" | Get inbound with inbound.id |
 | POST | "/add" | Add inbound |
 | POST | "/del/:id" | Delete Inbound |
@@ -57,7 +57,6 @@ xray panel supporting multi-protocol, **Multi-lang (English,Farsi,Chinese)**
 | POST | "/:id/resetClientTraffic/:email" | Reset Client's Traffic |
 | POST | "/resetAllTraffics" | Reset traffics of all inbounds |
 | POST | "/resetAllClientTraffics/:id" | Reset traffics of all clients in an inbound |
-</details>
 
 # Screenshot from Inbouds page
 
