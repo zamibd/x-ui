@@ -552,6 +552,7 @@ func (s *InboundService) ResetAllTraffics() error {
 	db := database.GetDB()
 
 	result := db.Model(model.Inbound{}).
+		Where("user_id > ?", 0).
 		Updates(map[string]interface{}{"up": 0, "down": 0})
 
 	err := result.Error
