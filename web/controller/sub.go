@@ -27,7 +27,7 @@ func (a *SUBController) initRouter(g *gin.RouterGroup) {
 
 func (a *SUBController) subs(c *gin.Context) {
 	subId := c.Param("subid")
-	host := c.Request.Host
+	host := c.Request.URL.Hostname()
 	subs, err := a.subService.GetSubs(subId, host)
 	if err != nil {
 		c.String(400, "Error!")
