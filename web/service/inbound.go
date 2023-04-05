@@ -397,8 +397,6 @@ func (s *InboundService) adjustTraffics(traffics []*xray.ClientTraffic) (full_tr
 	dbInbound := db.Model(model.Inbound{})
 	txInbound := dbInbound.Begin()
 
-	tx := db.Model(xray.ClientTraffic{})
-
 	defer func() {
 		if err != nil {
 			txInbound.Rollback()
@@ -410,7 +408,7 @@ func (s *InboundService) adjustTraffics(traffics []*xray.ClientTraffic) (full_tr
 	for traffic_index, traffic := range traffics {
 		inbound := &model.Inbound{}
 		client_traffic := &xray.ClientTraffic{}
-		err := tx.Where("email = ?", traffic.Email).First(client_traffic).Error
+		err := db.Model(xray.ClientTraffic{}).Where("email = ?", traffic.Email).First(client_traffic).Error
 		if err != nil {
 			if err == gorm.ErrRecordNotFound {
 				logger.Warning(err, traffic.Email)
