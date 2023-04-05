@@ -101,10 +101,10 @@
                 else return 'red'
             },
             get delayedExpireDays() {
-                return this.client && this.client.expiryTime < 0 ? this.client.expiryTime / -84600000 : 0;
+                return this.client && this.client.expiryTime < 0 ? this.client.expiryTime / -86400000 : 0;
             },
             set delayedExpireDays(days){
-                this.client.expiryTime = -84600000 * days;
+                this.client.expiryTime = -86400000 * days;
             },
         },
         methods: {

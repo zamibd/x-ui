@@ -379,7 +379,7 @@ func (t *Tgbot) getClientUsage(chatId int64, tgUserName string) {
 		if traffic.ExpiryTime == 0 {
 			expiryTime = "♾Unlimited"
 		} else if traffic.ExpiryTime < 0 {
-			expiryTime = fmt.Sprintf("%d days", traffic.ExpiryTime/-84600000)
+			expiryTime = fmt.Sprintf("%d days", traffic.ExpiryTime/-86400000)
 		} else {
 			expiryTime = time.Unix((traffic.ExpiryTime / 1000), 0).Format("2006-01-02 15:04:05")
 		}
@@ -415,7 +415,7 @@ func (t *Tgbot) searchClient(chatId int64, email string) {
 		if traffic.ExpiryTime == 0 {
 			expiryTime = "♾Unlimited"
 		} else if traffic.ExpiryTime < 0 {
-			expiryTime = fmt.Sprintf("%d days", traffic.ExpiryTime/-84600000)
+			expiryTime = fmt.Sprintf("%d days", traffic.ExpiryTime/-86400000)
 		} else {
 			expiryTime = time.Unix((traffic.ExpiryTime / 1000), 0).Format("2006-01-02 15:04:05")
 		}
@@ -455,7 +455,7 @@ func (t *Tgbot) searchInbound(chatId int64, remark string) {
 			if traffic.ExpiryTime == 0 {
 				expiryTime = "♾Unlimited"
 			} else if traffic.ExpiryTime < 0 {
-				expiryTime = fmt.Sprintf("%d days", traffic.ExpiryTime/-84600000)
+				expiryTime = fmt.Sprintf("%d days", traffic.ExpiryTime/-86400000)
 			} else {
 				expiryTime = time.Unix((traffic.ExpiryTime / 1000), 0).Format("2006-01-02 15:04:05")
 			}
@@ -490,7 +490,7 @@ func (t *Tgbot) searchForClient(chatId int64, query string) {
 	if traffic.ExpiryTime == 0 {
 		expiryTime = "♾Unlimited"
 	} else if traffic.ExpiryTime < 0 {
-		expiryTime = fmt.Sprintf("%d days", traffic.ExpiryTime/-84600000)
+		expiryTime = fmt.Sprintf("%d days", traffic.ExpiryTime/-86400000)
 	} else {
 		expiryTime = time.Unix((traffic.ExpiryTime / 1000), 0).Format("2006-01-02 15:04:05")
 	}
@@ -521,7 +521,7 @@ func (t *Tgbot) getExhausted() string {
 	}
 	ExpireThreshold, err := t.settingService.GetExpireDiff()
 	if err == nil && ExpireThreshold > 0 {
-		exDiff = int64(ExpireThreshold) * 84600000
+		exDiff = int64(ExpireThreshold) * 86400000
 	}
 	inbounds, err := t.inboundService.GetAllInbounds()
 	if err != nil {
@@ -569,7 +569,7 @@ func (t *Tgbot) getExhausted() string {
 			if traffic.ExpiryTime == 0 {
 				expiryTime = "♾Unlimited"
 			} else if traffic.ExpiryTime < 0 {
-				expiryTime += fmt.Sprintf("%d days", traffic.ExpiryTime/-84600000)
+				expiryTime += fmt.Sprintf("%d days", traffic.ExpiryTime/-86400000)
 			} else {
 				expiryTime = time.Unix((traffic.ExpiryTime / 1000), 0).Format("2006-01-02 15:04:05")
 			}

@@ -1460,7 +1460,7 @@ Inbound.VmessSettings.Vmess = class extends XrayCommonClass {
             return null;
         }
         if (this.expiryTime < 0){
-            return this.expiryTime / -84600000;
+            return this.expiryTime / -86400000;
         }
         return moment(this.expiryTime);
     }
@@ -1551,7 +1551,7 @@ Inbound.VLESSSettings.VLESS = class extends XrayCommonClass {
             return null;
         }
         if (this.expiryTime < 0){
-            return this.expiryTime / -84600000;
+            return this.expiryTime / -86400000;
         }
         return moment(this.expiryTime);
     }
@@ -1685,7 +1685,7 @@ Inbound.TrojanSettings.Trojan = class extends XrayCommonClass {
             return null;
         }
         if (this.expiryTime < 0){
-            return this.expiryTime / -84600000;
+            return this.expiryTime / -86400000;
         }
         return moment(this.expiryTime);
     }
