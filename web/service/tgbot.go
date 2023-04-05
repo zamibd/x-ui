@@ -363,6 +363,11 @@ func (t *Tgbot) getInboundUsages() string {
 }
 
 func (t *Tgbot) getClientUsage(chatId int64, tgUserName string) {
+	if len(tgUserName) == 0 {
+		msg := "Your configuration is not found!\nYou should configure your telegram username and ask Admin to add it to your configuration."
+		t.SendMsgToTgbot(chatId, msg)
+		return
+	}
 	traffics, err := t.inboundService.GetClientTrafficTgBot(tgUserName)
 	if err != nil {
 		logger.Warning(err)
@@ -373,6 +378,7 @@ func (t *Tgbot) getClientUsage(chatId int64, tgUserName string) {
 	if len(traffics) == 0 {
 		msg := "Your configuration is not found!\nPlease ask your Admin to use your telegram username in your configuration(s).\n\nYour username: <b>@" + tgUserName + "</b>"
 		t.SendMsgToTgbot(chatId, msg)
+		return
 	}
 	for _, traffic := range traffics {
 		expiryTime := ""
