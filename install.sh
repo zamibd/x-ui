@@ -70,7 +70,7 @@ fi
 
 
 install_base() {
-    if [[ "${release}" == "centos" ]]; then
+    if [[ "${release}" == "centos" ]] || [[ "${release}" == "fedora" ]] ; then
         yum install wget curl tar -y
     else
         apt install wget curl tar -y
