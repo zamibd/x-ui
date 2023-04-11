@@ -1515,7 +1515,7 @@ Inbound.VLESSSettings = class extends Inbound.Settings {
     toJson() {
         return {
             clients: Inbound.VLESSSettings.toJsonArray(this.vlesses),
-            decryption: this.decryption,
+            decryption: 'none',
             fallbacks: Inbound.VLESSSettings.toJsonArray(this.fallbacks),
         };
     }
@@ -1573,7 +1573,7 @@ Inbound.VLESSSettings.VLESS = class extends XrayCommonClass {
     }
 };
 Inbound.VLESSSettings.Fallback = class extends XrayCommonClass {
-    constructor(name="", alpn=[], path='', dest='', xver=0) {
+    constructor(name="", alpn='', path='', dest='', xver=0) {
         super();
         this.name = name;
         this.alpn = alpn;
@@ -1709,7 +1709,7 @@ Inbound.TrojanSettings.Trojan = class extends XrayCommonClass {
 };
 
 Inbound.TrojanSettings.Fallback = class extends XrayCommonClass {
-    constructor(name="", alpn=[], path='', dest='', xver=0) {
+    constructor(name="", alpn='', path='', dest='', xver=0) {
         super();
         this.name = name;
         this.alpn = alpn;
