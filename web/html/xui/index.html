@@ -424,7 +424,7 @@
                 txtModal.show('config.json',JSON.stringify(msg.obj, null, 2),'config.json');
             },
             getBackup(){
-                window.location = '/server/getDb';
+                window.location = basePath + 'server/getDb';
             }
         },
         async mounted() {
