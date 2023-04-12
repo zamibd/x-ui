@@ -77,9 +77,9 @@ bash <(curl -Ls https://raw.githubusercontent.com/alireza0/x-ui/master/install.s
 ```
 
 ## Install custom version
-To install your desired version you can add the version to the end of install command. Example for ver `0.4.0`:
+To install your desired version you can add the version to the end of install command. Example for ver `0.5.1`:
 ```
-bash <(curl -Ls https://raw.githubusercontent.com/alireza0/x-ui/master/install.sh) 0.4.0
+bash <(curl -Ls https://raw.githubusercontent.com/alireza0/x-ui/master/install.sh) 0.5.1
 ```
 
 ## Manual install & upgrade
@@ -243,7 +243,6 @@ find this in config :
 
 # a special thanks to
 - [HexaSoftwareTech](https://github.com/HexaSoftwareTech/)
-- [FranzKafkaYu](https://github.com/FranzKafkaYu)
 - [MHSanaei](https://github.com/MHSanaei) 
 
 ## Stargazers over time
