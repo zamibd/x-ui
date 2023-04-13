@@ -489,6 +489,17 @@ func (s *InboundService) DisableInvalidClients() (int64, error) {
 	count := result.RowsAffected
 	return count, err
 }
+func (s *InboundService) RemoveOrphanedTraffics() {
+	db := database.GetDB()
+	db.Exec(`
+		DELETE FROM client_traffics
+		WHERE email NOT IN (
+			SELECT JSON_EXTRACT(client.value, '$.email')
+			FROM inbounds,
+				JSON_EACH(JSON_EXTRACT(inbounds.settings, '$.clients')) AS client
+		)
+	`)
+}
 func (s *InboundService) AddClientStat(inboundId int, client *model.Client) error {
 	db := database.GetDB()
 
