@@ -14,6 +14,7 @@ import (
 	"runtime"
 	"strings"
 	"time"
+	"x-ui/config"
 	"x-ui/util/common"
 
 	"github.com/Workiva/go-datastructures/queue"
@@ -29,19 +30,19 @@ func GetBinaryName() string {
 }
 
 func GetBinaryPath() string {
-	return "bin/" + GetBinaryName()
+	return config.GetBinFolderPath() + "/" + GetBinaryName()
 }
 
 func GetConfigPath() string {
-	return "bin/config.json"
+	return config.GetBinFolderPath() + "/config.json"
 }
 
 func GetGeositePath() string {
-	return "bin/geosite.dat"
+	return config.GetBinFolderPath() + "/geosite.dat"
 }
 
 func GetGeoipPath() string {
-	return "bin/geoip.dat"
+	return config.GetBinFolderPath() + "/geoip.dat"
 }
 
 func stopProcess(p *Process) {
