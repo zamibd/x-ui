@@ -62,7 +62,7 @@ xray panel supporting multi-protocol, **Multi-lang (English,Farsi,Chinese)**
 
 # Environment Variables
 
-| variable       |                      type                      | default       |
+| Variable       |                      Type                      | Default       |
 | -------------- | :--------------------------------------------: | :------------ |
 | XUI_LOG_LEVEL  | `"debug"` \| `"info"` \| `"warn"` \| `"error"` | `"info"`      |
 | XUI_DEBUG      |                   `boolean`                    | `false`       |
