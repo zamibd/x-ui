@@ -1,27 +1,29 @@
 # x-ui
-![](https://img.shields.io/github/v/release/alireza0/x-ui.svg) 
+
+![](https://img.shields.io/github/v/release/alireza0/x-ui.svg)
 ![](https://img.shields.io/docker/pulls/alireza7/x-ui.svg)
 [![Go Report Card](https://goreportcard.com/badge/github.com/alireza0/x-ui)](https://goreportcard.com/report/github.com/alireza0/x-ui)
 [![Downloads](https://img.shields.io/github/downloads/alireza0/x-ui/total.svg)](https://img.shields.io/github/downloads/alireza0/x-ui/total.svg)
 [![License](https://img.shields.io/badge/license-GPL%20V3-blue.svg?longCache=true)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+
 > **Disclaimer: This project is only for personal learning and communication, please do not use it for illegal purposes, please do not use it in a production environment**
 
 xray panel supporting multi-protocol, **Multi-lang (English,Farsi,Chinese)**
 
-| Features        | Enable?           |
-| ------------- |:-------------:|
-| Multi-lang | :heavy_check_mark: |
-| Dark/Light Theme | :heavy_check_mark: |
-| Search in deep | :heavy_check_mark: |
-| Inbound Multi User | :heavy_check_mark: |
+| Features                             |      Enable?       |
+| ------------------------------------ | :----------------: |
+| Multi-lang                           | :heavy_check_mark: |
+| Dark/Light Theme                     | :heavy_check_mark: |
+| Search in deep                       | :heavy_check_mark: |
+| Inbound Multi User                   | :heavy_check_mark: |
 | Multi User Traffic & Expiration time | :heavy_check_mark: |
-| REST API | :heavy_check_mark: |
-| Telegram BOT (admin + clients) | :heavy_check_mark: |
-| Backup database using Telegram BOT | :heavy_check_mark: |
-| Subscription link | :heavy_check_mark: |
+| REST API                             | :heavy_check_mark: |
+| Telegram BOT (admin + clients)       | :heavy_check_mark: |
+| Backup database using Telegram BOT   | :heavy_check_mark: |
+| Subscription link                    | :heavy_check_mark: |
 | Calculate expire date on first usage | :heavy_check_mark: |
 
-**If you think this project is helpful to you, you may wish to give a** :star2: 
+**If you think this project is helpful to you, you may wish to give a** :star2:
 
 # Features
 
@@ -44,19 +46,28 @@ xray panel supporting multi-protocol, **Multi-lang (English,Farsi,Chinese)**
 - `/login` with `PUSH` user data: `{username: '', password: ''}` for login
 - `/xui/API/inbounds` base for following actions:
 
-| Method | Path | Action |
-| ------------- | ------------- | ------------- |
-| GET | "/" | Get all inbounds |
-| GET | "/get/:id" | Get inbound with inbound.id |
-| POST | "/add" | Add inbound |
-| POST | "/del/:id" | Delete Inbound |
-| POST | "/update/:id" | Update Inbound |
-| POST | "/addClient/" | Add Client to inbound |
-| POST | "/delClient/:email" | Delete Client |
-| POST | "/updateClient/:index" | Update Client |
-| POST | "/:id/resetClientTraffic/:email" | Reset Client's Traffic |
-| POST | "/resetAllTraffics" | Reset traffics of all inbounds |
-| POST | "/resetAllClientTraffics/:id" | Reset traffics of all clients in an inbound |
+| Method | Path                             | Action                                      |
+| ------ | -------------------------------- | ------------------------------------------- |
+| GET    | "/"                              | Get all inbounds                            |
+| GET    | "/get/:id"                       | Get inbound with inbound.id                 |
+| POST   | "/add"                           | Add inbound                                 |
+| POST   | "/del/:id"                       | Delete Inbound                              |
+| POST   | "/update/:id"                    | Update Inbound                              |
+| POST   | "/addClient/"                    | Add Client to inbound                       |
+| POST   | "/delClient/:email"              | Delete Client                               |
+| POST   | "/updateClient/:index"           | Update Client                               |
+| POST   | "/:id/resetClientTraffic/:email" | Reset Client's Traffic                      |
+| POST   | "/resetAllTraffics"              | Reset traffics of all inbounds              |
+| POST   | "/resetAllClientTraffics/:id"    | Reset traffics of all clients in an inbound |
+
+# Environment Variables
+
+| Variable       |                      Type                      | Default       |
+| -------------- | :--------------------------------------------: | :------------ |
+| XUI_LOG_LEVEL  | `"debug"` \| `"info"` \| `"warn"` \| `"error"` | `"info"`      |
+| XUI_DEBUG      |                   `boolean`                    | `false`       |
+| XUI_BIN_FOLDER |                    `string`                    | `"bin"`       |
+| XUI_DB_FOLDER  |                    `string`                    | `"/etc/x-ui"` |
 
 # Screenshot from Inbouds page
 
@@ -77,7 +88,9 @@ bash <(curl -Ls https://raw.githubusercontent.com/alireza0/x-ui/master/install.s
 ```
 
 ## Install custom version
+
 To install your desired version you can add the version to the end of install command. Example for ver `0.5.1`:
+
 ```
 bash <(curl -Ls https://raw.githubusercontent.com/alireza0/x-ui/master/install.sh) 0.5.1
 ```
@@ -130,6 +143,7 @@ docker build -t x-ui .
 ```
 
 ## SSL certificate application
+
 <details>
   <summary>Click for details</summary>
 
@@ -146,9 +160,11 @@ ln -s /snap/bin/certbot /usr/bin/certbot
 
 certbot certonly --standalone --register-unsafely-without-email --non-interactive --agree-tos -d <Your Domain Name>
 ```
+
 </details>
 
 ## Tg robot use
+
 <details>
   <summary>Click for details</summary>
 
@@ -167,8 +183,8 @@ Set the robot-related parameters in the panel background, including:
 
 Reference syntax:
 
-- 30 * * * * * //Notify at the 30s of each point
-- 0 */10 * * * * //Notify at the first second of each 10 minutes
+- 30 \* \* \* \* \* //Notify at the 30s of each point
+- 0 _/10 _ \* \* \* //Notify at the first second of each 10 minutes
 - @hourly // hourly notification
 - @daily // Daily notification (00:00 in the morning)
 - @every 8h // notify every 8 hours
@@ -190,6 +206,7 @@ Reference syntax:
 </details>
 
 # Common problem
+
 <details>
   <summary>Click for details</summary>
 ## Migrating from v2-ui
@@ -206,12 +223,15 @@ x-ui v2-ui
 
 **If you upgrade from an old version or other forks, for enable traffic for users you should do :**
 
-find this in config : 
-``` json
+find this in config :
+
+```json
  "policy": {
     "system": {
 ```
-**and add this just after  ` "policy": {` :**
+
+**and add this just after ` "policy": {` :**
+
 ```json
     "levels": {
       "0": {
@@ -222,6 +242,7 @@ find this in config :
 ```
 
 **the final output is like :**
+
 ```json
   "policy": {
     "levels": {
@@ -238,12 +259,15 @@ find this in config :
   },
   "routing": {
 ```
- restart panel
+
+restart panel
+
 </details>
 
 # a special thanks to
+
 - [HexaSoftwareTech](https://github.com/HexaSoftwareTech/)
-- [MHSanaei](https://github.com/MHSanaei) 
+- [MHSanaei](https://github.com/MHSanaei)
 
 ## Stargazers over time
 
