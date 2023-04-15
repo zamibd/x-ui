@@ -33,14 +33,8 @@
     <a-form-item label="Telegram Username" v-if="client.email">
         <a-input v-model.trim="client.tgId"></a-input>
     </a-form-item>
-    <a-form-item v-if="inbound.xtls" label="flow">
-        <a-select v-model="client.flow" style="width: 150px" :dropdown-class-name="siderDrawer.isDarkTheme ? 'ant-card-dark' : ''">
-            <a-select-option value="">{{ i18n "none" }}</a-select-option>
-            <a-select-option v-for="key in XTLS_FLOW_CONTROL" :value="key">[[ key ]]</a-select-option>
-        </a-select>
-    </a-form-item>
-    <a-form-item v-else-if="inbound.canEnableTlsFlow()" label="flow" layout="inline">
-        <a-select v-model="client.flow" style="width: 150px">
+    <a-form-item v-if="inbound.canEnableTlsFlow()" label="flow" layout="inline">
+        <a-select v-model="client.flow" style="width: 200px">
             <a-select-option value="" selected>{{ i18n "none" }}</a-select-option>
             <a-select-option v-for="key in TLS_FLOW_CONTROL" :value="key">[[ key ]]</a-select-option>
         </a-select>
