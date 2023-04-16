@@ -117,7 +117,7 @@
 "network" = "شبکه"
 "destinationPort" = "پورت مقصد"
 "targetAddress" = "آدرس مقصد"
-"disableInsecureEncryption" = "رمزگذاری ناامن را غیرفعال کنید"
+"disableInsecureEncryption" = "غیرفعال سازی رمزگذاری ناامن"
 "monitorDesc" = "به طور پیش فرض خالی بگذارید"
 "meansNoLimit" = "یعنی بدون محدودیت"
 "totalFlow" = "کل ترافیک"
