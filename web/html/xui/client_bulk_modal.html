@@ -60,6 +60,17 @@
                     </a-form-item>
                 </td>
             </tr>
+            <tr v-if="clientsBulkModal.inbound.canEnableTlsFlow()">
+                <td>Flow</td>
+                <td>
+                    <a-form-item>
+                        <a-select v-model="clientsBulkModal.flow" style="width: 250px" :dropdown-class-name="siderDrawer.isDarkTheme ? 'ant-card-dark' : ''">
+                            <a-select-option value="" selected>{{ i18n "none" }}</a-select-option>
+                            <a-select-option v-for="key in TLS_FLOW_CONTROL" :value="key">[[ key ]]</a-select-option>
+                        </a-select>
+                    </a-form-item>
+                </td>
+            </tr>
             <tr>
                 <td>Subscription</td>
                 <td>
@@ -150,6 +161,7 @@
         emailPostfix: "",
         subId: "",
         tgId: "",
+        flow: "",
         delayedStart: false,
         ok() {
             method=clientsBulkModal.emailMethod;
@@ -171,6 +183,9 @@
                 newClient.tgId = clientsBulkModal.tgId;
                 newClient._totalGB = clientsBulkModal.totalGB;
                 newClient._expiryTime = clientsBulkModal.expiryTime;
+                if(clientsBulkModal.inbound.canEnableTlsFlow()){
+                    newClient.flow = clientsBulkModal.flow;
+                }
                 clientsBulkModal.clients.push(newClient);
             }
             ObjectUtil.execute(clientsBulkModal.confirm, clientsBulkModal.inbound, clientsBulkModal.dbInbound);
@@ -190,6 +205,7 @@
             this.emailPostfix= "";
             this.subId= "";
             this.tgId= "";
+            this.flow= "";
             this.dbInbound = new DBInbound(dbInbound);
             this.inbound = dbInbound.toInbound();
             this.clients = this.getClients(this.inbound.protocol, this.inbound.settings);
