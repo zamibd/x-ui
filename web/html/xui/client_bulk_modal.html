@@ -150,7 +150,6 @@
         confirm: null,
         dbInbound: new DBInbound(),
         inbound: new Inbound(),
-        clients: [],
         quantity: 1,
         totalGB: 0,
         expiryTime: '',
@@ -164,6 +163,7 @@
         flow: "",
         delayedStart: false,
         ok() {
+            clients = [];
             method=clientsBulkModal.emailMethod;
             if(method>1){
                 start=clientsBulkModal.firstNum;
@@ -186,9 +186,9 @@
                 if(clientsBulkModal.inbound.canEnableTlsFlow()){
                     newClient.flow = clientsBulkModal.flow;
                 }
-                clientsBulkModal.clients.push(newClient);
+                clients.push(newClient);
             }
-            ObjectUtil.execute(clientsBulkModal.confirm, clientsBulkModal.inbound, clientsBulkModal.dbInbound);
+            ObjectUtil.execute(clientsBulkModal.confirm, clients, clientsBulkModal.dbInbound.id);
         },
         show({ title='', okText='{{ i18n "sure" }}', dbInbound=null, confirm=(inbound, dbInbound)=>{} }) {
             this.visible = true;
@@ -208,7 +208,6 @@
             this.flow= "";
             this.dbInbound = new DBInbound(dbInbound);
             this.inbound = dbInbound.toInbound();
-            this.clients = this.getClients(this.inbound.protocol, this.inbound.settings);
             this.delayedStart = false;
         },
         getClients(protocol, clientSettings) {

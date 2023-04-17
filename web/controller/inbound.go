@@ -31,7 +31,7 @@ func (a *InboundController) initRouter(g *gin.RouterGroup) {
 	g.POST("/add", a.addInbound)
 	g.POST("/del/:id", a.delInbound)
 	g.POST("/update/:id", a.updateInbound)
-	g.POST("/addClient/", a.addInboundClient)
+	g.POST("/addClient", a.addInboundClient)
 	g.POST("/delClient/:email", a.delInboundClient)
 	g.POST("/updateClient/:index", a.updateInboundClient)
 	g.POST("/:id/resetClientTraffic/:email", a.resetClientTraffic)
@@ -129,19 +129,19 @@ func (a *InboundController) updateInbound(c *gin.Context) {
 }
 
 func (a *InboundController) addInboundClient(c *gin.Context) {
-	inbound := &model.Inbound{}
-	err := c.ShouldBind(inbound)
+	data := &model.Inbound{}
+	err := c.ShouldBind(data)
 	if err != nil {
 		jsonMsg(c, I18n(c, "pages.inbounds.revise"), err)
 		return
 	}
 
-	err = a.inboundService.AddInboundClient(inbound)
+	err = a.inboundService.AddInboundClient(data)
 	if err != nil {
 		jsonMsg(c, "something worng!", err)
 		return
 	}
-	jsonMsg(c, "Client added", nil)
+	jsonMsg(c, "Client(s) added", nil)
 	if err == nil {
 		a.xrayService.SetToNeedRestart()
 	}
