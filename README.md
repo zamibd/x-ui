@@ -88,11 +88,9 @@ bash <(curl -Ls https://raw.githubusercontent.com/alireza0/x-ui/master/install.s
 ```
 
 ## Install custom version
-
-To install your desired version you can add the version to the end of install command. Example for ver `0.5.1`:
-
+To install your desired version you can add the version to the end of install command. Example for ver `0.5.2`:
 ```
-bash <(curl -Ls https://raw.githubusercontent.com/alireza0/x-ui/master/install.sh) 0.5.1
+bash <(curl -Ls https://raw.githubusercontent.com/alireza0/x-ui/master/install.sh) 0.5.2
 ```
 
 ## Manual install & upgrade
@@ -147,10 +145,6 @@ docker build -t x-ui .
 <details>
   <summary>Click for details</summary>
 
-### Cloudflare
-
-> This feature and tutorial are provided by [FranzKafkaYu](https://github.com/FranzKafkaYu)
-
 ### Certbot
 
 ```bash
@@ -168,8 +162,6 @@ certbot certonly --standalone --register-unsafely-without-email --non-interactiv
 <details>
   <summary>Click for details</summary>
 
-> This feature and tutorial are provided by [FranzKafkaYu](https://github.com/FranzKafkaYu)
-
 X-UI supports daily traffic notification, panel login reminder and other functions through the Tg robot. To use the Tg robot, you need to apply for the specific application tutorial. You can refer to the [blog](https://coderfan.net/how-to-use-telegram-bot-to-alarm-you-when-someone-login-into-your-vps.html)
 Set the robot-related parameters in the panel background, including:
 
@@ -184,7 +176,7 @@ Set the robot-related parameters in the panel background, including:
 Reference syntax:
 
 - 30 \* \* \* \* \* //Notify at the 30s of each point
-- 0 _/10 _ \* \* \* //Notify at the first second of each 10 minutes
+- 0 */10 \* \* \* \* //Notify at the first second of each 10 minutes
 - @hourly // hourly notification
 - @daily // Daily notification (00:00 in the morning)
 - @every 8h // notify every 8 hours

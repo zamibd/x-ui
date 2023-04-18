@@ -132,7 +132,7 @@
                                 <template v-if="dbInbound.isVMess || dbInbound.isVLess || dbInbound.isTrojan || dbInbound.isSS">
                                     <a-tag style="margin:0;" color="green">[[ dbInbound.toInbound().stream.network ]]</a-tag>
                                     <a-tag style="margin:0;" v-if="dbInbound.toInbound().stream.isTls" color="cyan">tls</a-tag>
-                                    <a-tag style="margin:0;" v-if="dbInbound.toInbound().stream.isXTls" color="cyan">xtls</a-tag>
+                                    <a-tag style="margin:0;" v-if="dbInbound.toInbound().stream.isReality" color="cyan">reality</a-tag>
                                 </template>
                             </template>
                             <template slot="clients" slot-scope="text, dbInbound">
@@ -209,11 +209,10 @@
 </a-layout>
 {{template "js" .}}
 <script>
-
     const columns = [{
         title: '{{ i18n "pages.inbounds.operate" }}',
         align: 'center',
-        width: 30,
+        width: 40,
         scopedSlots: { customRender: 'action' },
     }, {
         title: '{{ i18n "pages.inbounds.enable" }}',
@@ -221,7 +220,7 @@
         width: 40,
         scopedSlots: { customRender: 'enable' },
     }, {
-        title: "Id",
+        title: "ID",
         align: 'center',
         dataIndex: "id",
         width: 30,
@@ -529,9 +528,9 @@
                     title: '{{ i18n "pages.client.add"}}',
                     okText: '{{ i18n "pages.client.submitAdd"}}',
                     dbInbound: dbInbound,
-                    confirm: async (inbound, dbInbound, index) => {
+                    confirm: async (clients, dbInboundId) => {
                         clientModal.loading();
-                        await this.addClient(inbound, dbInbound);
+                        await this.addClient(clients, dbInboundId);
                         clientModal.close();
                     },
                     isEdit: false
@@ -543,9 +542,9 @@
                     title: '{{ i18n "pages.client.bulk"}} ' + dbInbound.remark,
                     okText: '{{ i18n "pages.client.bulk"}}',
                     dbInbound: dbInbound,
-                    confirm: async (inbound, dbInbound) => {
+                    confirm: async (clients, dbInboundId) => {
                         clientsBulkModal.loading();
-                        await this.addClient(inbound, dbInbound);
+                        await this.addClient(clients, dbInboundId);
                         clientsBulkModal.close();
                     },
                 });
@@ -559,9 +558,9 @@
                     okText: '{{ i18n "pages.client.submitEdit"}}',
                     dbInbound: dbInbound,
                     index: index,
-                    confirm: async (inbound, dbInbound, index) => {
+                    confirm: async (client, dbInboundId, index) => {
                         clientModal.loading();
-                        await this.updateClient(inbound, dbInbound, index);
+                        await this.updateClient(client, dbInboundId, index);
                         clientModal.close();
                     },
                     isEdit: true
@@ -571,17 +570,17 @@
                 firstKey = Object.keys(client)[0];
                 return clients.findIndex(c => c[firstKey] === client[firstKey]);
             },
-            async addClient(inbound, dbInbound) {
+            async addClient(clients, dbInboundId) {
                 const data = {
-                    id: dbInbound.id,
-                    settings: inbound.settings.toString(),
+                    id: dbInboundId,
+                    settings: '{"clients": [' + clients.toString() +']}',
                 };
-                await this.submit('/xui/inbound/addClient/', data);
+                await this.submit(`/xui/inbound/addClient`, data);
             },
-            async updateClient(inbound, dbInbound, index) {
+            async updateClient(client, dbInboundId, index) {
                 const data = {
-                    id: dbInbound.id,
-                    settings: inbound.settings.toString(),
+                    id: dbInboundId,
+                    settings: '{"clients": [' + client.toString() +']}',
                 };
                 await this.submit(`/xui/inbound/updateClient/${index}`, data);
             },
