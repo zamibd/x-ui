@@ -1,22 +1,18 @@
 FROM golang:1.20-alpine AS builder
 WORKDIR /app
-ENV CGO_ENABLED 1
-RUN apk add gcc && apk --no-cache --update add build-base
+ARG TARGETARCH 
+RUN apk --no-cache --update add build-base gcc wget
 COPY . .
-RUN go build main.go
+RUN env CGO_ENABLED=1 go build main.go
+RUN ./DockerInitFiles.sh "$TARGETARCH"
 
 FROM alpine
 LABEL org.opencontainers.image.authors="alireza7@gmail.com"
 ENV TZ=Asia/Tehran
 WORKDIR /app
 
-RUN apk add ca-certificates tzdata && mkdir bin
+RUN apk add ca-certificates tzdata
 
-# Download latest rule files
-ADD https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat \
-    https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat \
-    bin/
-
-COPY --from=builder  /app/main /app/x-ui
+COPY --from=builder  /app/build/ /app/
 VOLUME [ "/etc/x-ui" ]
 CMD [ "./x-ui" ]
