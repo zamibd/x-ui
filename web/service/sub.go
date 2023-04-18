@@ -323,18 +323,24 @@ func (s *SubService) genVlessLink(inbound *model.Inbound, email string) string {
 			if pbkValue, ok := searchKey(realitySettings, "publicKey"); ok {
 				params["pbk"], _ = pbkValue.(string)
 			}
-			if sidValue, ok := searchKey(realitySettings, "shortIds"); ok {
+			if sidValue, ok := searchKey(realitySetting, "shortIds"); ok {
 				shortIds, _ := sidValue.([]interface{})
 				params["sid"], _ = shortIds[0].(string)
 			}
 			if fpValue, ok := searchKey(realitySettings, "fingerprint"); ok {
-				params["fp"], _ = fpValue.(string)
+				if fp, ok := fpValue.(string); ok && len(fp) > 0 {
+					params["fp"] = fp
+				}
 			}
 			if spxValue, ok := searchKey(realitySettings, "spiderX"); ok {
-				params["spx"], _ = spxValue.(string)
+				if spx, ok := spxValue.(string); ok && len(spx) > 0 {
+					params["spx"] = spx
+				}
 			}
 			if serverName, ok := searchKey(realitySettings, "serverName"); ok {
-				address, _ = serverName.(string)
+				if sname, ok := serverName.(string); ok && len(sname) > 0 {
+					address = sname
+				}
 			}
 		}
 
@@ -467,13 +473,19 @@ func (s *SubService) genTrojanLink(inbound *model.Inbound, email string) string 
 				params["sid"], _ = shortIds[0].(string)
 			}
 			if fpValue, ok := searchKey(realitySettings, "fingerprint"); ok {
-				params["fp"], _ = fpValue.(string)
+				if fp, ok := fpValue.(string); ok && len(fp) > 0 {
+					params["fp"] = fp
+				}
 			}
 			if spxValue, ok := searchKey(realitySettings, "spiderX"); ok {
-				params["spx"], _ = spxValue.(string)
+				if spx, ok := spxValue.(string); ok && len(spx) > 0 {
+					params["spx"] = spx
+				}
 			}
 			if serverName, ok := searchKey(realitySettings, "serverName"); ok {
-				address, _ = serverName.(string)
+				if sname, ok := serverName.(string); ok && len(sname) > 0 {
+					address = sname
+				}
 			}
 		}
 
