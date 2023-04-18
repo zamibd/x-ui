@@ -1246,10 +1246,10 @@ class Inbound extends XrayCommonClass {
             if (!ObjectUtil.isArrEmpty(this.stream.reality.serverNames)) {
                 params.set("sni", this.stream.reality.serverNames.split(",")[0]);
             }
-            if (this.stream.reality.shortIds != "") {
+            if (this.stream.reality.shortIds.length > 0) {
                 params.set("sid", this.stream.reality.shortIds.split(",")[0]);
             }
-            if (this.stream.reality.fingerprint != "") {
+            if (!ObjectUtil.isEmpty(this.stream.reality.fingerprint)) {
                 params.set("fp", this.stream.reality.settings.fingerprint);
             }
             if (!ObjectUtil.isEmpty(this.stream.reality.settings.serverName)) {
@@ -1258,7 +1258,7 @@ class Inbound extends XrayCommonClass {
             if (!ObjectUtil.isEmpty(this.stream.reality.settings.spiderX)) {
                 params.set("spx", this.stream.reality.settings.spiderX);
             }
-            if (this.stream.network === 'tcp') {
+            if (this.stream.network === 'tcp' && !ObjectUtil.isEmpty(this.settings.vlesses[clientIndex].flow)) {
                 params.set("flow", this.settings.vlesses[clientIndex].flow);
             }
         }
@@ -1358,10 +1358,10 @@ class Inbound extends XrayCommonClass {
             if (!ObjectUtil.isArrEmpty(this.stream.reality.serverNames)) {
                 params.set("sni", this.stream.reality.serverNames.split(",")[0]);
             }
-            if (this.stream.reality.shortIds != "") {
+            if (this.stream.reality.shortIds.length > 0) {
                 params.set("sid", this.stream.reality.shortIds.split(",")[0]);
             }
-            if (this.stream.reality.fingerprint != "") {
+            if (!ObjectUtil.isEmpty(this.stream.reality.fingerprint)) {
                 params.set("fp", this.stream.reality.settings.fingerprint);
             }
             if (!ObjectUtil.isEmpty(this.stream.reality.settings.serverName)) {
@@ -1370,7 +1370,7 @@ class Inbound extends XrayCommonClass {
             if (!ObjectUtil.isEmpty(this.stream.reality.settings.spiderX)) {
                 params.set("spx", this.stream.reality.settings.spiderX);
             }
-            if (this.stream.network === 'tcp') {
+            if (this.stream.network === 'tcp' && !ObjectUtil.isEmpty(this.settings.trojans[clientIndex].flow)) {
                 params.set("flow", this.settings.trojans[clientIndex].flow);
             }
         }
