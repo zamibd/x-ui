@@ -1371,7 +1371,7 @@ class Inbound extends XrayCommonClass {
                 params.set("spx", this.stream.reality.settings.spiderX);
             }
             if (this.stream.network === 'tcp') {
-                params.set("flow", this.settings.vlesses[clientIndex].flow);
+                params.set("flow", this.settings.trojans[clientIndex].flow);
             }
         }
 
