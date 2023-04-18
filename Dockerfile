@@ -11,6 +11,12 @@ ENV TZ=Asia/Tehran
 WORKDIR /app
 
 RUN apk add ca-certificates tzdata && mkdir bin
+
+# Download latest rule files
+ADD https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat \
+    https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat \
+    bin/
+
 COPY --from=builder  /app/main /app/x-ui
 VOLUME [ "/etc/x-ui" ]
 CMD [ "./x-ui" ]
