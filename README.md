@@ -176,7 +176,7 @@ Set the robot-related parameters in the panel background, including:
 Reference syntax:
 
 - 30 \* \* \* \* \* //Notify at the 30s of each point
-- 0 */10 \* \* \* \* //Notify at the first second of each 10 minutes
+- 0 \*/10 \* \* \* \* //Notify at the first second of each 10 minutes
 - @hourly // hourly notification
 - @daily // Daily notification (00:00 in the morning)
 - @every 8h // notify every 8 hours
