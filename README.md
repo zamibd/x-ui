@@ -20,7 +20,7 @@ xray panel supporting multi-protocol, **Multi-lang (English,Farsi,Chinese)**
 | REST API                             | :heavy_check_mark: |
 | Telegram BOT (admin + clients)       | :heavy_check_mark: |
 | Backup database using Telegram BOT   | :heavy_check_mark: |
-| Subscription link                    | :heavy_check_mark: |
+| Subscription link + userInfo         | :heavy_check_mark: |
 | Calculate expire date on first usage | :heavy_check_mark: |
 
 **If you think this project is helpful to you, you may wish to give a** :star2:
@@ -46,19 +46,19 @@ xray panel supporting multi-protocol, **Multi-lang (English,Farsi,Chinese)**
 - `/login` with `PUSH` user data: `{username: '', password: ''}` for login
 - `/xui/API/inbounds` base for following actions:
 
-| Method | Path                             | Action                                      |
-| ------ | -------------------------------- | ------------------------------------------- |
-| GET    | "/"                              | Get all inbounds                            |
-| GET    | "/get/:id"                       | Get inbound with inbound.id                 |
-| POST   | "/add"                           | Add inbound                                 |
-| POST   | "/del/:id"                       | Delete Inbound                              |
-| POST   | "/update/:id"                    | Update Inbound                              |
-| POST   | "/addClient/"                    | Add Client to inbound                       |
-| POST   | "/delClient/:email"              | Delete Client                               |
-| POST   | "/updateClient/:index"           | Update Client                               |
-| POST   | "/:id/resetClientTraffic/:email" | Reset Client's Traffic                      |
-| POST   | "/resetAllTraffics"              | Reset traffics of all inbounds              |
-| POST   | "/resetAllClientTraffics/:id"    | Reset traffics of all clients in an inbound |
+| Method | Path                               | Action                                      |
+| :----: | ---------------------------------  | ------------------------------------------- |
+| `GET`  | `"/"`                              | Get all inbounds                            |
+| `GET`  | `"/get/:id"`                       | Get inbound with inbound.id                 |
+| `POST` | `"/add"`                           | Add inbound                                 |
+| `POST` | `"/del/:id"`                       | Delete Inbound                              |
+| `POST` | `"/update/:id"`                    | Update Inbound                              |
+| `POST` | `"/addClient/"`                    | Add Client to inbound                       |
+| `POST` | `"/delClient/:email"`              | Delete Client                               |
+| `POST` | `"/updateClient/:index"`           | Update Client                               |
+| `POST` | `"/:id/resetClientTraffic/:email"` | Reset Client's Traffic                      |
+| `POST` | `"/resetAllTraffics"`              | Reset traffics of all inbounds              |
+| `POST` | `"/resetAllClientTraffics/:id"`    | Reset traffics of all clients in an inbound |
 
 # Environment Variables
 
@@ -78,7 +78,7 @@ xray panel supporting multi-protocol, **Multi-lang (English,Farsi,Chinese)**
 
 - CentOS 8+
 - Ubuntu 20+
-- Debian 8+
+- Debian 10+
 - Fedora 36+
 
 # Install & Upgrade to latest version
