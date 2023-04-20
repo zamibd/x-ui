@@ -647,7 +647,7 @@ class RealityStreamSettings extends XrayCommonClass {
 }
 
 RealityStreamSettings.Settings = class extends XrayCommonClass {
-    constructor(publicKey = '', fingerprint = '', serverName = '', spiderX= '/') {
+    constructor(publicKey = '', fingerprint = UTLS_FINGERPRINT.UTLS_FIREFOX, serverName = '', spiderX= '/') {
         super();
         this.publicKey = publicKey;
         this.fingerprint = fingerprint;
@@ -1243,14 +1243,12 @@ class Inbound extends XrayCommonClass {
         if (this.reality) {
             params.set("security", "reality");
             params.set("pbk", this.stream.reality.settings.publicKey);
+            params.set("fp", this.stream.reality.settings.fingerprint);
             if (!ObjectUtil.isArrEmpty(this.stream.reality.serverNames)) {
                 params.set("sni", this.stream.reality.serverNames.split(",")[0]);
             }
             if (this.stream.reality.shortIds.length > 0) {
                 params.set("sid", this.stream.reality.shortIds.split(",")[0]);
-            }
-            if (!ObjectUtil.isEmpty(this.stream.reality.fingerprint)) {
-                params.set("fp", this.stream.reality.settings.fingerprint);
             }
             if (!ObjectUtil.isEmpty(this.stream.reality.settings.serverName)) {
                 address = this.stream.reality.settings.serverName;
@@ -1355,14 +1353,12 @@ class Inbound extends XrayCommonClass {
         if (this.reality) {
             params.set("security", "reality");
             params.set("pbk", this.stream.reality.settings.publicKey);
+            params.set("fp", this.stream.reality.settings.fingerprint);
             if (!ObjectUtil.isArrEmpty(this.stream.reality.serverNames)) {
                 params.set("sni", this.stream.reality.serverNames.split(",")[0]);
             }
             if (this.stream.reality.shortIds.length > 0) {
                 params.set("sid", this.stream.reality.shortIds.split(",")[0]);
-            }
-            if (!ObjectUtil.isEmpty(this.stream.reality.fingerprint)) {
-                params.set("fp", this.stream.reality.settings.fingerprint);
             }
             if (!ObjectUtil.isEmpty(this.stream.reality.settings.serverName)) {
                 address = this.stream.reality.settings.serverName;

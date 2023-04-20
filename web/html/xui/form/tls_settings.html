@@ -176,7 +176,6 @@
             <td>
                 <a-form-item >
                     <a-select v-model="inbound.stream.reality.settings.fingerprint" style="width: 250px">
-                        <a-select-option value=''>None</a-select-option>
                         <a-select-option v-for="key in UTLS_FINGERPRINT" :value="key">[[ key ]]</a-select-option>
                     </a-select>
                 </a-form-item>
