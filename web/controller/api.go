@@ -19,6 +19,7 @@ func (a *APIController) initRouter(g *gin.RouterGroup) {
 
 	g.GET("/", a.inbounds)
 	g.GET("/get/:id", a.inbound)
+	g.GET("/getClientTraffics/:email", a.getClientTraffics)
 	g.POST("/add", a.addInbound)
 	g.POST("/del/:id", a.delInbound)
 	g.POST("/update/:id", a.updateInbound)
@@ -37,6 +38,9 @@ func (a *APIController) inbounds(c *gin.Context) {
 }
 func (a *APIController) inbound(c *gin.Context) {
 	a.inboundController.getInbound(c)
+}
+func (a *APIController) getClientTraffics(c *gin.Context) {
+	a.inboundController.getClientTraffics(c)
 }
 func (a *APIController) addInbound(c *gin.Context) {
 	a.inboundController.addInbound(c)
