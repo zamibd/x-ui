@@ -300,22 +300,37 @@ func (s *InboundService) AddInboundClient(data *model.Inbound) error {
 	return db.Save(oldInbound).Error
 }
 
-func (s *InboundService) DelInboundClient(inbound *model.Inbound, email string) error {
-	db := database.GetDB()
-	err := s.DelClientStat(db, email)
-	if err != nil {
-		logger.Error("Delete stats Data Error")
-		return err
-	}
-
-	oldInbound, err := s.GetInbound(inbound.Id)
+func (s *InboundService) DelInboundClient(inboundId int, index int) error {
+	oldInbound, err := s.GetInbound(inboundId)
 	if err != nil {
 		logger.Error("Load Old Data Error")
 		return err
 	}
+	var settings map[string]interface{}
+	err = json.Unmarshal([]byte(oldInbound.Settings), &settings)
+	if err != nil {
+		return err
+	}
 
-	oldInbound.Settings = inbound.Settings
+	inerfaceClients := settings["clients"].([]interface{})
+	client := inerfaceClients[index].(map[string]interface{})
+	email := client["email"].(string)
+	inerfaceClients = append(inerfaceClients[:index], inerfaceClients[index+1:]...)
 
+	settings["clients"] = inerfaceClients
+	newSettings, err := json.MarshalIndent(settings, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	oldInbound.Settings = string(newSettings)
+
+	db := database.GetDB()
+	err = s.DelClientStat(db, email)
+	if err != nil {
+		logger.Error("Delete stats Data Error")
+		return err
+	}
 	return db.Save(oldInbound).Error
 }
 

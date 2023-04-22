@@ -616,18 +616,13 @@
                 inbound = newDbInbound.toInbound();
                 clients = this.getClients(dbInbound.protocol, inbound.settings);
                 index = this.findIndexOfClient(clients, client);
-                clients.splice(index, 1);
-                const data = {
-                    id: dbInboundId,
-                    settings: inbound.settings.toString(),
-                };
                 this.$confirm({
                     title: '{{ i18n "pages.inbounds.deleteInbound"}}',
                     content: '{{ i18n "pages.inbounds.deleteInboundContent"}}',
                     class: siderDrawer.isDarkTheme ? darkClass : '',
                     okText: '{{ i18n "delete"}}',
                     cancelText: '{{ i18n "cancel"}}',
-                    onOk: () => this.submit('/xui/inbound/delClient/' + client.email, data),
+                    onOk: () => this.submit(`/xui/inbound/${dbInboundId}/delClient/${index}`),
                 });
             },
             getClients(protocol, clientSettings) {
