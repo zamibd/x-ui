@@ -300,7 +300,7 @@ func (s *InboundService) AddInboundClient(data *model.Inbound) error {
 	return db.Save(oldInbound).Error
 }
 
-func (s *InboundService) DelInboundClient(inboundId int, index int) error {
+func (s *InboundService) DelInboundClient(inboundId int, clientId string) error {
 	oldInbound, err := s.GetInbound(inboundId)
 	if err != nil {
 		logger.Error("Load Old Data Error")
@@ -312,12 +312,25 @@ func (s *InboundService) DelInboundClient(inboundId int, index int) error {
 		return err
 	}
 
-	inerfaceClients := settings["clients"].([]interface{})
-	client := inerfaceClients[index].(map[string]interface{})
-	email := client["email"].(string)
-	inerfaceClients = append(inerfaceClients[:index], inerfaceClients[index+1:]...)
+	email := ""
+	client_key := "id"
+	if oldInbound.Protocol == "trojan" {
+		client_key = "password"
+	}
 
-	settings["clients"] = inerfaceClients
+	inerfaceClients := settings["clients"].([]interface{})
+	var newClients []interface{}
+	for _, client := range inerfaceClients {
+		c := client.(map[string]interface{})
+		c_id := c[client_key].(string)
+		if c_id == clientId {
+			email = c["email"].(string)
+		} else {
+			newClients = append(newClients, client)
+		}
+	}
+
+	settings["clients"] = newClients
 	newSettings, err := json.MarshalIndent(settings, "", "  ")
 	if err != nil {
 		return err
