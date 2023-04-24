@@ -686,7 +686,7 @@ func (s *InboundService) GetClientTrafficTgBot(tguname string) ([]*xray.ClientTr
 	return traffics, err
 }
 
-func (s *InboundService) GetClientTrafficByEmail(email string) (traffic []*xray.ClientTraffic, err error) {
+func (s *InboundService) GetClientTrafficByEmail(email string) (traffic *xray.ClientTraffic, err error) {
 	db := database.GetDB()
 	var traffics []*xray.ClientTraffic
 
@@ -697,7 +697,7 @@ func (s *InboundService) GetClientTrafficByEmail(email string) (traffic []*xray.
 			return nil, err
 		}
 	}
-	return traffics, err
+	return traffics[0], err
 }
 
 func (s *InboundService) SearchClientTraffic(query string) (traffic *xray.ClientTraffic, err error) {
