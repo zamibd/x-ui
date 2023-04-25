@@ -678,7 +678,8 @@
                 clients = this.getClients(dbInbound.protocol, inbound.settings);
                 index = this.findIndexOfClient(clients, client);
                 clients[index].enable = !clients[index].enable;
-                await this.updateClient(clients[index],dbInboundId, index);
+                clientId = dbInbound.protocol == "trojan" ? clients[index].password : clients[index].id;
+                await this.updateClient(clients[index],dbInboundId, clientId);
                 this.loading(false);
             },
             async submit(url, data) {
