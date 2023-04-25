@@ -78,6 +78,10 @@
                                         <a-icon type="reload"></a-icon>
                                         {{ i18n "pages.inbounds.resetAllTraffic" }}
                                     </a-menu-item>
+                                    <a-menu-item key="resetClients">
+                                        <a-icon type="file-done"></a-icon>
+                                        {{ i18n "pages.inbounds.resetAllClientTraffics" }}
+                                    </a-menu-item>
                                 </a-menu>
                             </a-dropdown>
                         </div>
@@ -111,7 +115,7 @@
                                             </a-menu-item>
                                             <a-menu-item key="resetClients">
                                                 <a-icon type="file-done"></a-icon>
-                                                {{ i18n "pages.inbounds.resetAllClientTraffics"}}
+                                                {{ i18n "pages.inbounds.resetInboundClientTraffics"}}
                                             </a-menu-item>
                                             <a-menu-item key="export">
                                                 <a-icon type="export"></a-icon>
@@ -396,6 +400,21 @@
                             this.searchedInbounds.push(newInbound);
                         }
                     });
+                }
+            },
+            generalActions(action){
+                switch (action.key) {
+                    case "export":
+                        this.exportAllLinks();
+                        break;
+                    case "resetInbounds":
+                        this.resetAllTraffic();
+                        break;
+                    case "resetClients":
+                        this.resetAllClientTraffics(-1);
+                        break;
+                    case "":
+                        break;
                 }
             },
             clickAction(action, dbInbound) {
@@ -699,8 +718,8 @@
             },
             resetAllClientTraffics(dbInboundId) {
                 this.$confirm({
-                    title: '{{ i18n "pages.inbounds.resetAllClientTrafficTitle"}}',
-                    content: '{{ i18n "pages.inbounds.resetAllClientTrafficContent"}}',
+                    title: dbInboundId>0 ? '{{ i18n "pages.inbounds.resetInboundClientTrafficTitle"}}' : '{{ i18n "pages.inbounds.resetAllClientTrafficTitle"}}',
+                    content: dbInboundId>0 ? '{{ i18n "pages.inbounds.resetInboundClientTrafficContent"}}' : '{{ i18n "pages.inbounds.resetAllClientTrafficContent"}}',
                     class: siderDrawer.isDarkTheme ? darkClass : '',
                     okText: '{{ i18n "reset"}}',
                     cancelText: '{{ i18n "cancel"}}',
