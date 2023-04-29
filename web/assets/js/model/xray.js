@@ -80,6 +80,12 @@ const ALPN_OPTION = {
     HTTP1: "http/1.1",
 };
 
+const SNIFFING_OPTION = {
+    HTTP:    "http",
+    TLS:     "tls",
+    QUIC:    "quic",
+};
+
 Object.freeze(Protocols);
 Object.freeze(VmessMethods);
 Object.freeze(SSMethods);
@@ -87,6 +93,7 @@ Object.freeze(TLS_FLOW_CONTROL);
 Object.freeze(TLS_VERSION_OPTION);
 Object.freeze(TLS_CIPHER_OPTION);
 Object.freeze(ALPN_OPTION);
+Object.freeze(SNIFFING_OPTION);
 
 class XrayCommonClass {
 
