@@ -75,9 +75,9 @@ const UTLS_FINGERPRINT = {
 };
 
 const ALPN_OPTION = {
-    H3: "h3",
-    H2: "h2",
     HTTP1: "http/1.1",
+    H2: "h2",
+    H3: "h3",
 };
 
 const SNIFFING_OPTION = {

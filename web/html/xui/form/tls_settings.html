@@ -76,7 +76,7 @@
             <td>
                 <a-form-item>
                     <a-checkbox-group v-model="inbound.stream.tls.alpn">
-                        <a-checkbox v-for="key in ALPN_OPTION" :value="key">[[ key ]]</a-checkbox>
+                        <a-checkbox v-for="key,value in ALPN_OPTION" :value="key">[[ value ]]</a-checkbox>
                     </a-checkbox-group>
                 </a-form-item>
             </td>
