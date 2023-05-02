@@ -98,7 +98,7 @@
                                               :dropdown-class-name="siderDrawer.isDarkTheme ? 'ant-card-dark' : ''">
                                         <a-select-option v-for="key in [5,10,30,60]" :value="key*1000">[[ key ]]s</a-select-option>
                                     </a-select>
-                                    <a-icon type="sync" :spin="isRefreshEnabled"></a-icon>
+                                    <a-icon type="sync" :spin="isRefreshEnabled" @click="manualRefresh"></a-icon>
                                     <a-switch v-model="isRefreshEnabled" @change="toggleRefresh"></a-switch>
                                 </a-col>
                             </a-row>
@@ -813,6 +813,13 @@
             },
             changeRefreshInterval(){
                 localStorage.setItem("refreshInterval", this.refreshInterval);
+            },
+            async manualRefresh(){
+                if(!this.isRefreshEnabled){
+                    this.spinning = true;
+                    await this.getDBInbounds();
+                    this.spinning = false;
+                }
             },
         },
         watch: {
