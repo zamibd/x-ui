@@ -79,7 +79,7 @@
                                 </a-list-item>
                             </a-list>
                         </a-tab-pane>
-                        <a-tab-pane key="2" tab='{{ i18n "pages.settings.userSetting"}}'>
+                        <a-tab-pane key="2" tab='{{ i18n "pages.settings.userSettings"}}'>
                             <a-form :style="'padding: 20px;' + themeSwitcher.textStyle">
                                 <a-form-item label='{{ i18n "pages.settings.oldUsername"}}'>
                                     <a-input v-model="user.oldUsername" style="max-width: 300px"></a-input>
@@ -233,7 +233,7 @@
                                 </a-tabs>
                             </a-list>
                         </a-tab-pane>
-                        <a-tab-pane key="4" tab='{{ i18n "pages.settings.TGReminder"}}'>
+                        <a-tab-pane key="4" tab='{{ i18n "pages.settings.TGBotSettings"}}'>
                             <a-row :xs="24" :sm="24" :lg="12">
                                 <h2 style="color: inherit; font-weight: bold; font-size: 18px; padding: 20px 20px; text-align: center;">
                                     <a-icon type="warning" style="color: inherit; font-size: 24px;"></a-icon>
@@ -272,7 +272,7 @@
             allSetting: new AllSetting(),
             saveBtnDisable: true,
             user: {},
-            lang : getLang(),
+            lang: getLang(),
             ipv4Settings: {
                 tag: "IPv4",
                 protocol: "freedom",
@@ -337,8 +337,8 @@
             }
         },
         methods: {
-            loading(spinning = true, obj) {
-                if (obj == null) this.spinning = spinning;
+            loading(spinning = true) {
+                this.spinning = spinning;
             },
             async getAllSetting() {
                 this.loading(true);
@@ -395,15 +395,22 @@
                     this.saveBtnDisable = true;
                 }
             },
+            doAllItemsExist(array1, array2) {
+                for (let i = 0; i < array1.length; i++) {
+                    if (!array2.includes(array1[i])) {
+                        return false;
+                    }
+                }
+                return true;
+            },
             syncRulesWithOutbound(tag, setting) {
                 const newTemplateSettings = this.templateSettings;
                 const haveRules = newTemplateSettings.routing.rules.some((r) => r?.outboundTag === tag);
                 const outboundIndex = newTemplateSettings.outbounds.findIndex((o) => o.tag === tag);
-                if (!haveRules && outboundIndex > 0){
+                if (!haveRules && outboundIndex > 0) {
                     newTemplateSettings.outbounds.splice(outboundIndex);
                 }
                 if (haveRules && outboundIndex < 0) {
-                    
                     newTemplateSettings.outbounds.push(setting);
                 }
                 this.templateSettings = newTemplateSettings;
@@ -430,7 +437,7 @@
                 const { data, property, outboundTag } = routeSettings;
                 const oldTemplateSettings = this.templateSettings;
                 const newTemplateSettings = oldTemplateSettings;
-                currentProperty = this.templateRuleGetter({outboundTag: outboundTag, property: property})
+                currentProperty = this.templateRuleGetter({ outboundTag, property })
                 if (currentProperty.length == 0) {
                     const propertyRule = {
                         type: "field",
@@ -449,7 +456,7 @@
                                 routingRule.hasOwnProperty("outboundTag") &&
                                 routingRule.outboundTag === outboundTag
                             ) {
-                                if (!insertedOnce && data.length>0){
+                                if (!insertedOnce && data.length > 0) {
                                     insertedOnce = true;
                                     routingRule[property] = data;
                                     newRules.push(routingRule);
@@ -513,7 +520,7 @@
                     newTemplateSettings = this.templateSettings;
                     freedomOutboundIndex = newTemplateSettings.outbounds.findIndex((o) => o.protocol === "freedom" && !o.tag);
                     if (!newTemplateSettings.outbounds[freedomOutboundIndex].settings) {
-                        newTemplateSettings.outbounds[freedomOutboundIndex].settings = {"domainStrategy": newValue};
+                        newTemplateSettings.outbounds[freedomOutboundIndex].settings = { "domainStrategy": newValue };
                     } else {
                         newTemplateSettings.outbounds[freedomOutboundIndex].settings.domainStrategy = newValue;
                     }
@@ -532,66 +539,66 @@
                 }
             },
             blockedIPs: {
-                get: function() { 
-                    return this.templateRuleGetter({outboundTag: "blocked", property: "ip"});
+                get: function () {
+                    return this.templateRuleGetter({ outboundTag: "blocked", property: "ip" });
                 },
-                set: function(newValue) {
-                    this.templateRuleSetter({outboundTag: "blocked", property: "ip", data: newValue});
+                set: function (newValue) {
+                    this.templateRuleSetter({ outboundTag: "blocked", property: "ip", data: newValue });
                 }
             },
             blockedDomains: {
-                get: function() { 
-                    return this.templateRuleGetter({outboundTag: "blocked", property: "domain"});
+                get: function () {
+                    return this.templateRuleGetter({ outboundTag: "blocked", property: "domain" });
                 },
-                set: function(newValue) {
-                    this.templateRuleSetter({outboundTag: "blocked", property: "domain", data: newValue});
+                set: function (newValue) {
+                    this.templateRuleSetter({ outboundTag: "blocked", property: "domain", data: newValue });
                 }
             },
             blockedProtocols: {
-                get: function() { 
-                    return this.templateRuleGetter({outboundTag: "blocked", property: "protocol"});
+                get: function () {
+                    return this.templateRuleGetter({ outboundTag: "blocked", property: "protocol" });
                 },
-                set: function(newValue) {
-                    this.templateRuleSetter({outboundTag: "blocked", property: "protocol", data: newValue});
+                set: function (newValue) {
+                    this.templateRuleSetter({ outboundTag: "blocked", property: "protocol", data: newValue });
                 }
             },
             directIPs: {
-                get: function() { 
-                    return this.templateRuleGetter({outboundTag: "direct", property: "ip"});
+                get: function () {
+                    return this.templateRuleGetter({ outboundTag: "direct", property: "ip" });
                 },
-                set: function(newValue) {
-                    this.templateRuleSetter({outboundTag: "direct", property: "ip", data: newValue});
-                    this.syncRulesWithOutbound("direct",this.directSettings);
+                set: function (newValue) {
+                    this.templateRuleSetter({ outboundTag: "direct", property: "ip", data: newValue });
+                    this.syncRulesWithOutbound("direct", this.directSettings);
                 }
             },
             directDomains: {
-                get: function() { 
-                    return this.templateRuleGetter({outboundTag: "direct", property: "domain"});
+                get: function () {
+                    return this.templateRuleGetter({ outboundTag: "direct", property: "domain" });
                 },
-                set: function(newValue) {
-                    this.templateRuleSetter({outboundTag: "direct", property: "domain", data: newValue});
-                    this.syncRulesWithOutbound("direct",this.directSettings);
+                set: function (newValue) {
+                    this.templateRuleSetter({ outboundTag: "direct", property: "domain", data: newValue });
+                    this.syncRulesWithOutbound("direct", this.directSettings);
                 }
             },
             manualBlockedIPs: {
-                get: function() { return JSON.stringify(this.blockedIPs, null, 2); },
-                set: debounce(function(value) { this.blockedIPs = JSON.parse(value); } , 1000)
+                get: function () { return JSON.stringify(this.blockedIPs, null, 2); },
+                set: debounce(function (value) { this.blockedIPs = JSON.parse(value); }, 1000)
             },
             manualBlockedDomains: {
-                get: function() { return JSON.stringify(this.blockedDomains, null, 2); },
-                set: debounce(function(value) { this.blockedDomains = JSON.parse(value); } , 1000)
+                get: function () { return JSON.stringify(this.blockedDomains, null, 2); },
+                set: debounce(function (value) { this.blockedDomains = JSON.parse(value); }, 1000)
             },
             manualDirectIPs: {
-                get: function() { return JSON.stringify(this.directIPs, null, 2); },
-                set: debounce(function(value) { this.directIPs = JSON.parse(value); } , 1000)
+                get: function () { return JSON.stringify(this.directIPs, null, 2); },
+                set: debounce(function (value) { this.directIPs = JSON.parse(value); }, 1000)
             },
             manualDirectDomains: {
-                get: function() { return JSON.stringify(this.directDomains, null, 2); },
-                set: debounce(function(value) { this.directDomains = JSON.parse(value); } , 1000)
+                get: function () { return JSON.stringify(this.directDomains, null, 2); },
+                set: debounce(function (value) { this.directDomains = JSON.parse(value); }, 1000)
             },
             torrentSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.protocols.bittorrent, this.blockedProtocols);
+                    return doAllItemsExist(this.settingsData.protocols.bittorrent, this.blockedProtocols);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -603,7 +610,7 @@
             },
             privateIpSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.ips.local, this.blockedIPs);
+                    return doAllItemsExist(this.settingsData.ips.local, this.blockedIPs);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -615,7 +622,7 @@
             },
             AdsSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.domains.ads, this.blockedDomains);
+                    return doAllItemsExist(this.settingsData.domains.ads, this.blockedDomains);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -628,7 +635,7 @@
             familyProtectSettings: {
                 get: function () {
                     if (!this.templateSettings || !this.templateSettings.dns || !this.templateSettings.dns.servers) return false;
-                    return areAllItemsExist(this.templateSettings.dns.servers, this.settingsData.familyProtectDNS.servers);
+                    return doAllItemsExist(this.templateSettings.dns.servers, this.settingsData.familyProtectDNS.servers);
                 },
                 set: function (newValue) {
                     newTemplateSettings = this.templateSettings;
@@ -642,10 +649,10 @@
             },
             GoogleIPv4Settings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.domains.google, this.templateRuleGetter({outboundTag: "IPv4", property: "domain"}));
+                    return doAllItemsExist(this.settingsData.domains.google, this.templateRuleGetter({ outboundTag: "IPv4", property: "domain" }));
                 },
                 set: function (newValue) {
-                    oldData = this.templateRuleGetter({outboundTag: "IPv4", property: "domain"});
+                    oldData = this.templateRuleGetter({ outboundTag: "IPv4", property: "domain" });
                     if (newValue) {
                         oldData = [...oldData, ...this.settingsData.domains.google];
                     } else {
@@ -661,10 +668,10 @@
             },
             NetflixIPv4Settings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.domains.netflix, this.templateRuleGetter({outboundTag: "IPv4", property: "domain"}));
+                    return doAllItemsExist(this.settingsData.domains.netflix, this.templateRuleGetter({ outboundTag: "IPv4", property: "domain" }));
                 },
                 set: function (newValue) {
-                    oldData = this.templateRuleGetter({outboundTag: "IPv4", property: "domain"});
+                    oldData = this.templateRuleGetter({ outboundTag: "IPv4", property: "domain" });
                     if (newValue) {
                         oldData = [...oldData, ...this.settingsData.domains.netflix];
                     } else {
@@ -680,7 +687,7 @@
             },
             IRIpSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.ips.ir, this.blockedIPs);
+                    return doAllItemsExist(this.settingsData.ips.ir, this.blockedIPs);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -692,7 +699,7 @@
             },
             IRDomainSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.domains.ir, this.blockedDomains);
+                    return doAllItemsExist(this.settingsData.domains.ir, this.blockedDomains);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -704,7 +711,7 @@
             },
             ChinaIpSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.ips.cn, this.blockedIPs);
+                    return doAllItemsExist(this.settingsData.ips.cn, this.blockedIPs);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -716,7 +723,7 @@
             },
             ChinaDomainSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.domains.cn, this.blockedDomains);
+                    return doAllItemsExist(this.settingsData.domains.cn, this.blockedDomains);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -728,7 +735,7 @@
             },
             RussiaIpSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.ips.ru, this.blockedIPs);
+                    return doAllItemsExist(this.settingsData.ips.ru, this.blockedIPs);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -740,7 +747,7 @@
             },
             RussiaDomainSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.domains.ru, this.blockedDomains);
+                    return doAllItemsExist(this.settingsData.domains.ru, this.blockedDomains);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -752,7 +759,7 @@
             },
             IRIpDirectSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.ips.ir, this.directIPs);
+                    return doAllItemsExist(this.settingsData.ips.ir, this.directIPs);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -764,7 +771,7 @@
             },
             IRDomainDirectSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.domains.ir, this.directDomains);
+                    return doAllItemsExist(this.settingsData.domains.ir, this.directDomains);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -776,7 +783,7 @@
             },
             ChinaIpDirectSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.ips.cn, this.directIPs);
+                    return doAllItemsExist(this.settingsData.ips.cn, this.directIPs);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -788,7 +795,7 @@
             },
             ChinaDomainDirectSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.domains.cn, this.directDomains);
+                    return doAllItemsExist(this.settingsData.domains.cn, this.directDomains);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -800,7 +807,7 @@
             },
             RussiaIpDirectSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.ips.ru, this.directIPs);
+                    return doAllItemsExist(this.settingsData.ips.ru, this.directIPs);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -812,7 +819,7 @@
             },
             RussiaDomainDirectSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.domains.ru, this.directDomains);
+                    return doAllItemsExist(this.settingsData.domains.ru, this.directDomains);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -821,9 +828,9 @@
                         this.directDomains = this.directDomains.filter(data => !this.settingsData.domains.ru.includes(data));
                     }
                 }
-                },
             },
-        });
+        },
+    });
 </script>
 </body>
 </html>
