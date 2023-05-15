@@ -291,6 +291,7 @@ body {
 .ant-card-dark .ant-calendar-picker-clear {
     color: hsla(0,0%,100%,.65);
     background-color: #193752;
+    border: 1px solid rgba(0, 65, 150, 0);
 }
 
 .ant-card-dark .ant-select-disabled .ant-select-selection {
