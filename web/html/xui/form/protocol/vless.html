@@ -31,7 +31,7 @@
                 <td>flow</td>
                 <td>
                     <a-form-item>
-                        <a-select v-model="inbound.settings.vlesses[index].flow" style="width: 200px" :dropdown-class-name="siderDrawer.isDarkTheme ? 'ant-card-dark' : ''">
+                        <a-select v-model="inbound.settings.vlesses[index].flow" style="width: 200px" :dropdown-class-name="themeSwitcher.darkCardClass">
                             <a-select-option value="" selected>{{ i18n "none" }}</a-select-option>
                             <a-select-option v-for="key in TLS_FLOW_CONTROL" :value="key">[[ key ]]</a-select-option>
                         </a-select>
@@ -99,7 +99,7 @@
                 <td>
                     <a-form-item>
                         <a-date-picker :show-time="{ format: 'HH:mm:ss' }" format="YYYY-MM-DD HH:mm:ss"
-                                       :dropdown-class-name="siderDrawer.isDarkTheme ? 'ant-card-dark' : ''"
+                                       :dropdown-class-name="themeSwitcher.darkCardClass"
                                        v-model="client._expiryTime" style="width: 200px;"></a-date-picker>
                     </a-form-item>
                 </td>

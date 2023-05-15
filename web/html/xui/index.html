@@ -212,7 +212,7 @@
                 <a-select v-model="logModal.rows"
                 style="width: 80px"
                 @change="openLogs(logModal.rows)"
-                :dropdown-class-name="siderDrawer.isDarkTheme ? 'ant-card-dark' : ''">
+                :dropdown-class-name="themeSwitcher.darkCardClass">
                     <a-select-option value="10">10</a-select-option>
                     <a-select-option value="20">20</a-select-option>
                     <a-select-option value="50">50</a-select-option>
