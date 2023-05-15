@@ -7,8 +7,8 @@
     <a-tag v-if="qrModal.clientName" color="orange" style="margin-bottom: 10px;display: block;text-align: center;">
         {{ i18n "pages.inbounds.email" }}: "[[ qrModal.clientName ]]"
     </a-tag>
-    <a-tag color="green" style="margin-bottom: 10px;display: block;text-align: center;" >{{ i18n "pages.inbounds.clickOnQRcode" }}</a-tag>
     <canvas @click="copyToClipboard()" id="qrCode" style="width: 100%; height: 100%;"></canvas>
+    <a-tag color="green" style="margin-bottom: 10px;display: block;text-align: center;" >{{ i18n "pages.inbounds.clickOnQRcode" }}</a-tag>
 </a-modal>
 
 <script>
