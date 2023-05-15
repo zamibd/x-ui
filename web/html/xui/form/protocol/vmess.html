@@ -20,7 +20,7 @@
                 </td>
             </tr>
             <tr>
-                <td>id</td>
+                <td>ID <a-icon @click="client.id = RandomUtil.randomUUID()" type="sync"></a-icon></td>
                 <td>
                     <a-form-item>
                         <a-input v-model.trim="client.id" style="width: 200px;"></a-input>
@@ -36,7 +36,7 @@
                 </td>
             </tr>
             <tr>
-                <td>Subscription</td>
+                <td>Subscription <a-icon @click="client.subId = RandomUtil.randomText()" type="sync"></a-icon></td>
                 <td>
                     <a-form-item v-if="client.email">
                         <a-input v-model.trim="client.subId" style="width: 200px;"></a-input>
