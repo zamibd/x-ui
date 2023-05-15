@@ -1,7 +1,7 @@
 {{define "clientsBulkModal"}}
 <a-modal id="client-bulk-modal" v-model="clientsBulkModal.visible" :title="clientsBulkModal.title" @ok="clientsBulkModal.ok"
          :confirm-loading="clientsBulkModal.confirmLoading" :closable="true" :mask-closable="false"
-         :class="siderDrawer.isDarkTheme ? darkClass : ''"
+         :class="themeSwitcher.darkCardClass"
          :ok-text="clientsBulkModal.okText" cancel-text='{{ i18n "close" }}'>
     <a-form layout="inline">
         <table width="100%" class="ant-table-tbody">
@@ -89,7 +89,7 @@
             </tr>
             <tr>
                 <td>
-                    <span >{{ i18n "pages.inbounds.totalFlow" }}</span>(GB)
+                    <span>{{ i18n "pages.inbounds.totalFlow" }}</span>(GB)
                     <a-tooltip>
                         <template slot="title">
                             0 <span>{{ i18n "pages.inbounds.meansNoLimit" }}</span>
@@ -121,7 +121,7 @@
             </tr>
             <tr v-else>
                 <td>
-                    <span >{{ i18n "pages.inbounds.expireDate" }}</span>
+                    <span>{{ i18n "pages.inbounds.expireDate" }}</span>
                     <a-tooltip>
                         <template slot="title">
                             <span>{{ i18n "pages.inbounds.leaveBlankToNeverExpire" }}</span>

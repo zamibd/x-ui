@@ -27,26 +27,15 @@
 <body>
 <a-layout id="app" v-cloak>
     {{ template "commonSider" . }}
-    <a-layout id="content-layout" :style="siderDrawer.isDarkTheme ? bgDarkStyle : ''">
+    <a-layout id="content-layout" :style="themeSwitcher.bgStyle">
         <a-layout-content>
             <a-spin :spinning="spinning" :delay="500" tip="loading">
                 <a-space direction="vertical">
                     <a-space direction="horizontal">
-                        <a-button type="primary" :disabled="saveBtnDisable" @click="updateAllSetting">{{ i18n "pages.setting.save" }}</a-button>
-                        <a-button type="danger" :disabled="!saveBtnDisable" @click="restartPanel">{{ i18n "pages.setting.restartPanel" }}</a-button>
+                        <a-button type="primary" :disabled="saveBtnDisable" @click="updateAllSetting">{{ i18n "pages.settings.save" }}</a-button>
+                        <a-button type="danger" :disabled="!saveBtnDisable" @click="restartPanel">{{ i18n "pages.settings.restartPanel" }}</a-button>
                     </a-space>
-                    <a-tabs default-active-key="1" :class="siderDrawer.isDarkTheme ? darkClass : ''">
-                        <a-tab-pane key="1" tab='{{ i18n "pages.setting.panelConfig"}}'>
-
-                            <a-list item-layout="horizontal" :style="siderDrawer.isDarkTheme ? 'color: hsla(0,0%,100%,.65);': 'background: white;'">
-                                <setting-list-item type="text" title='{{ i18n "pages.setting.panelListeningIP"}}' desc='{{ i18n "pages.setting.panelListeningIPDesc"}}' v-model="allSetting.webListen"></setting-list-item>
-                                <setting-list-item type="number" title='{{ i18n "pages.setting.panelPort"}}' desc='{{ i18n "pages.setting.panelPortDesc"}}' v-model.number="allSetting.webPort"></setting-list-item>
-                                <setting-list-item type="text" title='{{ i18n "pages.setting.publicKeyPath"}}' desc='{{ i18n "pages.setting.publicKeyPathDesc"}}' v-model="allSetting.webCertFile"></setting-list-item>
-                                <setting-list-item type="text" title='{{ i18n "pages.setting.privateKeyPath"}}' desc='{{ i18n "pages.setting.privateKeyPathDesc"}}' v-model="allSetting.webKeyFile"></setting-list-item>
-                                <setting-list-item type="text" title='{{ i18n "pages.setting.panelUrlPath"}}' desc='{{ i18n "pages.setting.panelUrlPathDesc"}}' v-model="allSetting.webBasePath"></setting-list-item>
-                                <setting-list-item type="number" title='{{ i18n "pages.setting.sessionMaxAge" }}' desc='{{ i18n "pages.setting.sessionMaxAgeDesc" }}'  v-model="allSetting.sessionMaxAge" :min="0"></setting-list-item>
-                                <setting-list-item type="number" title='{{ i18n "pages.setting.expireTimeDiff" }}' desc='{{ i18n "pages.setting.expireTimeDiffDesc" }}'  v-model="allSetting.expireDiff" :min="0"></setting-list-item>
-                                <setting-list-item type="number" title='{{ i18n "pages.setting.trafficDiff" }}' desc='{{ i18n "pages.setting.trafficDiffDesc" }}'  v-model="allSetting.trafficDiff" :min="0"></setting-list-item>
+                    <a-tabs default-active-key="1" :class="themeSwitcher.darkCardClass">
                                 <a-list-item>
                                     <a-row style="padding: 20px">
                                         <a-col :lg="24" :xl="12">
@@ -59,7 +48,7 @@
                                                         ref="selectLang"
                                                         v-model="lang"
                                                         @change="setLang(lang)"
-                                                        :dropdown-class-name="siderDrawer.isDarkTheme ? 'ant-card-dark' : ''"
+                                                        :dropdown-class-name="themeSwitcher.darkCardClass"
                                                         style="width: 100%"
                                                 >
                                                     <a-select-option :value="l.value" :label="l.value" v-for="l in supportLangs">
@@ -74,19 +63,19 @@
                                 </a-list-item>
                             </a-list>
                         </a-tab-pane>
-                        <a-tab-pane key="2" tab='{{ i18n "pages.setting.userSetting"}}'>
-                            <a-form :style="siderDrawer.isDarkTheme ? 'color: hsla(0,0%,100%,.65); padding: 20px;': 'background: white; padding: 20px;'">
-                                <a-form-item label='{{ i18n "pages.setting.oldUsername"}}'>
+                        <a-tab-pane key="2" tab='{{ i18n "pages.settings.userSetting"}}'>
+                            <a-form :style="themeSwitcher.isDarkTheme ? 'color: hsla(0,0%,100%,.65); padding: 20px;': 'background: white; padding: 20px;'">
+                                <a-form-item label='{{ i18n "pages.settings.oldUsername"}}'>
                                     <a-input v-model="user.oldUsername" style="max-width: 300px"></a-input>
                                 </a-form-item>
-                                <a-form-item label='{{ i18n "pages.setting.currentPassword"}}'>
+                                <a-form-item label='{{ i18n "pages.settings.currentPassword"}}'>
                                     <a-input type="password" v-model="user.oldPassword"
                                              style="max-width: 300px"></a-input>
                                 </a-form-item>
-                                <a-form-item label='{{ i18n "pages.setting.newUsername"}}'>
+                                <a-form-item label='{{ i18n "pages.settings.newUsername"}}'>
                                     <a-input v-model="user.newUsername" style="max-width: 300px"></a-input>
                                 </a-form-item>
-                                <a-form-item label='{{ i18n "pages.setting.newPassword"}}'>
+                                <a-form-item label='{{ i18n "pages.settings.newPassword"}}'>
                                     <a-input type="password" v-model="user.newPassword"
                                              style="max-width: 300px"></a-input>
                                 </a-form-item>
@@ -129,9 +118,7 @@
                                 <setting-list-item type="number" title='{{ i18n "pages.setting.tgNotifyCpu" }}' desc='{{ i18n "pages.setting.tgNotifyCpuDesc" }}'  v-model="allSetting.tgCpu" :min="0" :max="100"></setting-list-item>
                             </a-list>
                         </a-tab-pane>
-                        <a-tab-pane key="5" tab='{{ i18n "pages.setting.otherSetting"}}'>
-                            <a-list item-layout="horizontal" :style="siderDrawer.isDarkTheme ? 'color: hsla(0,0%,100%,.65);': 'background: white;'">
-                                <setting-list-item type="text" title='{{ i18n "pages.setting.timeZonee"}}' desc='{{ i18n "pages.setting.timeZoneDesc"}}' v-model="allSetting.timeLocation"></setting-list-item>
+                            <a-list item-layout="horizontal" :style="themeSwitcher.isDarkTheme ? 'color: hsla(0,0%,100%,.65);': 'background: white;'">
                             </a-list>
                         </a-tab-pane>
                     </a-tabs>
@@ -141,6 +128,7 @@
     </a-layout>
 </a-layout>
 {{template "js" .}}
+{{template "component/themeSwitcher" .}}
 {{template "component/setting"}}
 <script>
 
@@ -149,6 +137,7 @@
         el: '#app',
         data: {
             siderDrawer,
+            themeSwitcher,
             spinning: false,
             oldAllSetting: new AllSetting(),
             allSetting: new AllSetting(),
@@ -184,13 +173,14 @@
                 this.loading(false);
                 if (msg.success) {
                     this.user = {};
+                    window.location.replace(basePath + "logout")
                 }
             },
             async restartPanel() {
                 await new Promise(resolve => {
                     this.$confirm({
-                        title: '{{ i18n "pages.setting.restartPanel" }}',
-                        content: '{{ i18n "pages.setting.restartPanelDesc" }}',
+                        title: '{{ i18n "pages.settings.restartPanel" }}',
+                        content: '{{ i18n "pages.settings.restartPanelDesc" }}',
                         okText: '{{ i18n "sure" }}',
                         cancelText: '{{ i18n "cancel" }}',
                         onOk: () => resolve(),
@@ -202,7 +192,7 @@
                 if (msg.success) {
                     this.loading(true);
                     await PromiseUtil.sleep(5000);
-                    location.reload();
+                    window.location.replace(this.allSetting.webBasePath + "xui/settings");
                 }
             },
             async resetXrayConfigToDefault() {

@@ -3,7 +3,7 @@
     v-model="infoModal.visible" title='{{ i18n "pages.inbounds.details"}}'
     :closable="true"
     :mask-closable="true"
-    :class="siderDrawer.isDarkTheme ? darkClass : ''"
+    :class="themeSwitcher.darkCardClass"
     :footer="null"
     width="600px"
     >
@@ -81,7 +81,7 @@
                 <th>{{ i18n "pages.inbounds.expireDate" }}</th>
         <tr>
             <td>
-                <a-tag v-if="infoModal.clientStats" :color="green">
+                <a-tag v-if="infoModal.clientStats" color="green">
                     [[ sizeFormat(infoModal.clientStats['up']) ]] / 
                     [[ sizeFormat(infoModal.clientStats['down']) ]]
                     ([[ sizeFormat(infoModal.clientStats['up'] + infoModal.clientStats['down']) ]])
