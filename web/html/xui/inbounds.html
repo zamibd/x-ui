@@ -171,18 +171,21 @@
                             <template slot="clients" slot-scope="text, dbInbound">
                                 <template v-if="clientCount[dbInbound.id]">
                                     <a-tag style="margin:0;" color="green">[[ clientCount[dbInbound.id].clients ]]</a-tag>
+
                                     <a-popover title='{{ i18n "disabled" }}' :overlay-class-name="themeSwitcher.darkClass">
                                         <template slot="content">
                                             <p v-for="clientEmail in clientCount[dbInbound.id].deactive">[[ clientEmail ]]</p>
                                         </template>
                                         <a-tag style="margin:0; padding: 0 2px;" v-if="clientCount[dbInbound.id].deactive.length">[[ clientCount[dbInbound.id].deactive.length ]]</a-tag>
                                     </a-popover>
+
                                     <a-popover title='{{ i18n "depleted" }}' :overlay-class-name="themeSwitcher.darkClass">
                                         <template slot="content">
                                             <p v-for="clientEmail in clientCount[dbInbound.id].depleted">[[ clientEmail ]]</p>
                                         </template>
                                         <a-tag style="margin:0; padding: 0 2px;" color="red" v-if="clientCount[dbInbound.id].depleted.length">[[ clientCount[dbInbound.id].depleted.length ]]</a-tag>
                                     </a-popover>
+
                                     <a-popover title='{{ i18n "depletingSoon" }}' :overlay-class-name="themeSwitcher.darkClass">
                                         <template slot="content">
                                             <p v-for="clientEmail in clientCount[dbInbound.id].expiring">[[ clientEmail ]]</p>
