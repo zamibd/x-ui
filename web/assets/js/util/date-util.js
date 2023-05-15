@@ -128,7 +128,6 @@ Date.prototype.formatDateTime = function (split = ' ') {
 };
 
 class DateUtil {
-
     // String string to date object
     static parseDate(str) {
         return new Date(str.replace(/-/g, '/'));
