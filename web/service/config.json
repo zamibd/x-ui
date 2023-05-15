@@ -2,7 +2,6 @@
   "log": {
     "loglevel": "warning"
   },
- 
   "api": {
     "services": [
       "HandlerService",
@@ -46,6 +45,7 @@
     }
   },
   "routing": {
+    "domainStrategy": "IPIfNonMatch",
     "rules": [
       {
         "inboundTag": [

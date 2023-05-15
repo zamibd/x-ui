@@ -36,6 +36,23 @@
                         <a-button type="danger" :disabled="!saveBtnDisable" @click="restartPanel">{{ i18n "pages.settings.restartPanel" }}</a-button>
                     </a-space>
                     <a-tabs default-active-key="1" :class="themeSwitcher.darkCardClass">
+                        <a-tab-pane key="1" tab='{{ i18n "pages.settings.panelConfig"}}'>
+                            <a-row :xs="24" :sm="24" :lg="12">
+                                <h2 style="color: inherit; font-weight: bold; font-size: 18px; padding: 20px 20px; text-align: center;">
+                                    <a-icon type="warning" style="color: inherit; font-size: 24px;"></a-icon>
+                                    {{ i18n "pages.settings.infoDesc" }}
+                                </h2>
+                            </a-row>
+                            <a-list item-layout="horizontal" :style="themeSwitcher.isDarkTheme ? 'color: hsla(0,0%,100%,.65);': 'background: white;'">
+                                <setting-list-item type="text" title='{{ i18n "pages.settings.panelListeningIP"}}' desc='{{ i18n "pages.settings.panelListeningIPDesc"}}' v-model="allSetting.webListen"></setting-list-item>
+                                <setting-list-item type="number" title='{{ i18n "pages.settings.panelPort"}}' desc='{{ i18n "pages.settings.panelPortDesc"}}' v-model.number="allSetting.webPort"></setting-list-item>
+                                <setting-list-item type="text" title='{{ i18n "pages.settings.publicKeyPath"}}' desc='{{ i18n "pages.settings.publicKeyPathDesc"}}' v-model="allSetting.webCertFile"></setting-list-item>
+                                <setting-list-item type="text" title='{{ i18n "pages.settings.privateKeyPath"}}' desc='{{ i18n "pages.settings.privateKeyPathDesc"}}' v-model="allSetting.webKeyFile"></setting-list-item>
+                                <setting-list-item type="text" title='{{ i18n "pages.settings.panelUrlPath"}}' desc='{{ i18n "pages.settings.panelUrlPathDesc"}}' v-model="allSetting.webBasePath"></setting-list-item>
+                                <setting-list-item type="number" title='{{ i18n "pages.settings.sessionMaxAge" }}' desc='{{ i18n "pages.settings.sessionMaxAgeDesc" }}'  v-model="allSetting.sessionMaxAge" :min="0"></setting-list-item>
+                                <setting-list-item type="number" title='{{ i18n "pages.settings.expireTimeDiff" }}' desc='{{ i18n "pages.settings.expireTimeDiffDesc" }}'  v-model="allSetting.expireDiff" :min="0"></setting-list-item>
+                                <setting-list-item type="number" title='{{ i18n "pages.settings.trafficDiff" }}' desc='{{ i18n "pages.settings.trafficDiffDesc" }}'  v-model="allSetting.trafficDiff" :min="0"></setting-list-item>
+                                <setting-list-item type="text" title='{{ i18n "pages.settings.timeZone"}}' desc='{{ i18n "pages.settings.timeZoneDesc"}}' v-model="allSetting.timeLocation"></setting-list-item>
                                 <a-list-item>
                                     <a-row style="padding: 20px">
                                         <a-col :lg="24" :xl="12">
@@ -59,7 +76,6 @@
                                             </template>
                                         </a-col>
                                     </a-row>
-
                                 </a-list-item>
                             </a-list>
                         </a-tab-pane>
@@ -80,45 +96,159 @@
                                              style="max-width: 300px"></a-input>
                                 </a-form-item>
                                 <a-form-item>
-<!--                                    <a-button type="primary" @click="updateUser">Revise</a-button>-->
                                     <a-button type="primary" @click="updateUser">{{ i18n "confirm" }}</a-button>
                                 </a-form-item>
                             </a-form>
                         </a-tab-pane>
-                        <a-tab-pane key="3" tab='{{ i18n "pages.setting.xrayConfiguration"}}'>
-                            <a-list item-layout="horizontal" :style="siderDrawer.isDarkTheme ? 'color: hsla(0,0%,100%,.65);': 'background: white;'">
-                                <setting-list-item type="switch" title='{{ i18n "pages.setting.xrayConfigTorrent"}}' desc='{{ i18n "pages.setting.xrayConfigTorrentDesc"}}'  v-model="torrentSettings"></setting-list-item>
-                                <setting-list-item type="switch" title='{{ i18n "pages.setting.xrayConfigPrivateIp"}}' desc='{{ i18n "pages.setting.xrayConfigPrivateIpDesc"}}'  v-model="privateIpSettings"></setting-list-item>
-                                <a-divider>{{ i18n "pages.setting.advancedTemplate"}}</a-divider>
-                                <a-collapse>
-                                    <a-collapse-panel header="{{ i18n "pages.setting.xrayConfigInbounds"}}">
-                                        <setting-list-item type="textarea" title='{{ i18n "pages.setting.xrayConfigInbounds"}}' desc='{{ i18n "pages.setting.xrayConfigInboundsDesc"}}' v-model ="inboundSettings"></setting-list-item>
-                                    </a-collapse-panel>
-                                    <a-collapse-panel header="{{ i18n "pages.setting.xrayConfigOutbounds"}}">
-                                        <setting-list-item type="textarea" title='{{ i18n "pages.setting.xrayConfigOutbounds"}}' desc='{{ i18n "pages.setting.xrayConfigOutboundsDesc"}}' v-model ="outboundSettings"></setting-list-item>
-                                    </a-collapse-panel>
-                                    <a-collapse-panel header="{{ i18n "pages.setting.xrayConfigRoutings"}}">
-                                        <setting-list-item type="textarea" title='{{ i18n "pages.setting.xrayConfigRoutings"}}' desc='{{ i18n "pages.setting.xrayConfigRoutingsDesc"}}' v-model ="routingRuleSettings"></setting-list-item>
-                                    </a-collapse-panel>
-                                </a-collapse>
-                                <a-divider>{{ i18n "pages.setting.completeTemplate"}}</a-divider>
-                                <a-space direction="horizontal" style="padding: 0 20px">
-                                    <a-button type="primary" @click="resetXrayConfigToDefault">{{ i18n "pages.setting.resetDefaultConfig" }}</a-button>
-                                </a-space>
-                                <setting-list-item type="textarea" title='{{ i18n "pages.setting.xrayConfigTemplate"}}' desc='{{ i18n "pages.setting.xrayConfigTemplateDesc"}}' v-model="allSetting.xrayTemplateConfig"></setting-list-item>
-                            </a-list>
-                        </a-tab-pane>
-                        <a-tab-pane key="4" tab='{{ i18n "pages.setting.TGReminder"}}'>
-                            <a-list item-layout="horizontal" :style="siderDrawer.isDarkTheme ? 'color: hsla(0,0%,100%,.65);': 'background: white;'">
-                                <setting-list-item type="switch" title='{{ i18n "pages.setting.telegramBotEnable" }}' desc='{{ i18n "pages.setting.telegramBotEnableDesc" }}'  v-model="allSetting.tgBotEnable"></setting-list-item>
-                                <setting-list-item type="text" title='{{ i18n "pages.setting.telegramToken"}}' desc='{{ i18n "pages.setting.telegramTokenDesc"}}'  v-model="allSetting.tgBotToken"></setting-list-item>
-                                <setting-list-item type="text" title='{{ i18n "pages.setting.telegramChatId"}}' desc='{{ i18n "pages.setting.telegramChatIdDesc"}}'  v-model="allSetting.tgBotChatId"></setting-list-item>
-                                <setting-list-item type="text" title='{{ i18n "pages.setting.telegramNotifyTime"}}' desc='{{ i18n "pages.setting.telegramNotifyTimeDesc"}}'  v-model="allSetting.tgRunTime"></setting-list-item>
-                                <setting-list-item type="switch" title='{{ i18n "pages.setting.tgNotifyBackup" }}' desc='{{ i18n "pages.setting.tgNotifyBackupDesc" }}'  v-model="allSetting.tgBotBackup"></setting-list-item>
-                                <setting-list-item type="number" title='{{ i18n "pages.setting.tgNotifyCpu" }}' desc='{{ i18n "pages.setting.tgNotifyCpuDesc" }}'  v-model="allSetting.tgCpu" :min="0" :max="100"></setting-list-item>
-                            </a-list>
-                        </a-tab-pane>
+
+                        <a-tab-pane key="3" tab='{{ i18n "pages.settings.xrayConfiguration"}}'>
+                            <a-row :xs="24" :sm="24" :lg="12">
+                                <h2 style="color: inherit; font-weight: bold; font-size: 18px; padding: 20px 20px; text-align: center;">
+                                    <a-icon type="warning" style="color: inherit; font-size: 24px;"></a-icon>
+                                    {{ i18n "pages.settings.infoDesc" }}
+                                </h2>
+                            </a-row>
                             <a-list item-layout="horizontal" :style="themeSwitcher.isDarkTheme ? 'color: hsla(0,0%,100%,.65);': 'background: white;'">
+                                <a-tabs class="ant-card-dark-box-nohover" default-active-key="tpl-1" :class="themeSwitcher.darkCardClass" style="padding: 20px 20px;">
+                                    <a-tab-pane key="tpl-1" tab='{{ i18n "pages.settings.templates.basicTemplate"}}' style="padding-top: 20px;">
+                                        <a-collapse>
+                                            <a-collapse-panel header='{{ i18n "pages.settings.templates.generalConfigs"}}'>
+                                                <a-row :xs="24" :sm="24" :lg="12">
+                                                    <h2 style="color: inherit; font-weight: bold; font-size: 18px; padding: 10px 20px; border-bottom: 2px solid;">
+                                                        <a-icon type="warning" style="color: inherit; font-size: 24px;"></a-icon>
+                                                        {{ i18n "pages.settings.templates.generalConfigsDesc" }}
+                                                    </h2>
+                                                </a-row>
+                                                <a-list-item>
+                                                    <a-row style="padding: 20px">
+                                                        <a-col :lg="24" :xl="12">
+                                                            <a-list-item-meta 
+                                                                title='{{ i18n "pages.settings.templates.xrayConfigFreedomStrategy" }}'
+                                                                description='{{ i18n "pages.settings.templates.xrayConfigFreedomStrategyDesc" }}'/>
+                                                        </a-col>
+                                                        <a-col :lg="24" :xl="12">
+                                                            <template>
+                                                                <a-select
+                                                                    v-model="freedomStrategy"
+                                                                    :dropdown-class-name="themeSwitcher.darkCardClass"
+                                                                    style="width: 100%">
+                                                                    <a-select-option v-for="s in outboundDomainStrategies" :value="s">[[ s ]]</a-select-option>
+                                                                </a-select>
+                                                            </template>
+                                                        </a-col>
+                                                    </a-row>
+                                                </a-list-item>
+                                                <a-row style="padding: 20px">
+                                                    <a-col :lg="24" :xl="12">
+                                                        <a-list-item-meta 
+                                                            title='{{ i18n "pages.settings.templates.xrayConfigRoutingStrategy" }}'
+                                                            description='{{ i18n "pages.settings.templates.xrayConfigRoutingStrategyDesc" }}'/>
+                                                    </a-col>
+                                                    <a-col :lg="24" :xl="12">
+                                                        <template>
+                                                            <a-select
+                                                                v-model="routingStrategy"
+                                                                :dropdown-class-name="themeSwitcher.darkCardClass"
+                                                                style="width: 100%">
+                                                                <a-select-option v-for="s in routingDomainStrategies" :value="s">[[ s ]]</a-select-option>
+                                                            </a-select>
+                                                        </template>
+                                                    </a-col>
+                                                </a-row>
+                                            </a-list-item>
+                                            </a-collapse-panel>
+                                            <a-collapse-panel header='{{ i18n "pages.settings.templates.blockConfigs"}}'>
+                                                <a-row :xs="24" :sm="24" :lg="12">
+                                                    <h2 style="color: inherit; font-weight: bold; font-size: 18px; padding: 10px 20px; border-bottom: 2px solid;">
+                                                        <a-icon type="warning" style="color: inherit; font-size: 24px;"></a-icon>
+                                                        {{ i18n "pages.settings.templates.blockConfigsDesc" }}
+                                                    </h2>
+                                                </a-row>
+                                                <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigTorrent"}}' desc='{{ i18n "pages.settings.templates.xrayConfigTorrentDesc"}}' v-model="torrentSettings"></setting-list-item>
+                                                <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigPrivateIp"}}' desc='{{ i18n "pages.settings.templates.xrayConfigPrivateIpDesc"}}' v-model="privateIpSettings"></setting-list-item>
+                                                <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigAds"}}' desc='{{ i18n "pages.settings.templates.xrayConfigAdsDesc"}}' v-model="AdsSettings"></setting-list-item>
+                                                <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigFamily"}}' desc='{{ i18n "pages.settings.templates.xrayConfigFamilyDesc"}}' v-model="familyProtectSettings"></setting-list-item>
+                                            </a-collapse-panel>
+                                            <a-collapse-panel header='{{ i18n "pages.settings.templates.countryConfigs"}}'>
+                                                <a-row :xs="24" :sm="24" :lg="12">
+                                                    <h2 style="color: inherit; font-weight: bold; font-size: 18px; padding: 10px 20px; border-bottom: 2px solid;">
+                                                        <a-icon type="warning" style="color: inherit; font-size: 24px;"></a-icon>
+                                                        {{ i18n "pages.settings.templates.countryConfigsDesc" }}
+                                                    </h2>
+                                                </a-row>
+                                                <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigIRIp"}}' desc='{{ i18n "pages.settings.templates.xrayConfigIRIpDesc"}}' v-model="IRIpSettings"></setting-list-item>
+                                                <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigIRDomain"}}' desc='{{ i18n "pages.settings.templates.xrayConfigIRDomainDesc"}}' v-model="IRDomainSettings"></setting-list-item>
+                                                <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigChinaIp"}}' desc='{{ i18n "pages.settings.templates.xrayConfigChinaIpDesc"}}' v-model="ChinaIpSettings"></setting-list-item>
+                                                <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigChinaDomain"}}' desc='{{ i18n "pages.settings.templates.xrayConfigChinaDomainDesc"}}' v-model="ChinaDomainSettings"></setting-list-item>
+                                                <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigRussiaIp"}}' desc='{{ i18n "pages.settings.templates.xrayConfigRussiaIpDesc"}}' v-model="RussiaIpSettings"></setting-list-item>
+                                                <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigRussiaDomain"}}' desc='{{ i18n "pages.settings.templates.xrayConfigRussiaDomainDesc"}}' v-model="RussiaDomainSettings"></setting-list-item>
+                                                <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigDirectIRIp"}}' desc='{{ i18n "pages.settings.templates.xrayConfigDirectIRIpDesc"}}' v-model="IRIpDirectSettings"></setting-list-item>
+                                                <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigDirectIRDomain"}}' desc='{{ i18n "pages.settings.templates.xrayConfigDirectIRDomainDesc"}}' v-model="IRDomainDirectSettings"></setting-list-item>
+                                                <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigDirectChinaIp"}}' desc='{{ i18n "pages.settings.templates.xrayConfigDirectChinaIpDesc"}}' v-model="ChinaIpDirectSettings"></setting-list-item>
+                                                <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigDirectChinaDomain"}}' desc='{{ i18n "pages.settings.templates.xrayConfigDirectChinaDomainDesc"}}' v-model="ChinaDomainDirectSettings"></setting-list-item>
+                                                <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigDirectRussiaIp"}}' desc='{{ i18n "pages.settings.templates.xrayConfigDirectRussiaIpDesc"}}' v-model="RussiaIpDirectSettings"></setting-list-item>
+                                                <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigDirectRussiaDomain"}}' desc='{{ i18n "pages.settings.templates.xrayConfigDirectRussiaDomainDesc"}}' v-model="RussiaDomainDirectSettings"></setting-list-item>
+                                            </a-collapse-panel>
+                                            <a-collapse-panel header='{{ i18n "pages.settings.templates.ipv4Configs"}}'>
+                                                <a-row :xs="24" :sm="24" :lg="12">
+                                                    <h2 style="color: inherit; font-weight: bold; font-size: 18px; padding: 10px 20px; border-bottom: 2px solid;">
+                                                        <a-icon type="warning" style="color: inherit; font-size: 24px;"></a-icon>
+                                                        {{ i18n "pages.settings.templates.ipv4ConfigsDesc" }}
+                                                    </h2>
+                                                </a-row>
+                                                <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigGoogleIPv4"}}' desc='{{ i18n "pages.settings.templates.xrayConfigGoogleIPv4Desc"}}' v-model="GoogleIPv4Settings"></setting-list-item>
+                                                <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigNetflixIPv4"}}' desc='{{ i18n "pages.settings.templates.xrayConfigNetflixIPv4Desc"}}' v-model="NetflixIPv4Settings"></setting-list-item>
+                                            </a-collapse-panel>
+                                            <a-collapse-panel header='{{ i18n "pages.settings.templates.manualLists"}}'>
+                                                <a-row :xs="24" :sm="24" :lg="12">
+                                                    <h2 style="color: inherit; font-weight: bold; font-size: 18px; padding: 10px 20px; border-bottom: 2px solid;">
+                                                        <a-icon type="warning" style="color: inherit; font-size: 24px;"></a-icon>
+                                                        {{ i18n "pages.settings.templates.manualListsDesc" }}
+                                                    </h2>
+                                                </a-row>
+                                                <setting-list-item type="textarea" title='{{ i18n "pages.settings.templates.manualBlockedIPs"}}' v-model="manualBlockedIPs"></setting-list-item>
+                                                <setting-list-item type="textarea" title='{{ i18n "pages.settings.templates.manualBlockedDomains"}}' v-model="manualBlockedDomains"></setting-list-item>
+                                                <setting-list-item type="textarea" title='{{ i18n "pages.settings.templates.manualDirectIPs"}}' v-model="manualDirectIPs"></setting-list-item>
+                                                <setting-list-item type="textarea" title='{{ i18n "pages.settings.templates.manualDirectDomains"}}' v-model="manualDirectDomains"></setting-list-item>
+                                            </a-collapse-panel>
+                                        </a-collapse>
+                                    </a-tab-pane>
+                                    <a-tab-pane key="tpl-2" tab='{{ i18n "pages.settings.templates.advancedTemplate"}}' style="padding-top: 20px;">
+                                        <a-collapse>
+                                            <a-collapse-panel header='{{ i18n "pages.settings.templates.xrayConfigInbounds"}}'>
+                                                <setting-list-item type="textarea" title='{{ i18n "pages.settings.templates.xrayConfigInbounds"}}' desc='{{ i18n "pages.settings.templates.xrayConfigInboundsDesc"}}' v-model="inboundSettings"></setting-list-item>
+                                            </a-collapse-panel>
+                                            <a-collapse-panel header='{{ i18n "pages.settings.templates.xrayConfigOutbounds"}}'>
+                                                <setting-list-item type="textarea" title='{{ i18n "pages.settings.templates.xrayConfigOutbounds"}}' desc='{{ i18n "pages.settings.templates.xrayConfigOutboundsDesc"}}' v-model="outboundSettings"></setting-list-item>
+                                            </a-collapse-panel>
+                                            <a-collapse-panel header='{{ i18n "pages.settings.templates.xrayConfigRoutings"}}'>
+                                                <setting-list-item type="textarea" title='{{ i18n "pages.settings.templates.xrayConfigRoutings"}}' desc='{{ i18n "pages.settings.templates.xrayConfigRoutingsDesc"}}' v-model="routingRuleSettings"></setting-list-item>
+                                            </a-collapse-panel>
+                                        </a-collapse>
+                                    </a-tab-pane>
+                                    <a-tab-pane key="tpl-3" tab='{{ i18n "pages.settings.templates.completeTemplate"}}' style="padding-top: 20px;">
+                                        <a-space direction="horizontal" style="padding: 0 20px">
+                                            <a-button type="primary" @click="resetXrayConfigToDefault">{{ i18n "pages.settings.resetDefaultConfig" }}</a-button>
+                                        </a-space>
+                                        <setting-list-item type="textarea" title='{{ i18n "pages.settings.templates.xrayConfigTemplate"}}' desc='{{ i18n "pages.settings.templates.xrayConfigTemplateDesc"}}' v-model="allSetting.xrayTemplateConfig"></setting-list-item>
+                                    </a-tab-pane>
+                                </a-tabs>
+                            </a-list>
+                        </a-tab-pane>
+                        <a-tab-pane key="4" tab='{{ i18n "pages.settings.TGReminder"}}'>
+                            <a-row :xs="24" :sm="24" :lg="12">
+                                <h2 style="color: inherit; font-weight: bold; font-size: 18px; padding: 20px 20px; text-align: center;">
+                                    <a-icon type="warning" style="color: inherit; font-size: 24px;"></a-icon>
+                                    {{ i18n "pages.settings.infoDesc" }}
+                                </h2>
+                            </a-row>
+                            <a-list item-layout="horizontal" :style="themeSwitcher.isDarkTheme ? 'color: hsla(0,0%,100%,.65);': 'background: white;'">
+                                <setting-list-item type="switch" title='{{ i18n "pages.settings.telegramBotEnable" }}' desc='{{ i18n "pages.settings.telegramBotEnableDesc" }}'  v-model="allSetting.tgBotEnable"></setting-list-item>
+                                <setting-list-item type="text" title='{{ i18n "pages.settings.telegramToken"}}' desc='{{ i18n "pages.settings.telegramTokenDesc"}}'  v-model="allSetting.tgBotToken"></setting-list-item>
+                                <setting-list-item type="text" title='{{ i18n "pages.settings.telegramChatId"}}' desc='{{ i18n "pages.settings.telegramChatIdDesc"}}'  v-model="allSetting.tgBotChatId"></setting-list-item>
+                                <setting-list-item type="text" title='{{ i18n "pages.settings.telegramNotifyTime"}}' desc='{{ i18n "pages.settings.telegramNotifyTimeDesc"}}'  v-model="allSetting.tgRunTime"></setting-list-item>
+                                <setting-list-item type="switch" title='{{ i18n "pages.settings.tgNotifyBackup" }}' desc='{{ i18n "pages.settings.tgNotifyBackupDesc" }}'  v-model="allSetting.tgBotBackup"></setting-list-item>
+                                <setting-list-item type="number" title='{{ i18n "pages.settings.tgNotifyCpu" }}' desc='{{ i18n "pages.settings.tgNotifyCpuDesc" }}'  v-model="allSetting.tgCpu" :min="0" :max="100"></setting-list-item>
                             </a-list>
                         </a-tab-pane>
                     </a-tabs>
@@ -143,11 +273,73 @@
             allSetting: new AllSetting(),
             saveBtnDisable: true,
             user: {},
-            lang : getLang()
+            lang : getLang(),
+            ipv4Settings: {
+                tag: "IPv4",
+                protocol: "freedom",
+                settings: {
+                    domainStrategy: "UseIPv4"
+                }
+            },
+            directSettings: {
+                tag: "direct",
+                protocol: "freedom"
+            },
+            outboundDomainStrategies: ["AsIs", "UseIP", "UseIPv4", "UseIPv6"],
+            routingDomainStrategies: ["AsIs", "IPIfNonMatch", "IPOnDemand"],
+            settingsData: {
+                protocols: {
+                    bittorrent: ["bittorrent"],
+                },
+                ips: {
+                    local: ["geoip:private"],
+                    google: ["geoip:google"],
+                    cn: ["geoip:cn"],
+                    ir: ["geoip:ir"],
+                    ru: ["geoip:ru"],
+                },
+                domains: {
+                    ads: [
+                        "geosite:category-ads-all",
+                        "geosite:category-ads",
+                        "geosite:google-ads",
+                        "geosite:spotify-ads"
+                    ],
+                    porn: ["geosite:category-porn"],
+                    openai: ["geosite:openai"],
+                    google: ["geosite:google"],
+                    spotify: ["geosite:spotify"],
+                    netflix: ["geosite:netflix"],
+                    cn: [
+                        "geosite:cn",
+                        "regexp:.*\\.cn$"
+                    ],
+                    ru: [
+                        "geosite:category-gov-ru",
+                        "regexp:.*\\.ru$"
+                    ],
+                    ir: [
+                        "regexp:.*\\.ir$",
+                        "ext:iran.dat:ir",
+                        "ext:iran.dat:other",
+                        "ext:iran.dat:ads",
+                        "geosite:category-ir"
+                    ]
+                },
+                familyProtectDNS: {
+                    "servers": [
+                        "1.1.1.2",
+                        "1.0.0.2",
+                        "94.140.14.14",
+                        "94.140.15.15"
+                    ],
+                    "queryStrategy": "UseIPv4"
+                },
+            }
         },
         methods: {
-            loading(spinning = true) {
-                this.spinning = spinning;
+            loading(spinning = true, obj) {
+                if (obj == null) this.spinning = spinning;
             },
             async getAllSetting() {
                 this.loading(true);
@@ -204,6 +396,75 @@
                     this.saveBtnDisable = true;
                 }
             },
+            syncRulesWithOutbound(tag, setting) {
+                const newTemplateSettings = this.templateSettings;
+                const haveRules = newTemplateSettings.routing.rules.some((r) => r?.outboundTag === tag);
+                const outboundIndex = newTemplateSettings.outbounds.findIndex((o) => o.tag === tag);
+                if (!haveRules && outboundIndex > 0){
+                    newTemplateSettings.outbounds.splice(outboundIndex);
+                }
+                if (haveRules && outboundIndex < 0) {
+                    
+                    newTemplateSettings.outbounds.push(setting);
+                }
+                this.templateSettings = newTemplateSettings;
+            },
+            templateRuleGetter(routeSettings) {
+                const { property, outboundTag } = routeSettings;
+                let result = [];
+                if (this.templateSettings != null) {
+                    this.templateSettings.routing.rules.forEach(
+                        (routingRule) => {
+                            if (
+                                routingRule.hasOwnProperty(property) &&
+                                routingRule.hasOwnProperty("outboundTag") &&
+                                routingRule.outboundTag === outboundTag
+                            ) {
+                                result.push(...routingRule[property]);
+                            }
+                        }
+                    );
+                }
+                return result;
+            },
+            templateRuleSetter(routeSettings) {
+                const { data, property, outboundTag } = routeSettings;
+                const oldTemplateSettings = this.templateSettings;
+                const newTemplateSettings = oldTemplateSettings;
+                currentProperty = this.templateRuleGetter({outboundTag: outboundTag, property: property})
+                if (currentProperty.length == 0) {
+                    const propertyRule = {
+                        type: "field",
+                        outboundTag,
+                        [property]: data
+                    };
+                    newTemplateSettings.routing.rules.push(propertyRule);
+                }
+                else {
+                    const newRules = [];
+                    insertedOnce = false;
+                    newTemplateSettings.routing.rules.forEach(
+                        (routingRule) => {
+                            if (
+                                routingRule.hasOwnProperty(property) &&
+                                routingRule.hasOwnProperty("outboundTag") &&
+                                routingRule.outboundTag === outboundTag
+                            ) {
+                                if (!insertedOnce && data.length>0){
+                                    insertedOnce = true;
+                                    routingRule[property] = data;
+                                    newRules.push(routingRule);
+                                }
+                            }
+                            else {
+                                newRules.push(routingRule);
+                            }
+                        }
+                    );
+                    newTemplateSettings.routing.rules = newRules;
+                }
+                this.templateSettings = newTemplateSettings;
+            }
         },
         async mounted() {
             await this.getAllSetting();
@@ -214,7 +475,7 @@
         },
         computed: {
             templateSettings: {
-                get: function () { return this.allSetting.xrayTemplateConfig ? JSON.parse(this.allSetting.xrayTemplateConfig) : null ; },
+                get: function () { return this.allSetting.xrayTemplateConfig ? JSON.parse(this.allSetting.xrayTemplateConfig) : null; },
                 set: function (newValue) { this.allSetting.xrayTemplateConfig = JSON.stringify(newValue, null, 2) },
             },
             inboundSettings: {
@@ -241,75 +502,329 @@
                     this.templateSettings = newTemplateSettings
                 },
             },
-            torrentSettings: {
+            freedomStrategy: {
                 get: function () {
-                    torrentFilter = false
-                    if(this.templateSettings != null){
-                        this.templateSettings.routing.rules.forEach(routingRule => {
-                            if(routingRule.hasOwnProperty("protocol")){
-                                if (routingRule.protocol[0] === "bittorrent" && routingRule.outboundTag == "blocked"){
-                                    torrentFilter = true
-                                }
-                            }
-                        });
-                    }
-                    return torrentFilter
+                    if (!this.templateSettings) return "AsIs";
+                    freedomOutbound = this.templateSettings.outbounds.find((o) => o.tag === "direct");
+                    if (!freedomOutbound) return "AsIs";
+                    if (!freedomOutbound.settings || !freedomOutbound.settings.domainStrategy) return "AsIs";
+                    return freedomOutbound.settings.domainStrategy;
                 },
                 set: function (newValue) {
-                    newTemplateSettings = JSON.parse(this.allSetting.xrayTemplateConfig);
-                    if (newValue){
-                        newTemplateSettings.routing.rules.push(JSON.parse("{\"outboundTag\": \"blocked\",\"protocol\": [\"bittorrent\"],\"type\": \"field\"}"))
+                    newTemplateSettings = this.templateSettings;
+                    freedomOutboundIndex = newTemplateSettings.outbounds.findIndex((o) => o.protocol === "freedom" && !o.tag);
+                    if (!newTemplateSettings.outbounds[freedomOutboundIndex].settings) {
+                        newTemplateSettings.outbounds[freedomOutboundIndex].settings = {"domainStrategy": newValue};
+                    } else {
+                        newTemplateSettings.outbounds[freedomOutboundIndex].settings.domainStrategy = newValue;
                     }
-                    else {
-                        newTemplateSettings.routing.rules = [];
-                        this.templateSettings.routing.rules.forEach(routingRule => {
-                            if (routingRule.hasOwnProperty('protocol')){
-                                if (routingRule.protocol[0] === "bittorrent" && routingRule.outboundTag == "blocked"){
-                                    return;
-                                }
-                            }
-                            newTemplateSettings.routing.rules.push(routingRule);
-                        });
+                    this.templateSettings = newTemplateSettings;
+                }
+            },
+            routingStrategy: {
+                get: function () {
+                    if (!this.templateSettings || !this.templateSettings.routing || !this.templateSettings.routing.domainStrategy) return "AsIs";
+                    return this.templateSettings.routing.domainStrategy;
+                },
+                set: function (newValue) {
+                    newTemplateSettings = this.templateSettings;
+                    newTemplateSettings.routing.domainStrategy = newValue;
+                    this.templateSettings = newTemplateSettings;
+                }
+            },
+            blockedIPs: {
+                get: function() { 
+                    return this.templateRuleGetter({outboundTag: "blocked", property: "ip"});
+                },
+                set: function(newValue) {
+                    this.templateRuleSetter({outboundTag: "blocked", property: "ip", data: newValue});
+                }
+            },
+            blockedDomains: {
+                get: function() { 
+                    return this.templateRuleGetter({outboundTag: "blocked", property: "domain"});
+                },
+                set: function(newValue) {
+                    this.templateRuleSetter({outboundTag: "blocked", property: "domain", data: newValue});
+                }
+            },
+            blockedProtocols: {
+                get: function() { 
+                    return this.templateRuleGetter({outboundTag: "blocked", property: "protocol"});
+                },
+                set: function(newValue) {
+                    this.templateRuleSetter({outboundTag: "blocked", property: "protocol", data: newValue});
+                }
+            },
+            directIPs: {
+                get: function() { 
+                    return this.templateRuleGetter({outboundTag: "direct", property: "ip"});
+                },
+                set: function(newValue) {
+                    this.templateRuleSetter({outboundTag: "direct", property: "ip", data: newValue});
+                    this.syncRulesWithOutbound("direct",this.directSettings);
+                }
+            },
+            directDomains: {
+                get: function() { 
+                    return this.templateRuleGetter({outboundTag: "direct", property: "domain"});
+                },
+                set: function(newValue) {
+                    this.templateRuleSetter({outboundTag: "direct", property: "domain", data: newValue});
+                    this.syncRulesWithOutbound("direct",this.directSettings);
+                }
+            },
+            manualBlockedIPs: {
+                get: function() { return JSON.stringify(this.blockedIPs, null, 2); },
+                set: debounce(function(value) { this.blockedIPs = JSON.parse(value); } , 1000)
+            },
+            manualBlockedDomains: {
+                get: function() { return JSON.stringify(this.blockedDomains, null, 2); },
+                set: debounce(function(value) { this.blockedDomains = JSON.parse(value); } , 1000)
+            },
+            manualDirectIPs: {
+                get: function() { return JSON.stringify(this.directIPs, null, 2); },
+                set: debounce(function(value) { this.directIPs = JSON.parse(value); } , 1000)
+            },
+            manualDirectDomains: {
+                get: function() { return JSON.stringify(this.directDomains, null, 2); },
+                set: debounce(function(value) { this.directDomains = JSON.parse(value); } , 1000)
+            },
+            torrentSettings: {
+                get: function () {
+                    return areAllItemsExist(this.settingsData.protocols.bittorrent,this.blockedProtocols);
+                },
+                set: function (newValue) {
+                    if (newValue) {
+                        this.blockedProtocols = [...this.blockedProtocols, ...this.settingsData.protocols.bittorrent];
+                    } else {
+                        this.blockedProtocols = this.blockedProtocols.filter(data => !this.settingsData.protocols.bittorrent.includes(data));
                     }
-                    this.templateSettings = newTemplateSettings
                 },
             },
             privateIpSettings: {
                 get: function () {
-                    localIpFilter = false
-                    if(this.templateSettings != null){
-                        this.templateSettings.routing.rules.forEach(routingRule => {
-                            if(routingRule.hasOwnProperty("ip")){
-                                if (routingRule.ip[0] === "geoip:private" && routingRule.outboundTag == "blocked"){
-                                    localIpFilter = true
-                                }
-                            }
-                        });
-                    }
-                    return localIpFilter
+                    return areAllItemsExist(this.settingsData.ips.local,this.blockedIPs);
                 },
                 set: function (newValue) {
-                    newTemplateSettings = JSON.parse(this.allSetting.xrayTemplateConfig);
-                    if (newValue){
-                        newTemplateSettings.routing.rules.push(JSON.parse("{\"outboundTag\": \"blocked\",\"ip\": [\"geoip:private\"],\"type\": \"field\"}"))
+                    if (newValue) {
+                        this.blockedIPs = [...this.blockedIPs, ...this.settingsData.ips.local];
+                    } else {
+                        this.blockedIPs = this.blockedIPs.filter(data => !this.settingsData.ips.local.includes(data));
                     }
-                    else {
-                        newTemplateSettings.routing.rules = [];
-                        this.templateSettings.routing.rules.forEach(routingRule => {
-                            if (routingRule.hasOwnProperty('ip')){
-                                if (routingRule.ip[0] === "geoip:private" && routingRule.outboundTag == "blocked"){
-                                    return;
-                                }
-                            }
-                            newTemplateSettings.routing.rules.push(routingRule);
-                        });
-                    }
-                    this.templateSettings = newTemplateSettings
                 },
             },
-        }
-    });
-
+            AdsSettings: {
+                get: function () {
+                    return areAllItemsExist(this.settingsData.domains.ads,this.blockedDomains);
+                },
+                set: function (newValue) {
+                    if (newValue) {
+                        this.blockedDomains = [...this.blockedDomains, ...this.settingsData.domains.ads];
+                    } else {
+                        this.blockedDomains = this.blockedDomains.filter(data => !this.settingsData.domains.ads.includes(data));
+                    }
+                },
+            },
+            familyProtectSettings: {
+                get: function () {
+                    if (!this.templateSettings || !this.templateSettings.dns || !this.templateSettings.dns.servers) return false;
+                    return areAllItemsExist(this.templateSettings.dns.servers,this.settingsData.familyProtectDNS.servers);
+                },
+                set: function (newValue) {
+                    newTemplateSettings = this.templateSettings;
+                    if (newValue) {
+                        newTemplateSettings.dns = this.settingsData.familyProtectDNS;
+                    } else {
+                        delete newTemplateSettings.dns;
+                    }
+                    this.templateSettings = newTemplateSettings;
+                },
+            },
+            GoogleIPv4Settings: {
+                get: function () {
+                    return areAllItemsExist(this.settingsData.domains.google, this.templateRuleGetter({outboundTag: "IPv4", property: "domain"}));
+                },
+                set: function (newValue) {
+                    oldData = this.templateRuleGetter({outboundTag: "IPv4", property: "domain"});
+                    if (newValue) {
+                        oldData = [...oldData, ...this.settingsData.domains.google];
+                    } else {
+                        oldData = oldData.filter(data => !this.settingsData.domains.google.includes(data))
+                    }
+                    this.templateRuleSetter({
+                        outboundTag: "IPv4",
+                        property: "domain",
+                        data: oldData
+                    });
+                    this.syncRulesWithOutbound("IPv4", this.ipv4Settings);
+                },
+            },
+            NetflixIPv4Settings: {
+                get: function () {
+                    return areAllItemsExist(this.settingsData.domains.netflix, this.templateRuleGetter({outboundTag: "IPv4", property: "domain"}));
+                },
+                set: function (newValue) {
+                    oldData = this.templateRuleGetter({outboundTag: "IPv4", property: "domain"});
+                    if (newValue) {
+                        oldData = [...oldData, ...this.settingsData.domains.netflix];
+                    } else {
+                        oldData = oldData.filter(data => !this.settingsData.domains.netflix.includes(data))
+                    }
+                    this.templateRuleSetter({
+                        outboundTag: "IPv4",
+                        property: "domain",
+                        data: oldData
+                    });
+                    this.syncRulesWithOutbound("IPv4", this.ipv4Settings);
+                },
+            },
+            IRIpSettings: {
+                get: function () {
+                    return areAllItemsExist(this.settingsData.ips.ir,this.blockedIPs);
+                },
+                set: function (newValue) {
+                    if (newValue) {
+                        this.blockedIPs = [...this.blockedIPs, ...this.settingsData.ips.ir];
+                    } else {
+                        this.blockedIPs = this.blockedIPs.filter(data => !this.settingsData.ips.ir.includes(data));
+                    }
+                }
+            },
+            IRDomainSettings: {
+                get: function () {
+                    return areAllItemsExist(this.settingsData.domains.ir,this.blockedDomains);
+                },
+                set: function (newValue) {
+                    if (newValue) {
+                        this.blockedDomains = [...this.blockedDomains, ...this.settingsData.domains.ir];
+                    } else {
+                        this.blockedDomains = this.blockedDomains.filter(data => !this.settingsData.domains.ir.includes(data));
+                    }
+                }
+            },
+            ChinaIpSettings: {
+                get: function () {
+                    return areAllItemsExist(this.settingsData.ips.cn,this.blockedIPs);
+                },
+                set: function (newValue) {
+                    if (newValue) {
+                        this.blockedIPs = [...this.blockedIPs, ...this.settingsData.ips.cn];
+                    } else {
+                        this.blockedIPs = this.blockedIPs.filter(data => !this.settingsData.ips.cn.includes(data));
+                    }
+                }
+            },
+            ChinaDomainSettings: {
+                get: function () {
+                    return areAllItemsExist(this.settingsData.domains.cn,this.blockedDomains);
+                },
+                set: function (newValue) {
+                    if (newValue) {
+                        this.blockedDomains = [...this.blockedDomains, ...this.settingsData.domains.cn];
+                    } else {
+                        this.blockedDomains = this.blockedDomains.filter(data => !this.settingsData.domains.cn.includes(data));
+                    }
+                }
+            },
+            RussiaIpSettings: {
+                get: function () {
+                    return areAllItemsExist(this.settingsData.ips.ru,this.blockedIPs);
+                },
+                set: function (newValue) {
+                    if (newValue) {
+                        this.blockedIPs = [...this.blockedIPs, ...this.settingsData.ips.ru];
+                    } else {
+                        this.blockedIPs = this.blockedIPs.filter(data => !this.settingsData.ips.ru.includes(data));
+                    }
+                }
+            },
+            RussiaDomainSettings: {
+                get: function () {
+                    return areAllItemsExist(this.settingsData.domains.ru,this.blockedDomains);
+                },
+                set: function (newValue) {
+                    if (newValue) {
+                        this.blockedDomains = [...this.blockedDomains, ...this.settingsData.domains.ru];
+                    } else {
+                        this.blockedDomains = this.blockedDomains.filter(data => !this.settingsData.domains.ru.includes(data));
+                    }
+                }
+            },
+            IRIpDirectSettings: {
+                get: function () {
+                    return areAllItemsExist(this.settingsData.ips.ir,this.directIPs);
+                },
+                set: function (newValue) {
+                    if (newValue) {
+                        this.directIPs = [...this.directIPs, ...this.settingsData.ips.ir];
+                    } else {
+                        this.directIPs = this.directIPs.filter(data => !this.settingsData.ips.ir.includes(data));
+                    }
+                }
+            },
+            IRDomainDirectSettings: {
+                get: function () {
+                    return areAllItemsExist(this.settingsData.domains.ir,this.directDomains);
+                },
+                set: function (newValue) {
+                    if (newValue) {
+                        this.directDomains = [...this.directDomains, ...this.settingsData.domains.ir];
+                    } else {
+                        this.directDomains = this.directDomains.filter(data => !this.settingsData.domains.ir.includes(data));
+                    }
+                }
+            },
+            ChinaIpDirectSettings: {
+                get: function () {
+                    return areAllItemsExist(this.settingsData.ips.cn,this.directIPs);
+                },
+                set: function (newValue) {
+                    if (newValue) {
+                        this.directIPs = [...this.directIPs, ...this.settingsData.ips.cn];
+                    } else {
+                        this.directIPs = this.directIPs.filter(data => !this.settingsData.ips.cn.includes(data));
+                    }
+                }
+            },
+            ChinaDomainDirectSettings: {
+                get: function () {
+                    return areAllItemsExist(this.settingsData.domains.cn,this.directDomains);
+                },
+                set: function (newValue) {
+                    if (newValue) {
+                        this.directDomains = [...this.directDomains, ...this.settingsData.domains.cn];
+                    } else {
+                        this.directDomains = this.directDomains.filter(data => !this.settingsData.domains.cn.includes(data));
+                    }
+                }
+            },
+            RussiaIpDirectSettings: {
+                get: function () {
+                    return areAllItemsExist(this.settingsData.ips.ru,this.directIPs);
+                },
+                set: function (newValue) {
+                    if (newValue) {
+                        this.directIPs = [...this.directIPs, ...this.settingsData.ips.ru];
+                    } else {
+                        this.directIPs = this.directIPs.filter(data => !this.settingsData.ips.ru.includes(data));
+                    }
+                }
+            },
+            RussiaDomainDirectSettings: {
+                get: function () {
+                    return areAllItemsExist(this.settingsData.domains.ru,this.directDomains);
+                },
+                set: function (newValue) {
+                    if (newValue) {
+                        this.directDomains = [...this.directDomains, ...this.settingsData.domains.ru];
+                    } else {
+                        this.directDomains = this.directDomains.filter(data => !this.settingsData.domains.ru.includes(data));
+                    }
+                }
+                },
+            },
+        });
 </script>
 </body>
 </html>
