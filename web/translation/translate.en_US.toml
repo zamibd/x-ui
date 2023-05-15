@@ -207,7 +207,7 @@
 "resetDefaultConfig" = "Reset to default config"
 "panelConfig" = "Panel Configurations"
 "userSettings" = "User Settings"
-"xrayConfiguration" = "xray Configurations"
+"xrayConfiguration" = "Xray Configurations"
 "TGBotSettings" = "Telegram Bot Settings"
 "panelListeningIP" = "Panel Listening IP"
 "panelListeningIPDesc" = "Leave blank by default to monitor all IPs."
