@@ -51,8 +51,8 @@
 
 [menu]
 "dashboard" = "وضعیت سیستم"
-"inbounds" = "سرویس ها" 
-"setting" = "تنظیمات پنل"
+"inbounds" = "سرویس ها"
+"settings" = "تنظیمات پنل"
 "logout" = "خروج"
 "link" = "دیگر"
 
@@ -88,7 +88,7 @@
 "totalReceive" = "جمع کل ترافیک دانلود مصرفی"
 "xraySwitchVersionDialog" = "تغییر ورژن Xray"
 "xraySwitchVersionDialogDesc" = "آیا از تغییر ورژن مطمئن هستین"
-"dontRefreshh" = "در حال نصب ، لطفا رفرش نکنید "
+"dontRefresh" = "در حال نصب ، لطفا رفرش نکنید "
 "logs" = "گزارش ها"
 "config" = "تنظیمات"
 "backup" = "پشتیبان گیری"

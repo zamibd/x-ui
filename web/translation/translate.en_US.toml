@@ -52,8 +52,8 @@
 [menu]
 "dashboard" = "System Status"
 "inbounds" = "Inbounds"
-"setting" = "Panel Setting"
-"logout" = "LogOut"
+"settings" = "Panel Settings"
+"logout" = "Logout"
 "link" = "Other"
 
 [pages.login]
@@ -68,10 +68,10 @@
 "successLogin" = "Login"
 
 [pages.index]
-"title" = "System status"
+"title" = "System Status"
 "memory" = "Memory"
 "hard" = "Hard disk"
-"xrayStatus" = "xray Status"
+"xrayStatus" = "Xray Status"
 "stopXray" = "Stop"
 "restartXray" = "Restart"
 "xraySwitch" = "Switch Version"
@@ -88,11 +88,11 @@
 "totalReceive" = "Total download traffic of all network cards since system startup"
 "xraySwitchVersionDialog" = "Switch xray version"
 "xraySwitchVersionDialogDesc" = "Whether to switch the xray version to"
-"dontRefreshh" = "Installation is in progress, please do not refresh this page"
+"dontRefresh" = "Installation is in progress, please do not refresh this page"
 "logs" = "Logs"
 "config" = "Config"
-"backup" = "Backup"
-"backupTitle" = "Backup Database"
+"backup" = "Backup & Restore"
+"backupTitle" = "Backup & Restore Database"
 "backupDescription" = "Remember to backup before importing a new database"
 "exportDatabase" = "Download Database"
 "importDatabase" = "Upload Database"
@@ -198,7 +198,7 @@
 "encryption" = "Encryption"
 
 [pages.settings]
-"title" = "Setting"
+"title" = "Settings"
 "save" = "Save"
 "infoDesc" = "Every change here needs to be saved and restart panel to take effect"
 "restartPanel" = "Restart Panel"

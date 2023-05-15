@@ -52,7 +52,7 @@
 [menu]
 "dashboard" = "系统状态"
 "inbounds" = "入站列表"
-"setting" = "面板设置"
+"settings" = "面板设置"
 "logout" = "退出登录"
 "link" = "其他"
 
@@ -88,7 +88,7 @@
 "totalReceive" = "系统启动以来所有网卡的总下载流量"
 "xraySwitchVersionDialog" = "切换 xray 版本"
 "xraySwitchVersionDialogDesc" = "是否切换 xray 版本至"
-"dontRefreshh" = "安装中，请不要刷新此页面"
+"dontRefresh" = "安装中，请不要刷新此页面"
 "logs" = "日志"
 "config" = "配置"
 "backup" = "备份"

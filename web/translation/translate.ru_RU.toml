@@ -52,7 +52,7 @@
 [menu]
 "dashboard" = "статус системы"
 "inbounds" = "пользователи"
-"setting" = "настройки"
+"settings" = "настройки"
 "logout" = "выход"
 "link" = "другое"
 
