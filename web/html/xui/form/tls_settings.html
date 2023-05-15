@@ -25,7 +25,7 @@
             <td>CipherSuites</td>
             <td>
                 <a-form-item>
-                    <a-select v-model="inbound.stream.tls.cipherSuites" style="width: 250px" :dropdown-class-name="siderDrawer.isDarkTheme ? 'ant-card-dark' : ''">
+                    <a-select v-model="inbound.stream.tls.cipherSuites" style="width: 250px" :dropdown-class-name="themeSwitcher.darkCardClass">
                         <a-select-option value="">auto</a-select-option>
                         <a-select-option v-for="key in TLS_CIPHER_OPTION" :value="key">[[ key ]]</a-select-option>
                     </a-select>
@@ -36,7 +36,7 @@
             <td>MinVersion</td>
             <td>
                 <a-form-item>
-                    <a-select v-model="inbound.stream.tls.minVersion" :dropdown-class-name="siderDrawer.isDarkTheme ? 'ant-card-dark' : ''">
+                    <a-select v-model="inbound.stream.tls.minVersion" :dropdown-class-name="themeSwitcher.darkCardClass">
                         <a-select-option v-for="key in TLS_VERSION_OPTION" :value="key">[[ key ]]</a-select-option>
                     </a-select>
                 </a-form-item>
@@ -46,7 +46,7 @@
             <td>MaxVersion</td>
             <td>
                 <a-form-item>
-                    <a-select v-model="inbound.stream.tls.maxVersion" :dropdown-class-name="siderDrawer.isDarkTheme ? 'ant-card-dark' : ''">
+                    <a-select v-model="inbound.stream.tls.maxVersion" :dropdown-class-name="themeSwitcher.darkCardClass">
                         <a-select-option v-for="key in TLS_VERSION_OPTION" :value="key">[[ key ]]</a-select-option>
                     </a-select>
                 </a-form-item>
@@ -57,7 +57,7 @@
             <td>
                 <a-form-item>
                     <a-select v-model="inbound.stream.tls.settings.fingerprint"
-                              style="width: 250px" :dropdown-class-name="siderDrawer.isDarkTheme ? 'ant-card-dark' : ''">
+                              style="width: 250px" :dropdown-class-name="themeSwitcher.darkCardClass">
                         <a-select-option value=''>None</a-select-option>
                         <a-select-option v-for="key in UTLS_FINGERPRINT" :value="key">[[ key ]]</a-select-option>
                     </a-select>
@@ -177,7 +177,7 @@
             <td>
                 <a-form-item>
                     <a-select v-model="inbound.stream.reality.settings.fingerprint"
-                              style="width: 250px" :dropdown-class-name="siderDrawer.isDarkTheme ? 'ant-card-dark' : ''">
+                              style="width: 250px" :dropdown-class-name="themeSwitcher.darkCardClass">
                         <a-select-option v-for="key in UTLS_FINGERPRINT" :value="key">[[ key ]]</a-select-option>
                     </a-select>
                 </a-form-item>

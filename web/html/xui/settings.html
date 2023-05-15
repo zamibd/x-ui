@@ -43,7 +43,7 @@
                                     {{ i18n "pages.settings.infoDesc" }}
                                 </h2>
                             </a-row>
-                            <a-list item-layout="horizontal" :style="themeSwitcher.isDarkTheme ? 'color: hsla(0,0%,100%,.65);': 'background: white;'">
+                            <a-list item-layout="horizontal" :style="themeSwitcher.textStyle">
                                 <setting-list-item type="text" title='{{ i18n "pages.settings.panelListeningIP"}}' desc='{{ i18n "pages.settings.panelListeningIPDesc"}}' v-model="allSetting.webListen"></setting-list-item>
                                 <setting-list-item type="number" title='{{ i18n "pages.settings.panelPort"}}' desc='{{ i18n "pages.settings.panelPortDesc"}}' v-model.number="allSetting.webPort"></setting-list-item>
                                 <setting-list-item type="text" title='{{ i18n "pages.settings.publicKeyPath"}}' desc='{{ i18n "pages.settings.publicKeyPathDesc"}}' v-model="allSetting.webCertFile"></setting-list-item>
@@ -80,20 +80,18 @@
                             </a-list>
                         </a-tab-pane>
                         <a-tab-pane key="2" tab='{{ i18n "pages.settings.userSetting"}}'>
-                            <a-form :style="themeSwitcher.isDarkTheme ? 'color: hsla(0,0%,100%,.65); padding: 20px;': 'background: white; padding: 20px;'">
+                            <a-form :style="'padding: 20px;' + themeSwitcher.textStyle">
                                 <a-form-item label='{{ i18n "pages.settings.oldUsername"}}'>
                                     <a-input v-model="user.oldUsername" style="max-width: 300px"></a-input>
                                 </a-form-item>
                                 <a-form-item label='{{ i18n "pages.settings.currentPassword"}}'>
-                                    <a-input type="password" v-model="user.oldPassword"
-                                             style="max-width: 300px"></a-input>
+                                    <password-input v-model="user.oldPassword" style="max-width: 300px"></password-input>
                                 </a-form-item>
                                 <a-form-item label='{{ i18n "pages.settings.newUsername"}}'>
                                     <a-input v-model="user.newUsername" style="max-width: 300px"></a-input>
                                 </a-form-item>
                                 <a-form-item label='{{ i18n "pages.settings.newPassword"}}'>
-                                    <a-input type="password" v-model="user.newPassword"
-                                             style="max-width: 300px"></a-input>
+                                    <password-input v-model="user.newPassword" style="max-width: 300px"></password-input>
                                 </a-form-item>
                                 <a-form-item>
                                     <a-button type="primary" @click="updateUser">{{ i18n "confirm" }}</a-button>
@@ -108,7 +106,7 @@
                                     {{ i18n "pages.settings.infoDesc" }}
                                 </h2>
                             </a-row>
-                            <a-list item-layout="horizontal" :style="themeSwitcher.isDarkTheme ? 'color: hsla(0,0%,100%,.65);': 'background: white;'">
+                            <a-list item-layout="horizontal" :style="themeSwitcher.textStyle">
                                 <a-tabs class="ant-card-dark-box-nohover" default-active-key="tpl-1" :class="themeSwitcher.darkCardClass" style="padding: 20px 20px;">
                                     <a-tab-pane key="tpl-1" tab='{{ i18n "pages.settings.templates.basicTemplate"}}' style="padding-top: 20px;">
                                         <a-collapse>
@@ -242,7 +240,7 @@
                                     {{ i18n "pages.settings.infoDesc" }}
                                 </h2>
                             </a-row>
-                            <a-list item-layout="horizontal" :style="themeSwitcher.isDarkTheme ? 'color: hsla(0,0%,100%,.65);': 'background: white;'">
+                            <a-list item-layout="horizontal" :style="themeSwitcher.textStyle">
                                 <setting-list-item type="switch" title='{{ i18n "pages.settings.telegramBotEnable" }}' desc='{{ i18n "pages.settings.telegramBotEnableDesc" }}'  v-model="allSetting.tgBotEnable"></setting-list-item>
                                 <setting-list-item type="text" title='{{ i18n "pages.settings.telegramToken"}}' desc='{{ i18n "pages.settings.telegramTokenDesc"}}'  v-model="allSetting.tgBotToken"></setting-list-item>
                                 <setting-list-item type="text" title='{{ i18n "pages.settings.telegramChatId"}}' desc='{{ i18n "pages.settings.telegramChatIdDesc"}}'  v-model="allSetting.tgBotChatId"></setting-list-item>
@@ -259,6 +257,7 @@
 </a-layout>
 {{template "js" .}}
 {{template "component/themeSwitcher" .}}
+{{template "component/password" .}}
 {{template "component/setting"}}
 <script>
 
