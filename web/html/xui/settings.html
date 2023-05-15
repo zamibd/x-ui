@@ -591,7 +591,7 @@
             },
             torrentSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.protocols.bittorrent,this.blockedProtocols);
+                    return areAllItemsExist(this.settingsData.protocols.bittorrent, this.blockedProtocols);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -603,7 +603,7 @@
             },
             privateIpSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.ips.local,this.blockedIPs);
+                    return areAllItemsExist(this.settingsData.ips.local, this.blockedIPs);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -615,7 +615,7 @@
             },
             AdsSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.domains.ads,this.blockedDomains);
+                    return areAllItemsExist(this.settingsData.domains.ads, this.blockedDomains);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -628,7 +628,7 @@
             familyProtectSettings: {
                 get: function () {
                     if (!this.templateSettings || !this.templateSettings.dns || !this.templateSettings.dns.servers) return false;
-                    return areAllItemsExist(this.templateSettings.dns.servers,this.settingsData.familyProtectDNS.servers);
+                    return areAllItemsExist(this.templateSettings.dns.servers, this.settingsData.familyProtectDNS.servers);
                 },
                 set: function (newValue) {
                     newTemplateSettings = this.templateSettings;
@@ -680,7 +680,7 @@
             },
             IRIpSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.ips.ir,this.blockedIPs);
+                    return areAllItemsExist(this.settingsData.ips.ir, this.blockedIPs);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -692,7 +692,7 @@
             },
             IRDomainSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.domains.ir,this.blockedDomains);
+                    return areAllItemsExist(this.settingsData.domains.ir, this.blockedDomains);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -704,7 +704,7 @@
             },
             ChinaIpSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.ips.cn,this.blockedIPs);
+                    return areAllItemsExist(this.settingsData.ips.cn, this.blockedIPs);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -716,7 +716,7 @@
             },
             ChinaDomainSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.domains.cn,this.blockedDomains);
+                    return areAllItemsExist(this.settingsData.domains.cn, this.blockedDomains);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -728,7 +728,7 @@
             },
             RussiaIpSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.ips.ru,this.blockedIPs);
+                    return areAllItemsExist(this.settingsData.ips.ru, this.blockedIPs);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -740,7 +740,7 @@
             },
             RussiaDomainSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.domains.ru,this.blockedDomains);
+                    return areAllItemsExist(this.settingsData.domains.ru, this.blockedDomains);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -752,7 +752,7 @@
             },
             IRIpDirectSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.ips.ir,this.directIPs);
+                    return areAllItemsExist(this.settingsData.ips.ir, this.directIPs);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -764,7 +764,7 @@
             },
             IRDomainDirectSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.domains.ir,this.directDomains);
+                    return areAllItemsExist(this.settingsData.domains.ir, this.directDomains);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -776,7 +776,7 @@
             },
             ChinaIpDirectSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.ips.cn,this.directIPs);
+                    return areAllItemsExist(this.settingsData.ips.cn, this.directIPs);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -788,7 +788,7 @@
             },
             ChinaDomainDirectSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.domains.cn,this.directDomains);
+                    return areAllItemsExist(this.settingsData.domains.cn, this.directDomains);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -800,7 +800,7 @@
             },
             RussiaIpDirectSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.ips.ru,this.directIPs);
+                    return areAllItemsExist(this.settingsData.ips.ru, this.directIPs);
                 },
                 set: function (newValue) {
                     if (newValue) {
@@ -812,7 +812,7 @@
             },
             RussiaDomainDirectSettings: {
                 get: function () {
-                    return areAllItemsExist(this.settingsData.domains.ru,this.directDomains);
+                    return areAllItemsExist(this.settingsData.domains.ru, this.directDomains);
                 },
                 set: function (newValue) {
                     if (newValue) {
