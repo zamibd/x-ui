@@ -142,6 +142,11 @@
     transform: translateY(-30px)
 }
 
+.ant-list-item-meta-title {
+    font-weight: bold;
+    font-size: 16px;
+}
+
 .ant-progress-inner {
     background-color: #EBEEF5;
 }
@@ -181,6 +186,18 @@
 .ant-card-dark:hover {
     border-color: #e8e8e8;
     box-shadow: 0 2px 8px rgba(255,255,255,.15);
+}
+
+.ant-setting-textarea {
+    margin-top: 1.5rem;
+}
+
+.ant-card-dark-box-nohover{
+    padding: 0 20px 20px !important;
+    box-shadow: 0 1px 10px -1px rgb(154 175 238 / 0%) !important;
+}
+.ant-card-dark-box-nohover:hover{
+    box-shadow: 0 1px 10px -1px rgb(154 175 238 / 0%) !important;
 }
 
 .ant-card-dark .ant-table-thead th {
