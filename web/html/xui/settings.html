@@ -213,6 +213,11 @@
                                                 <setting-list-item type="textarea" title='{{ i18n "pages.settings.templates.manualDirectIPs"}}' v-model="manualDirectIPs"></setting-list-item>
                                                 <setting-list-item type="textarea" title='{{ i18n "pages.settings.templates.manualDirectDomains"}}' v-model="manualDirectDomains"></setting-list-item>
                                             </a-collapse-panel>
+                                            <a-collapse-panel header='{{ i18n "pages.settings.resetDefaultConfig"}}'>
+                                                <a-space direction="horizontal" style="padding: 0 20px">
+                                                    <a-button type="primary" @click="resetXrayConfigToDefault">{{ i18n "pages.settings.resetDefaultConfig" }}</a-button>
+                                                </a-space>
+                                            </a-collapse-panel>
                                         </a-collapse>
                                     </a-tab-pane>
                                     <a-tab-pane key="tpl-2" tab='{{ i18n "pages.settings.templates.advancedTemplate"}}' style="padding-top: 20px;">
@@ -229,9 +234,6 @@
                                         </a-collapse>
                                     </a-tab-pane>
                                     <a-tab-pane key="tpl-3" tab='{{ i18n "pages.settings.templates.completeTemplate"}}' style="padding-top: 20px;">
-                                        <a-space direction="horizontal" style="padding: 0 20px">
-                                            <a-button type="primary" @click="resetXrayConfigToDefault">{{ i18n "pages.settings.resetDefaultConfig" }}</a-button>
-                                        </a-space>
                                         <setting-list-item type="textarea" title='{{ i18n "pages.settings.templates.xrayConfigTemplate"}}' desc='{{ i18n "pages.settings.templates.xrayConfigTemplateDesc"}}' v-model="allSetting.xrayTemplateConfig"></setting-list-item>
                                     </a-tab-pane>
                                 </a-tabs>
