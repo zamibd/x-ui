@@ -19,10 +19,6 @@
     .ant-list-item {
         display: block;
     }
-
-    :not(.ant-card-dark)>.ant-tabs-top-bar {
-        background: white;
-    }
 </style>
 <body>
 <a-layout id="app" v-cloak>
@@ -35,7 +31,7 @@
                         <a-button type="primary" :disabled="saveBtnDisable" @click="updateAllSetting">{{ i18n "pages.settings.save" }}</a-button>
                         <a-button type="danger" :disabled="!saveBtnDisable" @click="restartPanel">{{ i18n "pages.settings.restartPanel" }}</a-button>
                     </a-space>
-                    <a-tabs default-active-key="1" :class="themeSwitcher.darkCardClass">
+                    <a-tabs default-active-key="1" :class="themeSwitcher.darkCardClass" :style="!themeSwitcher.isDarkTheme? 'background: white':''">
                         <a-tab-pane key="1" tab='{{ i18n "pages.settings.panelConfig"}}'>
                             <a-row :xs="24" :sm="24" :lg="12">
                                 <h2 style="color: inherit; font-weight: bold; font-size: 18px; padding: 20px 20px; text-align: center;">
