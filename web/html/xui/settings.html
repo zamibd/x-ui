@@ -296,7 +296,6 @@
                 },
                 ips: {
                     local: ["geoip:private"],
-                    google: ["geoip:google"],
                     cn: ["geoip:cn"],
                     ir: ["geoip:ir"],
                     ru: ["geoip:ru"],
@@ -306,12 +305,10 @@
                         "geosite:category-ads-all",
                         "geosite:category-ads",
                         "geosite:google-ads",
-                        "geosite:spotify-ads"
+                        "geosite:spotify-ads",
+                        "ext:iran.dat:ads"
                     ],
-                    porn: ["geosite:category-porn"],
-                    openai: ["geosite:openai"],
                     google: ["geosite:google"],
-                    spotify: ["geosite:spotify"],
                     netflix: ["geosite:netflix"],
                     cn: [
                         "geosite:cn",
@@ -325,7 +322,6 @@
                         "regexp:.*\\.ir$",
                         "ext:iran.dat:ir",
                         "ext:iran.dat:other",
-                        "ext:iran.dat:ads",
                         "geosite:category-ir"
                     ]
                 },
