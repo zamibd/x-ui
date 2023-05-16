@@ -507,7 +507,7 @@
             freedomStrategy: {
                 get: function () {
                     if (!this.templateSettings) return "AsIs";
-                    freedomOutbound = this.templateSettings.outbounds.find((o) => o.tag === "direct");
+                    freedomOutbound = this.templateSettings.outbounds.find((o) => o.protocol === "freedom" && !o.tag);
                     if (!freedomOutbound) return "AsIs";
                     if (!freedomOutbound.settings || !freedomOutbound.settings.domainStrategy) return "AsIs";
                     return freedomOutbound.settings.domainStrategy;
