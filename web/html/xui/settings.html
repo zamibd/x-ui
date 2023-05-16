@@ -167,11 +167,11 @@
                                                 <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigAds"}}' desc='{{ i18n "pages.settings.templates.xrayConfigAdsDesc"}}' v-model="AdsSettings"></setting-list-item>
                                                 <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigFamily"}}' desc='{{ i18n "pages.settings.templates.xrayConfigFamilyDesc"}}' v-model="familyProtectSettings"></setting-list-item>
                                             </a-collapse-panel>
-                                            <a-collapse-panel header='{{ i18n "pages.settings.templates.countryConfigs"}}'>
+                                            <a-collapse-panel header='{{ i18n "pages.settings.templates.blockCountryConfigs"}}'>
                                                 <a-row :xs="24" :sm="24" :lg="12">
                                                     <h2 style="color: inherit; font-weight: bold; font-size: 18px; padding: 10px 20px; border-bottom: 2px solid;">
                                                         <a-icon type="warning" style="color: inherit; font-size: 24px;"></a-icon>
-                                                        {{ i18n "pages.settings.templates.countryConfigsDesc" }}
+                                                        {{ i18n "pages.settings.templates.blockCountryConfigsDesc" }}
                                                     </h2>
                                                 </a-row>
                                                 <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigIRIp"}}' desc='{{ i18n "pages.settings.templates.xrayConfigIRIpDesc"}}' v-model="IRIpSettings"></setting-list-item>
@@ -180,6 +180,14 @@
                                                 <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigChinaDomain"}}' desc='{{ i18n "pages.settings.templates.xrayConfigChinaDomainDesc"}}' v-model="ChinaDomainSettings"></setting-list-item>
                                                 <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigRussiaIp"}}' desc='{{ i18n "pages.settings.templates.xrayConfigRussiaIpDesc"}}' v-model="RussiaIpSettings"></setting-list-item>
                                                 <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigRussiaDomain"}}' desc='{{ i18n "pages.settings.templates.xrayConfigRussiaDomainDesc"}}' v-model="RussiaDomainSettings"></setting-list-item>
+                                            </a-collapse-panel>
+                                            <a-collapse-panel header='{{ i18n "pages.settings.templates.directCountryConfigs"}}'>
+                                                <a-row :xs="24" :sm="24" :lg="12">
+                                                    <h2 style="color: inherit; font-weight: bold; font-size: 18px; padding: 10px 20px; border-bottom: 2px solid;">
+                                                        <a-icon type="warning" style="color: inherit; font-size: 24px;"></a-icon>
+                                                        {{ i18n "pages.settings.templates.directCountryConfigsDesc" }}
+                                                    </h2>
+                                                </a-row>
                                                 <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigDirectIRIp"}}' desc='{{ i18n "pages.settings.templates.xrayConfigDirectIRIpDesc"}}' v-model="IRIpDirectSettings"></setting-list-item>
                                                 <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigDirectIRDomain"}}' desc='{{ i18n "pages.settings.templates.xrayConfigDirectIRDomainDesc"}}' v-model="IRDomainDirectSettings"></setting-list-item>
                                                 <setting-list-item type="switch" title='{{ i18n "pages.settings.templates.xrayConfigDirectChinaIp"}}' desc='{{ i18n "pages.settings.templates.xrayConfigDirectChinaIpDesc"}}' v-model="ChinaIpDirectSettings"></setting-list-item>
