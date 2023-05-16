@@ -43,7 +43,7 @@ func (a *SettingController) initRouter(g *gin.RouterGroup) {
 func (a *SettingController) getAllSetting(c *gin.Context) {
 	allSetting, err := a.settingService.GetAllSetting()
 	if err != nil {
-		jsonMsg(c, I18n(c, "pages.settings.toasts.getSetting"), err)
+		jsonMsg(c, I18n(c, "pages.settings.toasts.getSettings"), err)
 		return
 	}
 	jsonObj(c, allSetting, nil)
@@ -52,22 +52,22 @@ func (a *SettingController) getAllSetting(c *gin.Context) {
 func (a *SettingController) getDefaultSettings(c *gin.Context) {
 	expireDiff, err := a.settingService.GetExpireDiff()
 	if err != nil {
-		jsonMsg(c, I18n(c, "pages.settings.toasts.getSetting"), err)
+		jsonMsg(c, I18n(c, "pages.settings.toasts.getSettings"), err)
 		return
 	}
 	trafficDiff, err := a.settingService.GetTrafficDiff()
 	if err != nil {
-		jsonMsg(c, I18n(c, "pages.settings.toasts.getSetting"), err)
+		jsonMsg(c, I18n(c, "pages.settings.toasts.getSettings"), err)
 		return
 	}
 	defaultCert, err := a.settingService.GetCertFile()
 	if err != nil {
-		jsonMsg(c, I18n(c, "pages.settings.toasts.getSetting"), err)
+		jsonMsg(c, I18n(c, "pages.settings.toasts.getSettings"), err)
 		return
 	}
 	defaultKey, err := a.settingService.GetKeyFile()
 	if err != nil {
-		jsonMsg(c, I18n(c, "pages.settings.toasts.getSetting"), err)
+		jsonMsg(c, I18n(c, "pages.settings.toasts.getSettings"), err)
 		return
 	}
 	result := map[string]interface{}{
@@ -83,18 +83,18 @@ func (a *SettingController) updateSetting(c *gin.Context) {
 	allSetting := &entity.AllSetting{}
 	err := c.ShouldBind(allSetting)
 	if err != nil {
-		jsonMsg(c, I18n(c, "pages.settings.toasts.modifySetting"), err)
+		jsonMsg(c, I18n(c, "pages.settings.toasts.modifySettings"), err)
 		return
 	}
 	err = a.settingService.UpdateAllSetting(allSetting)
-	jsonMsg(c, I18n(c, "pages.settings.toasts.modifySetting"), err)
+	jsonMsg(c, I18n(c, "pages.settings.toasts.modifySettings"), err)
 }
 
 func (a *SettingController) updateUser(c *gin.Context) {
 	form := &updateUserForm{}
 	err := c.ShouldBind(form)
 	if err != nil {
-		jsonMsg(c, I18n(c, "pages.settings.toasts.modifySetting"), err)
+		jsonMsg(c, I18n(c, "pages.settings.toasts.modifySettings"), err)
 		return
 	}
 	user := session.GetLoginUser(c)
@@ -123,7 +123,7 @@ func (a *SettingController) restartPanel(c *gin.Context) {
 func (a *SettingController) getDefaultXrayConfig(c *gin.Context) {
 	defaultJsonConfig, err := a.settingService.GetDefaultXrayConfig()
 	if err != nil {
-		jsonMsg(c, I18n(c, "pages.settings.toasts.getSetting"), err)
+		jsonMsg(c, I18n(c, "pages.settings.toasts.getSettings"), err)
 		return
 	}
 	jsonObj(c, defaultJsonConfig, nil)

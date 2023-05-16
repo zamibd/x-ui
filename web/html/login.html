@@ -50,7 +50,7 @@
         <a-layout-content>
             <a-row type="flex" justify="center">
                 <a-col :xs="22" :sm="20" :md="16" :lg="12" :xl="8">
-                    <h1 :style="themeSwitcher.textStyle">{{ i18n "pages.login.title" }}</h1>
+                    <h1 class="title" :style="themeSwitcher.textStyle">{{ i18n "pages.login.title" }}</h1>
                 </a-col>
             </a-row>
             <a-row type="flex" justify="center">
@@ -63,10 +63,9 @@
                             </a-input>
                         </a-form-item>
                         <a-form-item>
-                            <a-input type="password" v-model.trim="user.password"
-                                     placeholder='{{ i18n "password" }}' @keydown.enter.native="login">
-                                <a-icon slot="prefix" type="lock" :style="themeSwitcher.textStyle"/>
-                            </a-input>
+                            <password-input icon="lock" v-model.trim="user.password"
+                                            placeholder='{{ i18n "password" }}' @keydown.enter.native="login">
+                            </password-input>
                         </a-form-item>
                         <a-form-item>
                             <a-row justify="center" class="centered">
@@ -101,6 +100,7 @@
 </a-layout>
 {{template "js" .}}
 {{template "component/themeSwitcher" .}}
+{{template "component/password" .}}
 <script>
     const app = new Vue({
         delimiters: ['[[', ']]'],
@@ -125,7 +125,7 @@
                 }
             },
             updateBackground() {
-                document.querySelector('#app').style.background = this.themeSwitcher.isDarkTheme ? colors.dark.bg : 'white';
+                document.querySelector('#app').style.background = colors[this.themeSwitcher.currentTheme].bg;
             },
         },
         watch: {

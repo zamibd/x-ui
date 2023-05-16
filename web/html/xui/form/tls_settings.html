@@ -93,7 +93,7 @@
         <template v-for="cert,index in inbound.stream.tls.certs">
             <tr>
                 <td colspan="2">
-                    <a-form-item label="{{ i18n "certificate" }}">
+                    <a-form-item label='{{ i18n "certificate" }}'>
                         <a-radio-group v-model="cert.useFile" button-style="solid">
                             <a-radio-button :value="true">{{ i18n "pages.inbounds.certificatePath" }}</a-radio-button>
                             <a-radio-button :value="false">{{ i18n "pages.inbounds.certificateContent" }}</a-radio-button>

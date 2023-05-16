@@ -1,7 +1,7 @@
 {{define "form/shadowsocks"}}
 <a-form layout="inline">
     <a-collapse activeKey="0" v-for="(client, index) in inbound.settings.shadowsockses.slice(0,1)" v-if="!isEdit">  
-        <a-collapse-panel header="{{ i18n "pages.inbounds.client" }}">
+        <a-collapse-panel header='{{ i18n "pages.inbounds.client" }}'>
             <table width="100%" class="ant-table-tbody">
                 <tr>
                     <td>
@@ -47,7 +47,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <span>{{ i18n "pages.inbounds.totalFlow" }}</span>(GB)
+                        <span>{{ i18n "pages.inbounds.totalFlow" }}</span> (GB)
                         <a-tooltip>
                             <template slot="title">
                                 0 <span>{{ i18n "pages.inbounds.meansNoLimit" }}</span>
