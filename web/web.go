@@ -276,8 +276,6 @@ func (s *Server) initI18n(engine *gin.Engine) error {
 	engine.FuncMap["i18n"] = I18n
 
 	engine.Use(func(c *gin.Context) {
-		//accept := c.GetHeader("Accept-Language")
-
 		var lang string
 
 		if cookie, err := c.Request.Cookie("lang"); err == nil {
