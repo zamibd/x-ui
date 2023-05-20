@@ -180,6 +180,14 @@ class AllSetting {
         this.tgBotBackup = false;
         this.tgCpu = "";
         this.xrayTemplateConfig = "";
+        this.subEnable = false;
+        this.subListen = "";
+        this.subPort = "2096";
+        this.subPath = "sub/";
+        this.subDomain = "";
+        this.subCertFile = "";
+        this.subKeyFile = "";
+        this.subUpdates = 0;
 
         this.timeLocation = "Asia/Tehran";
 
