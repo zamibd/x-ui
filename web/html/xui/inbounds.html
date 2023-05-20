@@ -104,6 +104,10 @@
                                 </a-col>
                             </a-row>
                         </div>
+                        <a-switch v-model="enableFilter"
+                            checked-children="{{ i18n "search" }}" un-checked-children="{{ i18n "filter" }}"
+                            @change="toggleFilter">
+                        </a-switch>
                         <a-input v-if="!enableFilter" v-model.lazy="searchKey" placeholder='{{ i18n "search" }}' autofocus style="max-width: 300px"></a-input>
                         <a-radio-group v-if="enableFilter" v-model="filterBy" @change="filterInbounds" button-style="solid">
                             <a-radio-button value="">{{ i18n "none" }}</a-radio-button>
@@ -111,10 +115,6 @@
                             <a-radio-button value="depleted">{{ i18n "depleted" }}</a-radio-button>
                             <a-radio-button value="expiring">{{ i18n "depletingSoon" }}</a-radio-button>
                         </a-radio-group>
-                        <a-switch v-model="enableFilter"
-                            checked-children="{{ i18n "search" }}" un-checked-children="{{ i18n "filter" }}"
-                            @change="toggleFilter">
-                        </a-switch>
                         <a-table :columns="columns" :row-key="dbInbound => dbInbound.id"
                                  :data-source="searchedInbounds"
                                  :loading="spinning" :scroll="{ x: 1300 }"
@@ -760,9 +760,7 @@
                 }
             },
             showQrcode(dbInbound, clientIndex) {
-                const clientName = JSON.parse(dbInbound.settings).clients[clientIndex].email;
-                const link = dbInbound.genLink(clientIndex);
-                qrModal.show('{{ i18n "qrCode"}}', link, dbInbound, '', clientName);
+                qrModal.show('{{ i18n "qrCode"}}', dbInbound, clientIndex);
             },
             showInfo(dbInbound, index) {
                 infoModal.show(dbInbound, index);
