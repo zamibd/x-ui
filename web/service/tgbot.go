@@ -281,9 +281,16 @@ func (t *Tgbot) SendReport() {
 	t.SendMsgToTgbotAdmins(exhausted)
 	backupEnable, err := t.settingService.GetTgBotBackup()
 	if err == nil && backupEnable {
-		for _, adminId := range adminIds {
-			t.sendBackup(int64(adminId))
-		}
+		t.SendBackupToAdmins()
+	}
+}
+
+func (t *Tgbot) SendBackupToAdmins() {
+	if !t.IsRunning() {
+		return
+	}
+	for _, adminId := range adminIds {
+		t.sendBackup(int64(adminId))
 	}
 }
 
