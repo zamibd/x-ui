@@ -39,6 +39,7 @@ var defaultValueMap = map[string]string{
 	"tgRunTime":          "@daily",
 	"tgBotBackup":        "false",
 	"tgCpu":              "0",
+	"tgLang":             "en-US",
 	"subEnable":          "false",
 	"subListen":          "",
 	"subPort":            "2096",
