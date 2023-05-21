@@ -19,6 +19,32 @@
     .ant-list-item {
         display: block;
     }
+
+    .alert-msg {
+        color: inherit;
+        font-weight: bold;
+        font-size: 18px;
+        padding: 20px 20px;
+        text-align: center;
+    }
+
+    .alert-msg > i {
+        color: inherit;
+        font-size: 24px;
+    }
+
+    .collapse-title {
+        color: inherit;
+        font-weight: bold;
+        font-size: 18px;
+        padding: 10px 20px;
+        border-bottom: 2px solid;
+    }
+
+    .collapse-title > i {
+        color: inherit;
+        font-size: 24px;
+    }
 </style>
 <body>
 <a-layout id="app" v-cloak>
@@ -31,11 +57,11 @@
                         <a-button type="primary" :disabled="saveBtnDisable" @click="updateAllSetting">{{ i18n "pages.settings.save" }}</a-button>
                         <a-button type="danger" :disabled="!saveBtnDisable" @click="restartPanel">{{ i18n "pages.settings.restartPanel" }}</a-button>
                     </a-space>
-                    <a-tabs default-active-key="1" :class="themeSwitcher.darkCardClass" :style="!themeSwitcher.isDarkTheme? 'background: white':''">
+                    <a-tabs default-active-key="1" :class="themeSwitcher.darkCardClass">
                         <a-tab-pane key="1" tab='{{ i18n "pages.settings.panelConfig"}}'>
                             <a-row :xs="24" :sm="24" :lg="12">
-                                <h2 style="color: inherit; font-weight: bold; font-size: 18px; padding: 20px 20px; text-align: center;">
-                                    <a-icon type="warning" style="color: inherit; font-size: 24px;"></a-icon>
+                                <h2 class="alert-msg">
+                                    <a-icon type="warning"></a-icon>
                                     {{ i18n "pages.settings.infoDesc" }}
                                 </h2>
                             </a-row>
@@ -97,8 +123,8 @@
 
                         <a-tab-pane key="3" tab='{{ i18n "pages.settings.xrayConfiguration"}}'>
                             <a-row :xs="24" :sm="24" :lg="12">
-                                <h2 style="color: inherit; font-weight: bold; font-size: 18px; padding: 20px 20px; text-align: center;">
-                                    <a-icon type="warning" style="color: inherit; font-size: 24px;"></a-icon>
+                                <h2 class="alert-msg">
+                                    <a-icon type="warning"></a-icon>
                                     {{ i18n "pages.settings.infoDesc" }}
                                 </h2>
                             </a-row>
@@ -108,8 +134,8 @@
                                         <a-collapse>
                                             <a-collapse-panel header='{{ i18n "pages.settings.templates.generalConfigs"}}'>
                                                 <a-row :xs="24" :sm="24" :lg="12">
-                                                    <h2 style="color: inherit; font-weight: bold; font-size: 18px; padding: 10px 20px; border-bottom: 2px solid;">
-                                                        <a-icon type="warning" style="color: inherit; font-size: 24px;"></a-icon>
+                                                    <h2 class="collapse-title">
+                                                        <a-icon type="warning"></a-icon>
                                                         {{ i18n "pages.settings.templates.generalConfigsDesc" }}
                                                     </h2>
                                                 </a-row>
@@ -153,8 +179,8 @@
                                             </a-collapse-panel>
                                             <a-collapse-panel header='{{ i18n "pages.settings.templates.blockConfigs"}}'>
                                                 <a-row :xs="24" :sm="24" :lg="12">
-                                                    <h2 style="color: inherit; font-weight: bold; font-size: 18px; padding: 10px 20px; border-bottom: 2px solid;">
-                                                        <a-icon type="warning" style="color: inherit; font-size: 24px;"></a-icon>
+                                                    <h2 class="collapse-title">
+                                                        <a-icon type="warning"></a-icon>
                                                         {{ i18n "pages.settings.templates.blockConfigsDesc" }}
                                                     </h2>
                                                 </a-row>
@@ -165,8 +191,8 @@
                                             </a-collapse-panel>
                                             <a-collapse-panel header='{{ i18n "pages.settings.templates.blockCountryConfigs"}}'>
                                                 <a-row :xs="24" :sm="24" :lg="12">
-                                                    <h2 style="color: inherit; font-weight: bold; font-size: 18px; padding: 10px 20px; border-bottom: 2px solid;">
-                                                        <a-icon type="warning" style="color: inherit; font-size: 24px;"></a-icon>
+                                                    <h2 class="collapse-title">
+                                                        <a-icon type="warning"></a-icon>
                                                         {{ i18n "pages.settings.templates.blockCountryConfigsDesc" }}
                                                     </h2>
                                                 </a-row>
@@ -179,8 +205,8 @@
                                             </a-collapse-panel>
                                             <a-collapse-panel header='{{ i18n "pages.settings.templates.directCountryConfigs"}}'>
                                                 <a-row :xs="24" :sm="24" :lg="12">
-                                                    <h2 style="color: inherit; font-weight: bold; font-size: 18px; padding: 10px 20px; border-bottom: 2px solid;">
-                                                        <a-icon type="warning" style="color: inherit; font-size: 24px;"></a-icon>
+                                                    <h2 class="collapse-title">
+                                                        <a-icon type="warning"></a-icon>
                                                         {{ i18n "pages.settings.templates.directCountryConfigsDesc" }}
                                                     </h2>
                                                 </a-row>
@@ -193,8 +219,8 @@
                                             </a-collapse-panel>
                                             <a-collapse-panel header='{{ i18n "pages.settings.templates.ipv4Configs"}}'>
                                                 <a-row :xs="24" :sm="24" :lg="12">
-                                                    <h2 style="color: inherit; font-weight: bold; font-size: 18px; padding: 10px 20px; border-bottom: 2px solid;">
-                                                        <a-icon type="warning" style="color: inherit; font-size: 24px;"></a-icon>
+                                                    <h2 class="collapse-title">
+                                                        <a-icon type="warning"></a-icon>
                                                         {{ i18n "pages.settings.templates.ipv4ConfigsDesc" }}
                                                     </h2>
                                                 </a-row>
@@ -203,8 +229,8 @@
                                             </a-collapse-panel>
                                             <a-collapse-panel header='{{ i18n "pages.settings.templates.manualLists"}}'>
                                                 <a-row :xs="24" :sm="24" :lg="12">
-                                                    <h2 style="color: inherit; font-weight: bold; font-size: 18px; padding: 10px 20px; border-bottom: 2px solid;">
-                                                        <a-icon type="warning" style="color: inherit; font-size: 24px;"></a-icon>
+                                                    <h2 class="collapse-title">
+                                                        <a-icon type="warning"></a-icon>
                                                         {{ i18n "pages.settings.templates.manualListsDesc" }}
                                                     </h2>
                                                 </a-row>
@@ -241,8 +267,8 @@
                         </a-tab-pane>
                         <a-tab-pane key="4" tab='{{ i18n "pages.settings.TGBotSettings"}}'>
                             <a-row :xs="24" :sm="24" :lg="12">
-                                <h2 style="color: inherit; font-weight: bold; font-size: 18px; padding: 20px 20px; text-align: center;">
-                                    <a-icon type="warning" style="color: inherit; font-size: 24px;"></a-icon>
+                                <h2 class="alert-msg">
+                                    <a-icon type="warning"></a-icon>
                                     {{ i18n "pages.settings.infoDesc" }}
                                 </h2>
                             </a-row>
@@ -257,8 +283,8 @@
                         </a-tab-pane>
                         <a-tab-pane key="5" tab='{{ i18n "pages.settings.subSettings" }}'>
                             <a-row :xs="24" :sm="24" :lg="12">
-                                <h2 style="color: inherit; font-weight: bold; font-size: 18px; padding: 20px 20px; text-align: center;">
-                                    <a-icon type="warning" style="color: inherit; font-size: 24px;"></a-icon>
+                                <h2 class="alert-msg">
+                                    <a-icon type="warning"></a-icon>
                                     {{ i18n "pages.settings.infoDesc" }}
                                 </h2>
                             </a-row>
