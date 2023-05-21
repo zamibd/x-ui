@@ -331,6 +331,7 @@
 "manualBlockedDomains" = "被阻止的域列表"
 "manualDirectIPs" = "直接 IP 列表"
 "manualDirectDomains" = "直接域列表"
+"manualIPv4Domains" = "IPv4 域名列表"
 
 [pages.settings.toasts]
 "modifySettings" = "修改设置"

@@ -330,6 +330,7 @@
 "manualBlockedDomains" = "لیست دامنه های مسدود شده"
 "manualDirectIPs" = "لیست آی‌پی های مستقیم"
 "manualDirectDomains" = "لیست دامنه های مستقیم"
+"manualIPv4Domains" = "لیست دامنه‌های IPv4"
 
 [pages.settings.toasts]
 "modifySettings" = "ویرایش تنظیمات"

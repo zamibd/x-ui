@@ -332,6 +332,7 @@
 "manualBlockedDomains" = "List of Blocked Domains"
 "manualDirectIPs" = "List of Direct IPs"
 "manualDirectDomains" = "List of Direct Domains"
+"manualIPv4Domains" = "List of IPv4 Domains"
 
 [pages.settings.toasts]
 "modifySettings" = "Modify Settings "

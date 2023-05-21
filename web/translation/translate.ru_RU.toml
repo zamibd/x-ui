@@ -331,6 +331,7 @@
 "manualBlockedDomains" = "Список заблокированных доменов"
 "manualDirectIPs" = "Список прямых IP-адресов"
 "manualDirectDomains" = "Список прямых доменов"
+"manualIPv4Domains" = "Список доменов IPv4"
 
 [pages.settings.toasts]
 "modifySettings" = "Изменение настроек"
