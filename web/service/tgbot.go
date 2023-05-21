@@ -1,6 +1,7 @@
 package service
 
 import (
+	"embed"
 	"fmt"
 	"net"
 	"os"
@@ -11,6 +12,7 @@ import (
 	"x-ui/database/model"
 	"x-ui/logger"
 	"x-ui/util/common"
+	"x-ui/web/locale"
 	"x-ui/xray"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
@@ -38,7 +40,16 @@ func (t *Tgbot) NewTgbot() *Tgbot {
 	return new(Tgbot)
 }
 
-func (t *Tgbot) Start() error {
+func (t *Tgbot) I18nBot(name string, params ...string) string {
+	return locale.I18n(locale.Bot, name, params...)
+}
+
+func (t *Tgbot) Start(i18nFS embed.FS) error {
+	err := locale.InitLocalizer(i18nFS, &t.settingService)
+	if err != nil {
+		return err
+	}
+
 	tgBottoken, err := t.settingService.GetTgBotToken()
 	if err != nil || tgBottoken == "" {
 		logger.Warning("Get TgBotToken failed:", err)
