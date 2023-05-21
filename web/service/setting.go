@@ -249,6 +249,10 @@ func (s *SettingService) GetTgCpu() (int, error) {
 	return s.getInt("tgCpu")
 }
 
+func (s *SettingService) GetTgLang() (string, error) {
+	return s.getString("tgLang")
+}
+
 func (s *SettingService) GetPort() (int, error) {
 	return s.getInt("webPort")
 }
