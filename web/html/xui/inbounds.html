@@ -357,6 +357,7 @@
                 this.refreshing = true;
                 const msg = await HttpUtil.post('/xui/inbound/list');
                 if (!msg.success) {
+                    this.refreshing = false;
                     return;
                 }
                 this.setInbounds(msg.obj);
