@@ -23,14 +23,12 @@ xray panel supporting multi-protocol, **Multi-lang (English,Farsi,Chinese,Russia
 | Subscription link + userInfo         | :heavy_check_mark: |
 | Calculate expire date on first usage | :heavy_check_mark: |
 
-
 **If you think this project is helpful to you, you may wish to give a** :star2:
 
 **Buy Me a Coffee :**
 
 - Tron USDT (TRC20): `TYTq73Gj6dJ67qe58JVPD9zpjW2cc9XgVz`
 - Tezos (XTZ): tz2Wnh2SsY1eezXrcLChu6idWpgdHzUFQcts
-
 
 # Install & Upgrade to latest version
 
@@ -207,7 +205,7 @@ Reference syntax:
 - CPU threshold notification
 - Threshold for Expiration time and Traffic to report in advance
 - Support client report menu if client's telegram username added to the user's configurations
-- Support telegram traffic report searched with UID (VMESS/VLESS) or Password (TROJAN) - anonymously
+- Support telegram traffic report searched with UUID (VMESS/VLESS) or Password (TROJAN) - anonymously
 - Menu based bot
 - Search client by email ( only admin )
 - Check all inbounds
