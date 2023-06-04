@@ -379,14 +379,14 @@ func (s *InboundService) AddInboundClient(data *model.Inbound) (bool, error) {
 	for _, client := range clients {
 		if len(client.Email) > 0 {
 			s.AddClientStat(tx, data.Id, &client)
-			err = s.xrayApi.AddUser(string(oldInbound.Protocol), oldInbound.Tag, map[string]interface{}{
+			err1 := s.xrayApi.AddUser(string(oldInbound.Protocol), oldInbound.Tag, map[string]interface{}{
 				"email":    client.Email,
 				"id":       client.ID,
 				"alterId":  client.AlterIds,
 				"flow":     client.Flow,
 				"password": client.Password,
 			})
-			if err == nil {
+			if err1 == nil {
 				logger.Debug("Client added by api:", client.Email)
 			} else {
 				needRestart = true
@@ -558,14 +558,14 @@ func (s *InboundService) UpdateInboundClient(data *model.Inbound, clientId strin
 	if len(oldEmail) > 0 {
 		s.xrayApi.RemoveUser(oldInbound.Tag, oldEmail)
 		if clients[0].Enable {
-			err = s.xrayApi.AddUser(string(oldInbound.Protocol), oldInbound.Tag, map[string]interface{}{
+			err1 := s.xrayApi.AddUser(string(oldInbound.Protocol), oldInbound.Tag, map[string]interface{}{
 				"email":    clients[0].Email,
 				"id":       clients[0].ID,
 				"alterId":  clients[0].AlterIds,
 				"flow":     clients[0].Flow,
 				"password": clients[0].Password,
 			})
-			if err == nil {
+			if err1 == nil {
 				logger.Debug("Client edited by api:", clients[0].Email)
 				needRestart = false
 			}
@@ -821,14 +821,14 @@ func (s *InboundService) ResetClientTraffic(id int, clientEmail string) (bool, e
 		for _, client := range clients {
 			if client.Email == clientEmail {
 				s.xrayApi.Init(p.GetAPIPort())
-				err = s.xrayApi.AddUser(string(inbound.Protocol), inbound.Tag, map[string]interface{}{
+				err1 := s.xrayApi.AddUser(string(inbound.Protocol), inbound.Tag, map[string]interface{}{
 					"email":    client.Email,
 					"id":       client.ID,
 					"alterId":  client.AlterIds,
 					"flow":     client.Flow,
 					"password": client.Password,
 				})
-				if err == nil {
+				if err1 == nil {
 					logger.Debug("Client enabled due to reset traffic:", clientEmail)
 				} else {
 					needRestart = true
