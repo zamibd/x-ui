@@ -157,11 +157,19 @@ func (s *InboundService) AddInbound(inbound *model.Inbound) (*model.Inbound, err
 	}
 
 	db := database.GetDB()
+	tx := db.Begin()
+	defer func() {
+		if err == nil {
+			tx.Commit()
+		} else {
+			tx.Rollback()
+		}
+	}()
 
-	err = db.Save(inbound).Error
+	err = tx.Save(inbound).Error
 	if err == nil {
 		for _, client := range clients {
-			s.AddClientStat(inbound.Id, &client)
+			s.AddClientStat(tx, inbound.Id, &client)
 		}
 	}
 	return inbound, err
@@ -293,11 +301,22 @@ func (s *InboundService) AddInboundClient(data *model.Inbound) (bool, error) {
 
 	oldInbound.Settings = string(newSettings)
 
+	db := database.GetDB()
+	tx := db.Begin()
+
+	defer func() {
+		if err != nil {
+			tx.Rollback()
+		} else {
+			tx.Commit()
+		}
+	}()
+
 	needRestart := false
 	s.xrayApi.Init(p.GetAPIPort())
 	for _, client := range clients {
 		if len(client.Email) > 0 {
-			s.AddClientStat(data.Id, &client)
+			s.AddClientStat(tx, data.Id, &client)
 			err = s.xrayApi.AddUser(string(oldInbound.Protocol), oldInbound.Tag, map[string]interface{}{
 				"email":    client.Email,
 				"id":       client.ID,
@@ -316,8 +335,7 @@ func (s *InboundService) AddInboundClient(data *model.Inbound) (bool, error) {
 	}
 	s.xrayApi.Close()
 
-	db := database.GetDB()
-	return needRestart, db.Save(oldInbound).Error
+	return needRestart, tx.Save(oldInbound).Error
 }
 
 func (s *InboundService) DelInboundClient(inboundId int, clientId string) (bool, error) {
@@ -448,6 +466,15 @@ func (s *InboundService) UpdateInboundClient(data *model.Inbound, clientId strin
 
 	oldInbound.Settings = string(newSettings)
 	db := database.GetDB()
+	tx := db.Begin()
+
+	defer func() {
+		if err != nil {
+			tx.Rollback()
+		} else {
+			tx.Commit()
+		}
+	}()
 
 	if len(clients[0].Email) > 0 {
 		if len(oldEmail) > 0 {
@@ -456,10 +483,10 @@ func (s *InboundService) UpdateInboundClient(data *model.Inbound, clientId strin
 				return false, err
 			}
 		} else {
-			s.AddClientStat(data.Id, &clients[0])
+			s.AddClientStat(tx, data.Id, &clients[0])
 		}
 	} else {
-		err = s.DelClientStat(db, oldEmail)
+		err = s.DelClientStat(tx, oldEmail)
 		if err != nil {
 			return false, err
 		}
@@ -486,7 +513,7 @@ func (s *InboundService) UpdateInboundClient(data *model.Inbound, clientId strin
 		}
 	}
 	s.xrayApi.Close()
-	return needRestart, db.Save(oldInbound).Error
+	return needRestart, tx.Save(oldInbound).Error
 }
 
 func (s *InboundService) AddTraffic(traffics []*xray.Traffic) error {
@@ -675,9 +702,7 @@ func (s *InboundService) MigrationRemoveOrphanedTraffics() {
 	`)
 }
 
-func (s *InboundService) AddClientStat(inboundId int, client *model.Client) error {
-	db := database.GetDB()
-
+func (s *InboundService) AddClientStat(tx *gorm.DB, inboundId int, client *model.Client) error {
 	clientTraffic := xray.ClientTraffic{}
 	clientTraffic.InboundId = inboundId
 	clientTraffic.Email = client.Email
@@ -686,7 +711,7 @@ func (s *InboundService) AddClientStat(inboundId int, client *model.Client) erro
 	clientTraffic.Enable = true
 	clientTraffic.Up = 0
 	clientTraffic.Down = 0
-	result := db.Create(&clientTraffic)
+	result := tx.Create(&clientTraffic)
 	err := result.Error
 	if err != nil {
 		return err
@@ -977,10 +1002,19 @@ func (s *InboundService) SearchInbounds(query string) ([]*model.Inbound, error) 
 
 func (s *InboundService) MigrationRequirements() {
 	db := database.GetDB()
+	tx := db.Begin()
+	var err error
+	defer func() {
+		if err == nil {
+			tx.Commit()
+		} else {
+			tx.Rollback()
+		}
+	}()
 
 	// Fix inbounds based problems
 	var inbounds []*model.Inbound
-	err := db.Model(model.Inbound{}).Where("protocol IN (?)", []string{"vmess", "vless", "trojan"}).Find(&inbounds).Error
+	err = tx.Model(model.Inbound{}).Where("protocol IN (?)", []string{"vmess", "vless", "trojan"}).Find(&inbounds).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return
 	}
@@ -1024,17 +1058,17 @@ func (s *InboundService) MigrationRequirements() {
 		for _, modelClient := range modelClients {
 			if len(modelClient.Email) > 0 {
 				var count int64
-				db.Model(xray.ClientTraffic{}).Where("email = ?", modelClient.Email).Count(&count)
+				tx.Model(xray.ClientTraffic{}).Where("email = ?", modelClient.Email).Count(&count)
 				if count == 0 {
-					s.AddClientStat(inbounds[inbound_index].Id, &modelClient)
+					s.AddClientStat(tx, inbounds[inbound_index].Id, &modelClient)
 				}
 			}
 		}
 	}
-	db.Save(inbounds)
+	tx.Save(inbounds)
 
 	// Remove orphaned traffics
-	db.Where("inbound_id = 0").Delete(xray.ClientTraffic{})
+	tx.Where("inbound_id = 0").Delete(xray.ClientTraffic{})
 }
 
 func (s *InboundService) MigrateDB() {
