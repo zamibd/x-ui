@@ -239,6 +239,12 @@ func (s *InboundService) UpdateInbound(inbound *model.Inbound) (*model.Inbound, 
 	if err != nil {
 		return inbound, err
 	}
+
+	err = s.updateClientTraffics(oldInbound, inbound)
+	if err != nil {
+		return inbound, err
+	}
+
 	oldInbound.Up = inbound.Up
 	oldInbound.Down = inbound.Down
 	oldInbound.Total = inbound.Total
@@ -255,6 +261,62 @@ func (s *InboundService) UpdateInbound(inbound *model.Inbound) (*model.Inbound, 
 
 	db := database.GetDB()
 	return inbound, db.Save(oldInbound).Error
+}
+
+func (s *InboundService) updateClientTraffics(oldInbound *model.Inbound, newInbound *model.Inbound) error {
+	oldClients, err := s.GetClients(oldInbound)
+	if err != nil {
+		return err
+	}
+	newClients, err := s.GetClients(newInbound)
+	if err != nil {
+		return err
+	}
+
+	db := database.GetDB()
+	tx := db.Begin()
+
+	defer func() {
+		if err != nil {
+			tx.Rollback()
+		} else {
+			tx.Commit()
+		}
+	}()
+
+	var emailExists bool
+
+	for _, oldClient := range oldClients {
+		emailExists = false
+		for _, newClient := range newClients {
+			if oldClient.Email == newClient.Email {
+				emailExists = true
+				break
+			}
+		}
+		if !emailExists {
+			err = s.DelClientStat(tx, oldClient.Email)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	for _, newClient := range newClients {
+		emailExists = false
+		for _, oldClient := range oldClients {
+			if newClient.Email == oldClient.Email {
+				emailExists = true
+				break
+			}
+		}
+		if !emailExists {
+			err = s.AddClientStat(tx, oldInbound.Id, &newClient)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }
 
 func (s *InboundService) AddInboundClient(data *model.Inbound) (bool, error) {
