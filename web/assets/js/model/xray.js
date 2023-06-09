@@ -465,6 +465,7 @@ class TlsStreamSettings extends XrayCommonClass {
                 minVersion = TLS_VERSION_OPTION.TLS10,
                 maxVersion = TLS_VERSION_OPTION.TLS12,
                 cipherSuites = '',
+                rejectUnknownSni = false,
                 certificates=[new TlsStreamSettings.Cert()],
                 alpn=[],
                 settings=new TlsStreamSettings.Settings()) {
@@ -473,6 +474,7 @@ class TlsStreamSettings extends XrayCommonClass {
         this.minVersion = minVersion;
         this.maxVersion = maxVersion;
         this.cipherSuites = cipherSuites;
+        this.rejectUnknownSni = rejectUnknownSni;
         this.certs = certificates;
         this.alpn = alpn;
         this.settings = settings;
@@ -501,6 +503,7 @@ class TlsStreamSettings extends XrayCommonClass {
             json.minVersion,
             json.maxVersion,
             json.cipherSuites,
+            json.rejectUnknownSni,
             certs,
             json.alpn,
             settings,
@@ -513,6 +516,7 @@ class TlsStreamSettings extends XrayCommonClass {
             minVersion: this.minVersion,
             maxVersion: this.maxVersion,
             cipherSuites: this.cipherSuites,
+            rejectUnknownSni: this.rejectUnknownSni,
             certificates: TlsStreamSettings.toJsonArray(this.certs),
             alpn: this.alpn,
             settings: this.settings,
