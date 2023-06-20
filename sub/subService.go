@@ -558,10 +558,6 @@ func (s *SubService) genTrojanLink(inbound *model.Inbound, email string) string 
 				}
 			}
 		}
-
-		if streamNetwork == "tcp" && len(clients[clientIndex].Flow) > 0 {
-			params["flow"] = clients[clientIndex].Flow
-		}
 	}
 
 	link := fmt.Sprintf("trojan://%s@%s:%d", password, address, port)
