@@ -54,23 +54,11 @@
         },
     };
 
-    const protocols = {
-        VMESS: Protocols.VMESS,
-        VLESS: Protocols.VLESS,
-        TROJAN: Protocols.TROJAN,
-        SHADOWSOCKS: Protocols.SHADOWSOCKS,
-        DOKODEMO: Protocols.DOKODEMO,
-        SOCKS: Protocols.SOCKS,
-        HTTP: Protocols.HTTP,
-    };
-
     new Vue({
         delimiters: ['[[', ']]'],
         el: '#inbound-modal',
         data: {
             inModal: inModal,
-            Protocols: protocols,
-            SSMethods: SSMethods,
             delayedStart: false,
             get inbound() {
                 return inModal.inbound;
