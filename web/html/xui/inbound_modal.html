@@ -100,6 +100,17 @@
                     this.inModal.inbound.reality = false;
                 }
             },
+            SSMethodChange() {
+                if (this.inModal.inbound.isSSMultiUser) {
+                    if (this.inModal.inbound.settings.shadowsockses.length ==0){
+                        this.inModal.inbound.settings.shadowsockses = [new Inbound.ShadowsocksSettings.Shadowsocks()];
+                    }
+                } else {
+                    if (this.inModal.inbound.settings.shadowsockses.length > 0){
+                        this.inModal.inbound.settings.shadowsockses = [];
+                    }
+                }
+            },
             setDefaultCertData(index){
                 inModal.inbound.stream.tls.certs[index].certFile = app.defaultCert;
                 inModal.inbound.stream.tls.certs[index].keyFile = app.defaultKey;
