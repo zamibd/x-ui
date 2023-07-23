@@ -448,11 +448,16 @@ func (s *InboundService) AddInboundClient(data *model.Inbound) (bool, error) {
 		if len(client.Email) > 0 {
 			s.AddClientStat(tx, data.Id, &client)
 			if client.Enable {
+				cipher := ""
+				if oldInbound.Protocol == "shadowsocks" {
+					cipher = oldSettings["method"].(string)
+				}
 				err1 := s.xrayApi.AddUser(string(oldInbound.Protocol), oldInbound.Tag, map[string]interface{}{
 					"email":    client.Email,
 					"id":       client.ID,
 					"flow":     client.Flow,
 					"password": client.Password,
+					"cipher":   cipher,
 				})
 				if err1 == nil {
 					logger.Debug("Client added by api:", client.Email)
@@ -631,11 +636,16 @@ func (s *InboundService) UpdateInboundClient(data *model.Inbound, clientId strin
 		s.xrayApi.Init(p.GetAPIPort())
 		s.xrayApi.RemoveUser(oldInbound.Tag, oldEmail)
 		if clients[0].Enable {
+			cipher := ""
+			if oldInbound.Protocol == "shadowsocks" {
+				cipher = oldSettings["method"].(string)
+			}
 			err1 := s.xrayApi.AddUser(string(oldInbound.Protocol), oldInbound.Tag, map[string]interface{}{
 				"email":    clients[0].Email,
 				"id":       clients[0].ID,
 				"flow":     clients[0].Flow,
 				"password": clients[0].Password,
+				"cipher":   cipher,
 			})
 			if err1 == nil {
 				logger.Debug("Client edited by api:", clients[0].Email)
@@ -645,7 +655,6 @@ func (s *InboundService) UpdateInboundClient(data *model.Inbound, clientId strin
 			}
 		} else {
 			logger.Debug("Client disabled by api:", clients[0].Email)
-			needRestart = false
 		}
 		s.xrayApi.Close()
 	} else {
@@ -928,11 +937,21 @@ func (s *InboundService) ResetClientTraffic(id int, clientEmail string) (bool, e
 		for _, client := range clients {
 			if client.Email == clientEmail {
 				s.xrayApi.Init(p.GetAPIPort())
+				cipher := ""
+				if string(inbound.Protocol) == "shadowsocks" {
+					var oldSettings map[string]interface{}
+					err = json.Unmarshal([]byte(inbound.Settings), &oldSettings)
+					if err != nil {
+						return false, err
+					}
+					cipher = oldSettings["method"].(string)
+				}
 				err1 := s.xrayApi.AddUser(string(inbound.Protocol), inbound.Tag, map[string]interface{}{
 					"email":    client.Email,
 					"id":       client.ID,
 					"flow":     client.Flow,
 					"password": client.Password,
+					"cipher":   cipher,
 				})
 				if err1 == nil {
 					logger.Debug("Client enabled due to reset traffic:", clientEmail)
