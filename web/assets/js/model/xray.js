@@ -522,13 +522,14 @@ class TlsStreamSettings extends XrayCommonClass {
 }
 
 TlsStreamSettings.Cert = class extends XrayCommonClass {
-    constructor(useFile=true, certificateFile='', keyFile='', certificate='', key='') {
+    constructor(useFile=true, certificateFile='', keyFile='', certificate='', key='', ocspStapling=3600) {
         super();
         this.useFile = useFile;
         this.certFile = certificateFile;
         this.keyFile = keyFile;
         this.cert = certificate instanceof Array ? certificate.join('\n') : certificate;
         this.key = key instanceof Array ? key.join('\n') : key;
+        this.ocspStapling = ocspStapling;
     }
 
     static fromJson(json={}) {
@@ -536,13 +537,15 @@ TlsStreamSettings.Cert = class extends XrayCommonClass {
             return new TlsStreamSettings.Cert(
                 true,
                 json.certificateFile,
-                json.keyFile,
+                json.keyFile, '', '',
+                json.ocspStapling,
             );
         } else {
             return new TlsStreamSettings.Cert(
                 false, '', '',
                 json.certificate.join('\n'),
                 json.key.join('\n'),
+                json.ocspStapling,
             );
         }
     }
@@ -552,11 +555,13 @@ TlsStreamSettings.Cert = class extends XrayCommonClass {
             return {
                 certificateFile: this.certFile,
                 keyFile: this.keyFile,
+                ocspStapling: this.ocspStapling,
             };
         } else {
             return {
                 certificate: this.cert.split('\n'),
                 key: this.key.split('\n'),
+                ocspStapling: this.ocspStapling,
             };
         }
     }
@@ -904,7 +909,7 @@ class Inbound extends XrayCommonClass {
         } else if (this.isWs) {
             return this.stream.ws.path;
         } else if (this.isH2) {
-            return this.stream.http.path[0];
+            return this.stream.http.path;
         }
         return null;
     }
