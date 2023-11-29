@@ -96,7 +96,14 @@ func (s *SubService) GetSubs(subId string, host string, showInfo bool) ([]string
 func (s *SubService) getInboundsBySubId(subId string) ([]*model.Inbound, error) {
 	db := database.GetDB()
 	var inbounds []*model.Inbound
-	err := db.Model(model.Inbound{}).Preload("ClientStats").Where("settings like ? and enable = ?", fmt.Sprintf(`%%"subId": "%s"%%`, subId), true).Find(&inbounds).Error
+	err := db.Model(model.Inbound{}).Preload("ClientStats").Where(`id in (
+		SELECT DISTINCT inbounds.id
+		FROM inbounds,
+			JSON_EACH(JSON_EXTRACT(inbounds.settings, '$.clients')) AS client 
+		WHERE
+			protocol in ('vmess','vless','trojan','shadowsocks')
+			AND JSON_EXTRACT(client.value, '$.subId') = ? AND enable = ?
+	)`, subId, true).Find(&inbounds).Error
 	if err != nil {
 		return nil, err
 	}
@@ -196,7 +203,6 @@ func (s *SubService) genVmessLink(inbound *model.Inbound, email string) string {
 	}
 
 	security, _ := stream["security"].(string)
-	var domains []interface{}
 	obj["tls"] = security
 	if security == "tls" {
 		tlsSetting, _ := stream["tlsSettings"].(map[string]interface{})
@@ -219,9 +225,6 @@ func (s *SubService) genVmessLink(inbound *model.Inbound, email string) string {
 			if insecure, ok := searchKey(tlsSettings, "allowInsecure"); ok {
 				obj["allowInsecure"], _ = insecure.(bool)
 			}
-			if domainSettings, ok := searchKey(tlsSettings, "domains"); ok {
-				domains, _ = domainSettings.([]interface{})
-			}
 		}
 		serverName, _ := tlsSetting["serverName"].(string)
 		if serverName != "" {
@@ -239,16 +242,35 @@ func (s *SubService) genVmessLink(inbound *model.Inbound, email string) string {
 	}
 	obj["id"] = clients[clientIndex].ID
 
-	if len(domains) > 0 {
+	externalProxies, _ := stream["externalProxy"].([]interface{})
+
+	if len(externalProxies) > 0 {
 		links := ""
-		for index, d := range domains {
-			domain := d.(map[string]interface{})
-			obj["ps"] = s.genRemark(inbound, email, domain["remark"].(string))
-			obj["add"] = domain["domain"].(string)
+		for index, externalProxy := range externalProxies {
+			ep, _ := externalProxy.(map[string]interface{})
+			newSecurity, _ := ep["forceTls"].(string)
+			newObj := map[string]interface{}{}
+			for key, value := range obj {
+				if !(newSecurity == "none" && (key == "alpn" || key == "sni" || key == "fp" || key == "allowInsecure")) {
+					newObj[key] = value
+				}
+			}
+			newObj["ps"] = s.genRemark(inbound, email, ep["remark"].(string))
+			dest, _ := ep["dest"].(string)
+			d := strings.Split(dest, ":")
+			if len(d) == 2 {
+				newObj["add"] = d[0]
+				newObj["port"] = d[1]
+			} else {
+				newObj["add"] = d[0]
+			}
+			if newSecurity != "same" {
+				newObj["tls"] = newSecurity
+			}
 			if index > 0 {
 				links += "\n"
 			}
-			jsonStr, _ := json.MarshalIndent(obj, "", "  ")
+			jsonStr, _ := json.MarshalIndent(newObj, "", "  ")
 			links += "vmess://" + base64.StdEncoding.EncodeToString(jsonStr)
 		}
 		return links
@@ -323,7 +345,6 @@ func (s *SubService) genVlessLink(inbound *model.Inbound, email string) string {
 	}
 
 	security, _ := stream["security"].(string)
-	var domains []interface{}
 	if security == "tls" {
 		params["security"] = "tls"
 		tlsSetting, _ := stream["tlsSettings"].(map[string]interface{})
@@ -347,9 +368,6 @@ func (s *SubService) genVlessLink(inbound *model.Inbound, email string) string {
 				if insecure.(bool) {
 					params["allowInsecure"] = "1"
 				}
-			}
-			if domainSettings, ok := searchKey(tlsSettings, "domains"); ok {
-				domains, _ = domainSettings.([]interface{})
 			}
 		}
 
@@ -401,6 +419,48 @@ func (s *SubService) genVlessLink(inbound *model.Inbound, email string) string {
 		}
 	}
 
+	externalProxies, _ := stream["externalProxy"].([]interface{})
+
+	if len(externalProxies) > 0 {
+		links := ""
+		for index, externalProxy := range externalProxies {
+			ep, _ := externalProxy.(map[string]interface{})
+			newSecurity, _ := ep["forceTls"].(string)
+			dest, _ := ep["dest"].(string)
+			d := strings.Split(dest, ":")
+			link := ""
+			if len(d) == 2 {
+				link = fmt.Sprintf("vless://%s@%s:%s", uuid, d[0], d[1])
+			} else {
+				link = fmt.Sprintf("vless://%s@%s:%d", uuid, d[0], port)
+			}
+			if newSecurity != "same" {
+				params["security"] = newSecurity
+			} else {
+				params["security"] = security
+			}
+			url, _ := url.Parse(link)
+			q := url.Query()
+
+			for k, v := range params {
+				if !(newSecurity == "none" && (k == "alpn" || k == "sni" || k == "fp" || k == "allowInsecure")) {
+					q.Add(k, v)
+				}
+			}
+
+			// Set the new query values on the URL
+			url.RawQuery = q.Encode()
+
+			url.Fragment = s.genRemark(inbound, email, ep["remark"].(string))
+
+			if index > 0 {
+				links += "\n"
+			}
+			links += url.String()
+		}
+		return links
+	}
+
 	link := fmt.Sprintf("vless://%s@%s:%d", uuid, address, port)
 	url, _ := url.Parse(link)
 	q := url.Query()
@@ -411,20 +471,6 @@ func (s *SubService) genVlessLink(inbound *model.Inbound, email string) string {
 
 	// Set the new query values on the URL
 	url.RawQuery = q.Encode()
-
-	if len(domains) > 0 {
-		links := ""
-		for index, d := range domains {
-			domain := d.(map[string]interface{})
-			url.Fragment = s.genRemark(inbound, email, domain["remark"].(string))
-			url.Host = fmt.Sprintf("%s:%d", domain["domain"].(string), port)
-			if index > 0 {
-				links += "\n"
-			}
-			links += url.String()
-		}
-		return links
-	}
 
 	url.Fragment = s.genRemark(inbound, email, "")
 	return url.String()
@@ -493,7 +539,6 @@ func (s *SubService) genTrojanLink(inbound *model.Inbound, email string) string 
 	}
 
 	security, _ := stream["security"].(string)
-	var domains []interface{}
 	if security == "tls" {
 		params["security"] = "tls"
 		tlsSetting, _ := stream["tlsSettings"].(map[string]interface{})
@@ -517,9 +562,6 @@ func (s *SubService) genTrojanLink(inbound *model.Inbound, email string) string 
 				if insecure.(bool) {
 					params["allowInsecure"] = "1"
 				}
-			}
-			if domainSettings, ok := searchKey(tlsSettings, "domains"); ok {
-				domains, _ = domainSettings.([]interface{})
 			}
 		}
 
@@ -563,6 +605,48 @@ func (s *SubService) genTrojanLink(inbound *model.Inbound, email string) string 
 		}
 	}
 
+	externalProxies, _ := stream["externalProxy"].([]interface{})
+
+	if len(externalProxies) > 0 {
+		links := ""
+		for index, externalProxy := range externalProxies {
+			ep, _ := externalProxy.(map[string]interface{})
+			newSecurity, _ := ep["forceTls"].(string)
+			dest, _ := ep["dest"].(string)
+			d := strings.Split(dest, ":")
+			link := ""
+			if len(d) == 2 {
+				link = fmt.Sprintf("trojan://%s@%s:%s", password, d[0], d[1])
+			} else {
+				link = fmt.Sprintf("trojan://%s@%s:%d", password, d[0], port)
+			}
+			if newSecurity != "same" {
+				params["security"] = newSecurity
+			} else {
+				params["security"] = security
+			}
+			url, _ := url.Parse(link)
+			q := url.Query()
+
+			for k, v := range params {
+				if !(newSecurity == "none" && (k == "alpn" || k == "sni" || k == "fp" || k == "allowInsecure")) {
+					q.Add(k, v)
+				}
+			}
+
+			// Set the new query values on the URL
+			url.RawQuery = q.Encode()
+
+			url.Fragment = s.genRemark(inbound, email, ep["remark"].(string))
+
+			if index > 0 {
+				links += "\n"
+			}
+			links += url.String()
+		}
+		return links
+	}
+
 	link := fmt.Sprintf("trojan://%s@%s:%d", password, address, port)
 
 	url, _ := url.Parse(link)
@@ -574,20 +658,6 @@ func (s *SubService) genTrojanLink(inbound *model.Inbound, email string) string 
 
 	// Set the new query values on the URL
 	url.RawQuery = q.Encode()
-
-	if len(domains) > 0 {
-		links := ""
-		for index, d := range domains {
-			domain := d.(map[string]interface{})
-			url.Fragment = s.genRemark(inbound, email, domain["remark"].(string))
-			url.Host = fmt.Sprintf("%s:%d", domain["domain"].(string), port)
-			if index > 0 {
-				links += "\n"
-			}
-			links += url.String()
-		}
-		return links
-	}
 
 	url.Fragment = s.genRemark(inbound, email, "")
 	return url.String()
@@ -662,6 +732,41 @@ func (s *SubService) genShadowsocksLink(inbound *model.Inbound, email string) st
 	if method[0] == '2' {
 		encPart = fmt.Sprintf("%s:%s:%s", method, inboundPassword, clients[clientIndex].Password)
 	}
+
+	externalProxies, _ := stream["externalProxy"].([]interface{})
+
+	if len(externalProxies) > 0 {
+		links := ""
+		for index, externalProxy := range externalProxies {
+			ep, _ := externalProxy.(map[string]interface{})
+			dest, _ := ep["dest"].(string)
+			d := strings.Split(dest, ":")
+			link := ""
+			if len(d) == 2 {
+				link = fmt.Sprintf("ss://%s@%s:%s", base64.StdEncoding.EncodeToString([]byte(encPart)), d[0], d[1])
+			} else {
+				link = fmt.Sprintf("ss://%s@%s:%d", base64.StdEncoding.EncodeToString([]byte(encPart)), d[0], inbound.Port)
+			}
+			url, _ := url.Parse(link)
+			q := url.Query()
+
+			for k, v := range params {
+				q.Add(k, v)
+			}
+
+			// Set the new query values on the URL
+			url.RawQuery = q.Encode()
+
+			url.Fragment = s.genRemark(inbound, email, ep["remark"].(string))
+
+			if index > 0 {
+				links += "\n"
+			}
+			links += url.String()
+		}
+		return links
+	}
+
 	link := fmt.Sprintf("ss://%s@%s:%d", base64.StdEncoding.EncodeToString([]byte(encPart)), address, inbound.Port)
 	url, _ := url.Parse(link)
 	q := url.Query()
@@ -672,6 +777,7 @@ func (s *SubService) genShadowsocksLink(inbound *model.Inbound, email string) st
 
 	// Set the new query values on the URL
 	url.RawQuery = q.Encode()
+
 	url.Fragment = s.genRemark(inbound, email, "")
 	return url.String()
 }
