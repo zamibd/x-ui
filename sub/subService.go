@@ -718,6 +718,35 @@ func (s *SubService) genShadowsocksLink(inbound *model.Inbound, email string) st
 		}
 	}
 
+	security, _ := stream["security"].(string)
+	if security == "tls" {
+		params["security"] = "tls"
+		tlsSetting, _ := stream["tlsSettings"].(map[string]interface{})
+		alpns, _ := tlsSetting["alpn"].([]interface{})
+		var alpn []string
+		for _, a := range alpns {
+			alpn = append(alpn, a.(string))
+		}
+		if len(alpn) > 0 {
+			params["alpn"] = strings.Join(alpn, ",")
+		}
+		if sniValue, ok := searchKey(tlsSetting, "serverName"); ok {
+			params["sni"], _ = sniValue.(string)
+		}
+
+		tlsSettings, _ := searchKey(tlsSetting, "settings")
+		if tlsSetting != nil {
+			if fpValue, ok := searchKey(tlsSettings, "fingerprint"); ok {
+				params["fp"], _ = fpValue.(string)
+			}
+			if insecure, ok := searchKey(tlsSettings, "allowInsecure"); ok {
+				if insecure.(bool) {
+					params["allowInsecure"] = "1"
+				}
+			}
+		}
+	}
+
 	encPart := fmt.Sprintf("%s:%s", method, clients[clientIndex].Password)
 	if method[0] == '2' {
 		encPart = fmt.Sprintf("%s:%s:%s", method, inboundPassword, clients[clientIndex].Password)
@@ -729,6 +758,7 @@ func (s *SubService) genShadowsocksLink(inbound *model.Inbound, email string) st
 		links := ""
 		for index, externalProxy := range externalProxies {
 			ep, _ := externalProxy.(map[string]interface{})
+			newSecurity, _ := ep["forceTls"].(string)
 			dest, _ := ep["dest"].(string)
 			d := strings.Split(dest, ":")
 			link := ""
@@ -737,11 +767,18 @@ func (s *SubService) genShadowsocksLink(inbound *model.Inbound, email string) st
 			} else {
 				link = fmt.Sprintf("ss://%s@%s:%d", base64.StdEncoding.EncodeToString([]byte(encPart)), d[0], inbound.Port)
 			}
+			if newSecurity != "same" {
+				params["security"] = newSecurity
+			} else {
+				params["security"] = security
+			}
 			url, _ := url.Parse(link)
 			q := url.Query()
 
 			for k, v := range params {
-				q.Add(k, v)
+				if !(newSecurity == "none" && (k == "alpn" || k == "sni" || k == "fp" || k == "allowInsecure")) {
+					q.Add(k, v)
+				}
 			}
 
 			// Set the new query values on the URL

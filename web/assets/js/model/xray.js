@@ -962,7 +962,7 @@ class Inbound extends XrayCommonClass {
     }
 
     canEnableTls() {
-        if(![Protocols.VMESS, Protocols.VLESS, Protocols.TROJAN].includes(this.protocol)) return false;
+        if(![Protocols.VMESS, Protocols.VLESS, Protocols.TROJAN, Protocols.SHADOWSOCKS].includes(this.protocol)) return false;
         return ["tcp", "ws", "http", "quic", "grpc"].includes(this.network);
     }
 
@@ -1166,9 +1166,10 @@ class Inbound extends XrayCommonClass {
         return url.toString();
     }
 
-    genSSLink(address='', port=this.port, remark='', clientPassword) {
+    genSSLink(address='', port=this.port, forceTls, remark='', clientPassword) {
         let settings = this.settings;
         const type = this.stream.network;
+        const security = forceTls == 'same' ? this.stream.security : forceTls;
         const params = new Map();
         params.set("type", this.stream.network);
         switch (type) {
@@ -1218,6 +1219,21 @@ class Inbound extends XrayCommonClass {
                 }
                 break;
         }
+
+        if (security === 'tls') {
+            params.set("security", "tls");
+            if (this.stream.isTls){
+                params.set("fp" , this.stream.tls.settings.fingerprint);
+                params.set("alpn", this.stream.tls.alpn);
+                if(this.stream.tls.settings.allowInsecure){
+                    params.set("allowInsecure", "1");
+                }
+                if (!ObjectUtil.isEmpty(this.stream.tls.sni)){
+                    params.set("sni", this.stream.tls.sni);
+                }
+            }
+        }
+
 
         let password = new Array();
         if (this.isSS2022) password.push(settings.password);
@@ -1330,7 +1346,7 @@ class Inbound extends XrayCommonClass {
             case Protocols.VLESS:
                 return this.genVLESSLink(address, port, forceTls, remark, client.id, client.flow);
             case Protocols.SHADOWSOCKS: 
-                return this.genSSLink(address, port, remark, this.isSSMultiUser ? client.password : '');
+                return this.genSSLink(address, port, forceTls, remark, this.isSSMultiUser ? client.password : '');
             case Protocols.TROJAN:
                 return this.genTrojanLink(address, port, forceTls, remark, client.password);
             default: return '';
@@ -1377,7 +1393,7 @@ class Inbound extends XrayCommonClass {
             });
             return links.join('\r\n');
         } else {
-            if(this.protocol == Protocols.SHADOWSOCKS && !this.isSSMultiUser) return this.genSSLink(this.listen, this.port, remark);
+            if(this.protocol == Protocols.SHADOWSOCKS && !this.isSSMultiUser) return this.genSSLink(this.listen, this.port, forceTls, remark);
             return '';
         }
     }
