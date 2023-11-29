@@ -988,6 +988,7 @@
                         newInbound = newDbInbound.toInbound();
                         newInbound.stream.security = rootInbound.stream.security;
                         newInbound.stream.tls = rootInbound.stream.tls;
+                        newInbound.stream.externalProxy = rootInbound.stream.externalProxy;
                         newDbInbound.streamSettings = newInbound.stream.toString();
                     }
                 }

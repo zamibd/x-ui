@@ -53,6 +53,7 @@ func (s *SubService) GetSubs(subId string, host string, showInfo bool) ([]string
 				json.Unmarshal([]byte(fallbackMaster.StreamSettings), &masterStream)
 				stream["security"] = masterStream["security"]
 				stream["tlsSettings"] = masterStream["tlsSettings"]
+				stream["externalProxy"] = masterStream["externalProxy"]
 				modifiedStream, _ := json.MarshalIndent(stream, "", "  ")
 				inbound.StreamSettings = string(modifiedStream)
 			}
