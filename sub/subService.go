@@ -214,21 +214,18 @@ func (s *SubService) genVmessLink(inbound *model.Inbound, email string) string {
 			}
 			obj["alpn"] = strings.Join(alpn, ",")
 		}
+		if sniValue, ok := searchKey(tlsSetting, "serverName"); ok {
+			obj["sni"], _ = sniValue.(string)
+		}
+
 		tlsSettings, _ := searchKey(tlsSetting, "settings")
 		if tlsSetting != nil {
-			if sniValue, ok := searchKey(tlsSettings, "serverName"); ok {
-				obj["sni"], _ = sniValue.(string)
-			}
 			if fpValue, ok := searchKey(tlsSettings, "fingerprint"); ok {
 				obj["fp"], _ = fpValue.(string)
 			}
 			if insecure, ok := searchKey(tlsSettings, "allowInsecure"); ok {
 				obj["allowInsecure"], _ = insecure.(bool)
 			}
-		}
-		serverName, _ := tlsSetting["serverName"].(string)
-		if serverName != "" {
-			obj["add"] = serverName
 		}
 	}
 
@@ -356,11 +353,12 @@ func (s *SubService) genVlessLink(inbound *model.Inbound, email string) string {
 		if len(alpn) > 0 {
 			params["alpn"] = strings.Join(alpn, ",")
 		}
+		if sniValue, ok := searchKey(tlsSetting, "serverName"); ok {
+			params["sni"], _ = sniValue.(string)
+		}
+
 		tlsSettings, _ := searchKey(tlsSetting, "settings")
 		if tlsSetting != nil {
-			if sniValue, ok := searchKey(tlsSettings, "serverName"); ok {
-				params["sni"], _ = sniValue.(string)
-			}
 			if fpValue, ok := searchKey(tlsSettings, "fingerprint"); ok {
 				params["fp"], _ = fpValue.(string)
 			}
@@ -373,11 +371,6 @@ func (s *SubService) genVlessLink(inbound *model.Inbound, email string) string {
 
 		if streamNetwork == "tcp" && len(clients[clientIndex].Flow) > 0 {
 			params["flow"] = clients[clientIndex].Flow
-		}
-
-		serverName, _ := tlsSetting["serverName"].(string)
-		if serverName != "" {
-			address = serverName
 		}
 	}
 
@@ -550,11 +543,12 @@ func (s *SubService) genTrojanLink(inbound *model.Inbound, email string) string 
 		if len(alpn) > 0 {
 			params["alpn"] = strings.Join(alpn, ",")
 		}
+		if sniValue, ok := searchKey(tlsSetting, "serverName"); ok {
+			params["sni"], _ = sniValue.(string)
+		}
+
 		tlsSettings, _ := searchKey(tlsSetting, "settings")
 		if tlsSetting != nil {
-			if sniValue, ok := searchKey(tlsSettings, "serverName"); ok {
-				params["sni"], _ = sniValue.(string)
-			}
 			if fpValue, ok := searchKey(tlsSettings, "fingerprint"); ok {
 				params["fp"], _ = fpValue.(string)
 			}
@@ -563,11 +557,6 @@ func (s *SubService) genTrojanLink(inbound *model.Inbound, email string) string 
 					params["allowInsecure"] = "1"
 				}
 			}
-		}
-
-		serverName, _ := tlsSetting["serverName"].(string)
-		if serverName != "" {
-			address = serverName
 		}
 	}
 

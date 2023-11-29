@@ -461,7 +461,7 @@ class TlsStreamSettings extends XrayCommonClass {
                 alpn=[],
                 settings=new TlsStreamSettings.Settings()) {
         super();
-        this.server = serverName;
+        this.sni = serverName;
         this.minVersion = minVersion;
         this.maxVersion = maxVersion;
         this.cipherSuites = cipherSuites;
@@ -503,7 +503,7 @@ class TlsStreamSettings extends XrayCommonClass {
 
     toJson() {
         return {
-            serverName: this.server,
+            serverName: this.sni,
             minVersion: this.minVersion,
             maxVersion: this.maxVersion,
             cipherSuites: this.cipherSuites,
@@ -562,24 +562,21 @@ TlsStreamSettings.Cert = class extends XrayCommonClass {
 };
 
 TlsStreamSettings.Settings = class extends XrayCommonClass {
-    constructor(allowInsecure = false, fingerprint = '', serverName = '', domains = []) {
+    constructor(allowInsecure = false, fingerprint = '') {
         super();
         this.allowInsecure = allowInsecure;
         this.fingerprint = fingerprint;
-        this.serverName = serverName;
     }
     static fromJson(json = {}) {
         return new TlsStreamSettings.Settings(
             json.allowInsecure,
             json.fingerprint,
-            json.serverName,
         );
     }
     toJson() {
         return {
             allowInsecure: this.allowInsecure,
             fingerprint: this.fingerprint,
-            serverName: this.serverName,
         };
     }
 };
@@ -1054,11 +1051,8 @@ class Inbound extends XrayCommonClass {
         }
 
         if (security === 'tls') {
-            if (address == this.listen && port == this.port && !ObjectUtil.isEmpty(this.stream.tls.server)) {
-                obj.add = this.stream.tls.server;
-            }
-            if (!ObjectUtil.isEmpty(this.stream.tls.settings.serverName)){
-                obj.sni = this.stream.tls.settings.serverName;
+            if (!ObjectUtil.isEmpty(this.stream.tls.sni)){
+                obj.sni = this.stream.tls.sni;
             }
             if (!ObjectUtil.isEmpty(this.stream.tls.settings.fingerprint)){
                 obj.fp = this.stream.tls.settings.fingerprint;
@@ -1136,11 +1130,8 @@ class Inbound extends XrayCommonClass {
                 if(this.stream.tls.settings.allowInsecure){
                     params.set("allowInsecure", "1");
                 }
-                if (!ObjectUtil.isEmpty(this.stream.tls.server)) {
-                    address = this.stream.tls.server;
-                }
-                if (this.stream.tls.settings.serverName !== ''){
-                    params.set("sni", this.stream.tls.settings.serverName);
+                if (!ObjectUtil.isEmpty(this.stream.tls.sni)){
+                    params.set("sni", this.stream.tls.sni);
                 }
                 if (type == "tcp" && !ObjectUtil.isEmpty(flow)) {
                     params.set("flow", flow);
@@ -1157,9 +1148,6 @@ class Inbound extends XrayCommonClass {
             }
             if (this.stream.reality.shortIds.length > 0) {
                 params.set("sid", this.stream.reality.shortIds.split(",")[0]);
-            }
-            if (address == this.listen && port == this.port && !ObjectUtil.isEmpty(this.stream.reality.settings.serverName)) {
-                address = this.stream.reality.settings.serverName;
             }
             if (!ObjectUtil.isEmpty(this.stream.reality.settings.spiderX)) {
                 params.set("spx", this.stream.reality.settings.spiderX);
@@ -1305,11 +1293,8 @@ class Inbound extends XrayCommonClass {
                 if(this.stream.tls.settings.allowInsecure){
                     params.set("allowInsecure", "1");
                 }
-                if (address == this.listen && port == this.port && !ObjectUtil.isEmpty(this.stream.tls.server)) {
-                    address = this.stream.tls.server;
-                }
-                if (this.stream.tls.settings.serverName !== ''){
-                    params.set("sni", this.stream.tls.settings.serverName);
+                if (!ObjectUtil.isEmpty(this.stream.tls.sni)){
+                    params.set("sni", this.stream.tls.sni);
                 }
             }
         }
@@ -1323,9 +1308,6 @@ class Inbound extends XrayCommonClass {
             }
             if (this.stream.reality.shortIds.length > 0) {
                 params.set("sid", this.stream.reality.shortIds.split(",")[0]);
-            }
-            if (address == this.listen && port == this.port && !ObjectUtil.isEmpty(this.stream.reality.settings.serverName)) {
-                address = this.stream.reality.settings.serverName;
             }
             if (!ObjectUtil.isEmpty(this.stream.reality.settings.spiderX)) {
                 params.set("spx", this.stream.reality.settings.spiderX);
