@@ -1340,7 +1340,7 @@ class Inbound extends XrayCommonClass {
     genAllLinks(remark='', client){
         let result = [];
         let email = client ? client.email : '';
-        let addr = this.listen;
+        let addr = !ObjectUtil.isEmpty(this.listen) && this.listen !== "0.0.0.0" ? this.listen : location.hostname;
         let port = this.port
         if(ObjectUtil.isArrEmpty(this.stream.externalProxy)){
             let r = [remark, email].filter(x => x.length > 0).join('-');
