@@ -75,7 +75,8 @@
                 if (value) {
                     inModal.inbound.stream.externalProxy = [{
                         forceTls: "same",
-                        dest: window.location.hostname + ":" + inModal.inbound.port,
+                        dest: window.location.hostname,
+                        port: inModal.inbound.port,
                         remark: ""
                     }];
                 } else {

@@ -254,14 +254,9 @@ func (s *SubService) genVmessLink(inbound *model.Inbound, email string) string {
 				}
 			}
 			newObj["ps"] = s.genRemark(inbound, email, ep["remark"].(string))
-			dest, _ := ep["dest"].(string)
-			d := strings.Split(dest, ":")
-			if len(d) == 2 {
-				newObj["add"] = d[0]
-				newObj["port"] = d[1]
-			} else {
-				newObj["add"] = d[0]
-			}
+			newObj["add"] = ep["dest"].(string)
+			newObj["port"] = ep["port"].(string)
+
 			if newSecurity != "same" {
 				newObj["tls"] = newSecurity
 			}
@@ -421,13 +416,9 @@ func (s *SubService) genVlessLink(inbound *model.Inbound, email string) string {
 			ep, _ := externalProxy.(map[string]interface{})
 			newSecurity, _ := ep["forceTls"].(string)
 			dest, _ := ep["dest"].(string)
-			d := strings.Split(dest, ":")
-			link := ""
-			if len(d) == 2 {
-				link = fmt.Sprintf("vless://%s@%s:%s", uuid, d[0], d[1])
-			} else {
-				link = fmt.Sprintf("vless://%s@%s:%d", uuid, d[0], port)
-			}
+			port, _ := ep["port"].(string)
+			link := fmt.Sprintf("vless://%s@%s:%s", uuid, dest, port)
+
 			if newSecurity != "same" {
 				params["security"] = newSecurity
 			} else {
@@ -603,13 +594,9 @@ func (s *SubService) genTrojanLink(inbound *model.Inbound, email string) string 
 			ep, _ := externalProxy.(map[string]interface{})
 			newSecurity, _ := ep["forceTls"].(string)
 			dest, _ := ep["dest"].(string)
-			d := strings.Split(dest, ":")
-			link := ""
-			if len(d) == 2 {
-				link = fmt.Sprintf("trojan://%s@%s:%s", password, d[0], d[1])
-			} else {
-				link = fmt.Sprintf("trojan://%s@%s:%d", password, d[0], port)
-			}
+			port, _ := ep["port"].(string)
+			link := fmt.Sprintf("trojan://%s@%s:%s", password, dest, port)
+
 			if newSecurity != "same" {
 				params["security"] = newSecurity
 			} else {
@@ -760,13 +747,9 @@ func (s *SubService) genShadowsocksLink(inbound *model.Inbound, email string) st
 			ep, _ := externalProxy.(map[string]interface{})
 			newSecurity, _ := ep["forceTls"].(string)
 			dest, _ := ep["dest"].(string)
-			d := strings.Split(dest, ":")
-			link := ""
-			if len(d) == 2 {
-				link = fmt.Sprintf("ss://%s@%s:%s", base64.StdEncoding.EncodeToString([]byte(encPart)), d[0], d[1])
-			} else {
-				link = fmt.Sprintf("ss://%s@%s:%d", base64.StdEncoding.EncodeToString([]byte(encPart)), d[0], inbound.Port)
-			}
+			port, _ := ep["port"].(string)
+			link := fmt.Sprintf("ss://%s@%s:%s", base64.StdEncoding.EncodeToString([]byte(encPart)), dest, port)
+
 			if newSecurity != "same" {
 				params["security"] = newSecurity
 			} else {

@@ -1367,16 +1367,9 @@ class Inbound extends XrayCommonClass {
         } else {
             this.stream.externalProxy.forEach((ep) => {
                 let r = [remark, email, ep.remark].filter(x => x.length > 0).join('-')
-                let dest = ep.dest.split(":");
-                if(dest.length == 2) {
-                    addr = dest[0];
-                    port = dest[1];
-                } else {
-                    addr = dest[0];
-                }
                 result.push({
                     remark: r,
-                    link: this.genLink(addr, port, ep.forceTls, r, client)
+                    link: this.genLink(ep.dest, ep.port, ep.forceTls, r, client)
                 });
             });
         }

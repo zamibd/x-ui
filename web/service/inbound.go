@@ -1383,7 +1383,8 @@ func (s *InboundService) MigrationRequirements() {
 					for _, domain := range domains {
 						if domainMap, ok := domain.(map[string]interface{}); ok {
 							domainMap["forceTls"] = "same"
-							domainMap["dest"] = domainMap["domain"].(string) + fmt.Sprintf(":%d", ep.Port)
+							domainMap["port"] = ep.Port
+							domainMap["dest"] = domainMap["domain"].(string)
 							delete(domainMap, "domain")
 						}
 					}
