@@ -794,7 +794,7 @@
                 if(reverseTypeObj.length == 0) Reflect.deleteProperty(newTemplateSettings.reverse, oldData.type+'s');
                 if(Object.keys(newTemplateSettings.reverse).length === 0) Reflect.deleteProperty(newTemplateSettings, 'reverse');
 
-                newRules = newTemplateSettings.routing.rules.filter(r => r.outboundTag != oldtag && (r.inboundTag && !r.inboundTag.includes(oldtag)));
+                newRules = newTemplateSettings.routing.rules.filter(r => r.outboundTag != oldData.tag && (r.inboundTag && !r.inboundTag.includes(oldData.tag)));
                 newTemplateSettings.routing.rules = newRules;
                 
                 this.templateSettings = newTemplateSettings;
