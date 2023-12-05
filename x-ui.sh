@@ -796,7 +796,7 @@ show_menu() {
 ————————————————
  "
     show_status
-    echo && read -p "Please enter your selection [0-17]: " num
+    echo && read -p "Please enter your selection [0-18]: " num
 
     case "${num}" in
     0)
