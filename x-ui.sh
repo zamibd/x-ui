@@ -670,8 +670,14 @@ else
 fi
 
 echo -e "---------------------------"
-sleep 2
-   systemctl restart x-ui
+sleep 1
+read -p "Do you want to restart x-ui? (y/n): " restart_choice
+if [[ $restart_choice == [Yy] ]]; then
+    systemctl restart x-ui
+    echo "X-UI has been restarted."
+else
+    echo "X-UI was not restarted."
+fi
     before_show_menu
     ;;
             2)
@@ -723,8 +729,14 @@ else
 fi
 
 echo -e "---------------------------"
-sleep 2
-   systemctl restart x-ui
+sleep 1
+read -p "Do you want to restart x-ui? (y/n): " restart_choice
+if [[ $restart_choice == [Yy] ]]; then
+    systemctl restart x-ui
+    echo "X-UI has been restarted."
+else
+    echo "X-UI was not restarted."
+fi
     before_show_menu
     ;;
         *)
