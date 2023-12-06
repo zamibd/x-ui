@@ -88,6 +88,9 @@ style attribute {
     position: relative;
     clear: both;
 }
+.ant-table-body {
+    overflow-x: auto!important;
+}
 .ant-card-hoverable {
     cursor: auto;
     cursor: pointer;
