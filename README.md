@@ -111,21 +111,22 @@ docker build -t x-ui .
 
 ## Features
 
-- System Status Monitoring
-- Search within all inbounds and users
-- Support Dark/Light theme UI
-- Support multi-user, multi-protocol, web page visualization operation
-- advanced GUI for routing traffic (Reverse & Transparent proxy, Multi-Domain, Multi-Certificate, Multi-Port per inbound)
 - Supported protocols: VMess, VLESS, Trojan, Shadowsocks, Dokodemo-door, SOCKS, HTTP
 - Support XTLS native encryptions (Vision, REALITY)
-- Traffic statistics, limit traffic, set expire date
-- Customizable Xray configuration templates
-- Support subscription (multi) link
-- Detect users which are expiring or exceed traffic limit
-- Support HTTPS access panel (self-provided domain name + SSL certificate)
-- Support one-click SSL certificate application and automatic renewal
-- Support export/import database from panel
+- Support advanced GUI for routing traffic (Reverse and Transparent proxy, Multi-Domain, Multi-Certificate, Multi-Port per inbound)
+- Support Multi-User per inbound
+- Support user traffic limitation, expiration date
+- Support System Status Monitoring
+- Support deep database search (inbounds and users)
+- Show traffic statistics
 - Show online users
+- Show users with expirtion date or exceeded traffic limitation
+- Support advanced GUI for Xray Core configuration
+- Support subscription (multi) link
+- Support import/export database
+- Support One-Click SSL certificate application and automatic renewal
+- Support HTTPS for panel (self-provided domain name + SSL certificate)
+- Support Dark/Light theme UI
 
 ## Recommended OS
 
