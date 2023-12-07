@@ -554,6 +554,7 @@
                 enable : false,
                 subURI : ''
             },
+            remarkModel: '-ieo',
             tgBotEnable: false,
             showAlert: false,
             pageSize: 0,
@@ -599,6 +600,7 @@
                         subURI: subURI
                     };
                     this.pageSize = pageSize;
+                    this.remarkModel = remarkModel;
                 }
             },
             setInbounds(dbInbounds) {
@@ -1173,7 +1175,7 @@
             inboundLinks(dbInboundId) {
                 dbInbound = this.dbInbounds.find(row => row.id === dbInboundId);
                 newDbInbound = this.checkFallback(dbInbound);
-                txtModal.show('{{ i18n "pages.inbounds.export"}}', newDbInbound.genInboundLinks, newDbInbound.remark);
+                txtModal.show('{{ i18n "pages.inbounds.export"}}', newDbInbound.genInboundLinks(this.remarkModel), newDbInbound.remark);
             },
             importInbound() {
                 promptModal.open({
@@ -1190,7 +1192,7 @@
 			exportAllLinks() {
                 let copyText = [];
                 for (const dbInbound of this.dbInbounds) {
-                    copyText.push(dbInbound.genInboundLinks);
+                    copyText.push(dbInbound.genInboundLinks(this.remarkModel));
                 }
                 txtModal.show('{{ i18n "pages.inbounds.export"}}', copyText.join('\r\n'), 'All-Inbounds');
             },
