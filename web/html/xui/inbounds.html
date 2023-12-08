@@ -944,7 +944,7 @@
             resetTraffic(dbInboundId) {
                 dbInbound = this.dbInbounds.find(row => row.id === dbInboundId);
                 this.$confirm({
-                    title: '{{ i18n "pages.inbounds.resetTraffic"}}',
+                    title: '{{ i18n "pages.inbounds.resetTraffic"}}' + ' #' + dbInboundId,
                     content: '{{ i18n "pages.inbounds.resetTrafficContent"}}',
                     class: themeSwitcher.currentTheme,
                     okText: '{{ i18n "reset"}}',
@@ -959,7 +959,7 @@
             },
             delInbound(dbInboundId) {
                 this.$confirm({
-                    title: '{{ i18n "pages.inbounds.deleteInbound"}}',
+                    title: '{{ i18n "pages.inbounds.deleteInbound"}}' + ' #' + dbInboundId,
                     content: '{{ i18n "pages.inbounds.deleteInboundContent"}}',
                     class: themeSwitcher.currentTheme,
                     okText: '{{ i18n "delete"}}',
@@ -972,7 +972,7 @@
                 clientId = this.getClientId(dbInbound.protocol, client);
                 if (confirmation){
                     this.$confirm({
-                        title: '{{ i18n "pages.inbounds.deleteClient"}}',
+                        title: '{{ i18n "pages.inbounds.deleteClient"}}' + ' ' + client.email,
                         content: '{{ i18n "pages.inbounds.deleteClientContent"}}',
                         class: themeSwitcher.currentTheme,
                         okText: '{{ i18n "delete"}}',
@@ -1053,7 +1053,7 @@
             resetClientTraffic(client, dbInboundId, confirmation = true) {
                 if (confirmation){
                     this.$confirm({
-                        title: '{{ i18n "pages.inbounds.resetTraffic"}}',
+                        title: '{{ i18n "pages.inbounds.resetTraffic"}}' + ' ' + client.email,
                         content: '{{ i18n "pages.inbounds.resetTrafficContent"}}',
                         class: themeSwitcher.currentTheme,
                         okText: '{{ i18n "reset"}}',
