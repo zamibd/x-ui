@@ -1041,5 +1041,5 @@ li.ant-select-dropdown-menu-item:empty:after {
 }
 
 .ant-input-number {
-    overflow: hidden;
+    overflow: clip;
 }
