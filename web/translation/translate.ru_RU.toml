@@ -60,7 +60,7 @@
 "settings" = "Настройки"
 "xray" = "Xray Настройки"
 "logout" = "Выйти"
-"link" = "Другое"
+"link" = "менеджмент"
 
 [pages.login]
 "title" = "Войти"
