@@ -55,11 +55,11 @@
 "security" = "Security"
 
 [menu]
-"dashboard" = "System Status"
+"dashboard" = "Status Overview"
 "inbounds" = "Inbounds"
 "settings" = "Panel Settings"
 "xray" = "Xray Config"
-"logout" = "Logout"
+"logout" = "Log Out"
 "link" = "Management"
 
 [pages.login]
@@ -74,7 +74,7 @@
 "successLogin" = "Login"
 
 [pages.index]
-"title" = "Overview"
+"title" = "Status Overview"
 "memory" = "RAM"
 "hard" = "Disk"
 "xrayStatus" = "Xray Status"
@@ -107,7 +107,7 @@
 "title" = "Inbounds"
 "totalDownUp" = "Total Sent/Received"
 "totalUsage" = "Total Usage"
-"inboundCount" = "Number of Inbounds"
+"inboundCount" = "Total Inbounds"
 "operate" = "Menu"
 "enable" = "Enable"
 "remark" = "Remark"
@@ -297,7 +297,7 @@
 "userPassMustBeNotEmpty" = "The new username or password is required"
 
 [pages.xray]
-"title" = "Xray Configurations"
+"title" = "Xray Config"
 "save" = "Save"
 "restart" = "Restart Xray"
 "basicTemplate" = "Basic"
@@ -391,7 +391,7 @@
 "secretKey" = "Secret Key"
 "publicKey" = "Public Key"
 "allowedIPs" = "Allowed IPs"
-"endpoint" = "End Point"
+"endpoint" = "Endpoint"
 "psk" = "PreShared Key"
 "domainStrategy" = "Domain Strategy"
 
