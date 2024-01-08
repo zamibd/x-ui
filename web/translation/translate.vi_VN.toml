@@ -392,6 +392,8 @@
 "publicKey" = "Khóa công khai"
 "allowedIPs" = "IP được phép"
 "endpoint" = "Điểm cuối"
+"psk" = "Khóa chia sẻ"
+"domainStrategy" = "Chiến lược tên miền"
 
 [tgbot]
 "noResult" = "❗ Không có kết quả!"

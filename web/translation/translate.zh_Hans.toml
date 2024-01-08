@@ -392,6 +392,8 @@
 "publicKey" = "公钥"
 "allowedIPs" = "允许的 IP"
 "endpoint" = "终点"
+"psk" = "共享密钥"
+"domainStrategy" = "域策略"
 
 [tgbot]
 "noResult" = "❗ 没有结果！"

@@ -389,8 +389,10 @@
 "intercon" = "اتصال میانی"
 "secretKey" = "کلید شخصی"
 "publicKey" = "کلید عمومی"
-"allowedIPs" = "های مجاز IP"
+"allowedIPs" = "آی‌پی‌های مجاز"
 "endpoint" = "نقطه پایانی"
+"psk" = "کلید مشترک"
+"domainStrategy" = "استراتژی حل دامنه"
 
 [tgbot]
 "noResult" = "❗نتیجه‌ای یافت نشد"

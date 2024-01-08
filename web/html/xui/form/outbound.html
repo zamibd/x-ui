@@ -18,7 +18,7 @@
             <a-select
             v-model="outbound.settings.domainStrategy"
             :dropdown-class-name="themeSwitcher.currentTheme">
-                <a-select-option v-for="s in outboundDomainStrategies" :value="s">[[ s ]]</a-select-option>
+                <a-select-option v-for="s in OutboundDomainStrategies" :value="s">[[ s ]]</a-select-option>
             </a-select>
         </a-form-item>
         <a-form-item label='Fragment'>
@@ -71,24 +71,76 @@
     <a-form-item label='MTU'>
         <a-input-number v-model.number="outbound.settings.mtu"></a-input-number>
     </a-form-item>
-    <a-form-item label='{{ i18n "pages.xray.outbound.address" }}'>
+    <a-form-item>
+        <template slot="label">
+            <a-tooltip>
+                <template slot="title">
+                    <span>{{ i18n "pages.xray.rules.useComma" }}</span>
+                </template>
+                {{ i18n "pages.xray.outbound.address" }} <a-icon type="question-circle"></a-icon>
+            </a-tooltip>
+        </template>
         <a-input v-model.trim="outbound.settings.address"></a-input>
     </a-form-item>
     <a-form-item label='{{ i18n "pages.xray.outbound.secretKey" }}'>
         <a-input v-model.trim="outbound.settings.secretKey"></a-input>
     </a-form-item>
-    <a-form-item label='{{ i18n "pages.xray.outbound.publicKey" }}'>
-        <a-input v-model.trim="outbound.settings.publicKey"></a-input>
+    <a-form-item label='{{ i18n "pages.xray.outbound.domainStrategy" }}'>
+        <a-select v-model="outbound.settings.domainStrategy" :dropdown-class-name="themeSwitcher.currentTheme">
+            <a-select-option v-for="wds in ['', ...WireguardDomainStrategy]" :value="wds">[[ wds ]]</a-select-option>
+        </a-select>
     </a-form-item>
-    <a-form-item label='{{ i18n "pages.xray.outbound.allowedIPs" }}'>
-        <a-input v-model.trim="outbound.settings.allowedIPs"></a-input>
+    <a-form-item label='Workers'>
+        <a-input-number min="0" v-model.number="outbound.settings.workers"></a-input>
     </a-form-item>
-    <a-form-item label='keepAlive'>
-        <a-input-number v-model.number="outbound.settings.keepAlive" :min="0"></a-input>
+    <a-form-item label='Kernel Mode'>
+        <a-switch v-model="outbound.settings.kernelMode"></a-switch>
     </a-form-item>
-    <a-form-item label='{{ i18n "pages.xray.outbound.endpoint" }}'>
-        <a-input v-model.trim="outbound.settings.endpoint"></a-input>
+    <a-form-item>
+        <template slot="label">
+            <a-tooltip>
+                <template slot="title">
+                    <span>{{ i18n "pages.xray.rules.useComma" }}</span>
+                </template>
+                Reserved <a-icon type="question-circle"></a-icon>
+            </a-tooltip>
+        </template>
+        <a-input v-model="outbound.settings.reserved"></a-input>
     </a-form-item>
+    <a-form-item label="Peers">
+        <a-button type="primary" size="small" @click="outbound.settings.addPeer()">+</a-button>
+    </a-form-item>
+    <a-form v-for="(peer, index) in outbound.settings.peers" :colon="false" :label-col="{ md: {span:8} }" :wrapper-col="{ md: {span:14} }">
+        <a-divider style="margin:0;">
+            Peer [[ index + 1 ]]
+            <a-icon v-if="outbound.settings.peers.length>1" type="delete" @click="() => outbound.settings.delPeer(index)"
+                    style="color: rgb(255, 77, 79);cursor: pointer;"/>
+        </a-divider>
+
+        <a-form-item label='{{ i18n "pages.xray.outbound.endpoint" }}'>
+            <a-input v-model.trim="peer.endpoint"></a-input>
+        </a-form-item>
+        <a-form-item label='{{ i18n "pages.xray.outbound.publicKey" }}'>
+            <a-input v-model.trim="peer.publicKey"></a-input>
+        </a-form-item>
+        <a-form-item label='{{ i18n "pages.xray.outbound.psk" }}'>
+            <a-input v-model.trim="peer.psk"></a-input>
+        </a-form-item>
+        <a-form-item>
+            <template slot="label">
+                <a-tooltip>
+                    <template slot="title">
+                        <span>{{ i18n "pages.xray.rules.useComma" }}</span>
+                    </template>
+                    {{ i18n "pages.xray.outbound.allowedIPs" }} <a-icon type="question-circle"></a-icon>
+                </a-tooltip>
+            </template>
+            <a-input v-model.trim="peer.allowedIPs"></a-input>
+        </a-form-item>
+        <a-form-item label='keepAlive'>
+            <a-input-number v-model.number="peer.keepAlive" :min="0"></a-input>
+        </a-form-item>    
+    </a-form>
 </template>
 
 <!-- Address + Port -->

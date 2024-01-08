@@ -392,6 +392,8 @@
 "publicKey" = "Открытый ключ"
 "allowedIPs" = "Разрешенные IP-адреса"
 "endpoint" = "Конечная точка"
+"psk" = "Общий ключ"
+"domainStrategy" = "Стратегия домена"
 
 [tgbot]
 "noResult" = "❗ Нет результатов!"

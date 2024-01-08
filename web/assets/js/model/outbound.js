@@ -47,18 +47,27 @@ const ALPN_OPTION = {
     HTTP1: "http/1.1",
 };
 
-const outboundDomainStrategies = [
+const OutboundDomainStrategies = [
     "AsIs",
     "UseIP",
     "UseIPv4",
     "UseIPv6"
-]
+];
+
+const WireguardDomainStrategy = [
+    "ForceIP",
+    "ForceIPv4",
+    "ForceIPv4v6",
+    "ForceIPv6",
+    "ForceIPv6v4"
+];
 
 Object.freeze(Protocols);
 Object.freeze(SSMethods);
 Object.freeze(TLS_FLOW_CONTROL);
 Object.freeze(ALPN_OPTION);
-Object.freeze(outboundDomainStrategies);
+Object.freeze(OutboundDomainStrategies);
+Object.freeze(WireguardDomainStrategy);
 
 class CommonClass {
 
@@ -901,42 +910,82 @@ Outbound.HttpSettings = class extends CommonClass {
         };
     }
 };
-Outbound.WireguardSettings = class extends CommonClass{
-    constructor(mtu=1420, secretKey='', address='', publicKey='', allowedIPs='0.0.0.0/0,::/0', endpoint='', keepAlive=0) {
+Outbound.WireguardSettings = class extends CommonClass {
+    constructor(
+            mtu=1420, secretKey='', address='', workers=2, domainStrategy='', reserved='',
+            peers=[new Outbound.WireguardSettings.Peer()], kernelMode=false) {
         super();
-        this.mtu = mtu,
-        this.secretKey = secretKey,
-        this.address = address,
-        this.publicKey = publicKey,
-        this.allowedIPs = allowedIPs,
-        this.endpoint = endpoint,
-        this.keepAlive = keepAlive
+        this.mtu = mtu;
+        this.secretKey = secretKey;
+        this.address = address instanceof Array ? address.join(',') : address;
+        this.workers = workers;
+        this.domainStrategy = domainStrategy;
+        this.reserved = reserved instanceof Array ? reserved.join(',') : reserved;
+        this.peers = peers;
+        this.kernelMode = kernelMode;
+    }
+
+    addPeer() {
+        this.peers.push(new Outbound.WireguardSettings.Peer());
+    }
+
+    delPeer(index) {
+        this.peers.splice(index, 1);
     }
 
     static fromJson(json={}){
-        const peers = json.peers
         return new Outbound.WireguardSettings(
             json.mtu,
             json.secretKey,
-            json.address.toString(),
-            peers[0].publicKey,
-            peers[0].allowedIPs.toString(),
-            peers[0].endpoint,
-            peers[0].keepAlive
+            json.address,
+            json.workers,
+            json.domainStrategy,
+            json.reserved,
+            json.peers.map(peer => Outbound.WireguardSettings.Peer.fromJson(peer)),
+            json.kernelMode,
         );
     }
 
     toJson() {
         return {
-            mtu: this.mtu,
+            mtu: this.mtu?? undefined,
             secretKey: this.secretKey,
             address: this.address ? this.address.split(",") : [],
-            peers: [{
-                publicKey:this.publicKey,
-                allowedIPs: this.allowedIPs ? this.allowedIPs.split(",") : [],
-                keepAlive: this.keepAlive,
-                endpoint: this.endpoint
-            }]
+            workers: this.workers?? undefined,
+            domainStrategy: WireguardDomainStrategy.includes(this.domainStrategy) ? this.domainStrategy : undefined,
+            reserved: this.reserved ? this.reserved.split(",") : undefined,
+            peers: Outbound.WireguardSettings.Peer.toJsonArray(this.peers),
+            kernelMode: this.kernelMode,
         };
     }
 };
+Outbound.WireguardSettings.Peer = class extends CommonClass {
+    constructor(publicKey='', psk='', allowedIPs='0.0.0.0/0,::/0', endpoint='', keepAlive=0) {
+        super();
+        this.publicKey = publicKey;
+        this.psk = psk;
+        this.allowedIPs = allowedIPs instanceof Array ? allowedIPs.join(',') : allowedIPs;
+        this.endpoint = endpoint;
+        this.keepAlive = keepAlive;
+    }
+
+    static fromJson(json={}){
+        return new Outbound.WireguardSettings.Peer(
+            json.publicKey,
+            json.preSharedKey,
+            json.allowedIPs,
+            json.endpoint,
+            json.keepAlive
+        );
+    }
+
+    toJson() {
+        return {
+            publicKey: this.publicKey,
+            preSharedKey: this.psk.length>0 ? this.psk : undefined,
+            allowedIPs: this.allowedIPs ? this.allowedIPs.split(",") : [],
+            keepAlive: this.keepAlive?? undefined,
+            endpoint: this.endpoint
+        };
+    }
+}

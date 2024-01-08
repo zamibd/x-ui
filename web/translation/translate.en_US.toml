@@ -392,6 +392,8 @@
 "publicKey" = "Public Key"
 "allowedIPs" = "Allowed IPs"
 "endpoint" = "End Point"
+"psk" = "PreShared Key"
+"domainStrategy" = "Domain Strategy"
 
 [tgbot]
 "noResult" = "❗ No result!"
