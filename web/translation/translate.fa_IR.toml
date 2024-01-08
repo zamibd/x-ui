@@ -387,6 +387,10 @@
 "bridge" = "پل"
 "portal" = "پرتال"
 "intercon" = "اتصال میانی"
+"secretKey" = "کلید شخصی"
+"publicKey" = "کلید عمومی"
+"allowedIPs" = "های مجاز IP"
+"endpoint" = "نقطه پایانی"
 
 [tgbot]
 "noResult" = "❗ نتیجه‌ای یافت نشد!"

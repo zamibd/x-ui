@@ -388,6 +388,10 @@
 "bridge" = "Bridge"
 "portal" = "Portal"
 "intercon" = "Interconnection"
+"secretKey" = "Secret Key"
+"publicKey" = "Public Key"
+"allowedIPs" = "Allowed IPs"
+"endpoint" = "End Point"
 
 [tgbot]
 "noResult" = "❗ No result!"

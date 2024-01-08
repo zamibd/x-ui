@@ -66,6 +66,31 @@
         </a-form-item>
 </template>
 
+<!-- wireguard settings -->
+<template v-if="outbound.protocol === Protocols.Wireguard">
+    <a-form-item label='MTU'>
+        <a-input-number v-model.number="outbound.settings.mtu"></a-input-number>
+    </a-form-item>
+    <a-form-item label='{{ i18n "pages.xray.outbound.address" }}'>
+        <a-input v-model.trim="outbound.settings.address"></a-input>
+    </a-form-item>
+    <a-form-item label='{{ i18n "pages.xray.outbound.secretKey" }}'>
+        <a-input v-model.trim="outbound.settings.secretKey"></a-input>
+    </a-form-item>
+    <a-form-item label='{{ i18n "pages.xray.outbound.publicKey" }}'>
+        <a-input v-model.trim="outbound.settings.publicKey"></a-input>
+    </a-form-item>
+    <a-form-item label='{{ i18n "pages.xray.outbound.allowedIPs" }}'>
+        <a-input v-model.trim="outbound.settings.allowedIPs"></a-input>
+    </a-form-item>
+    <a-form-item label='keepAlive'>
+        <a-input-number v-model.number="outbound.settings.keepAlive" :min="0"></a-input>
+    </a-form-item>
+    <a-form-item label='{{ i18n "pages.xray.outbound.endpoint" }}'>
+        <a-input v-model.trim="outbound.settings.endpoint"></a-input>
+    </a-form-item>
+</template>
+
 <!-- Address + Port -->
 <template v-if="outbound.hasAddressPort()">
         <a-form-item label='{{ i18n "pages.inbounds.address" }}'>

@@ -8,6 +8,7 @@ const Protocols = {
     Shadowsocks: "shadowsocks",
     Socks: "socks",
     HTTP: "http",
+    Wireguard: "wireguard"
 };
 
 const SSMethods = {
@@ -625,6 +626,7 @@ Outbound.Settings = class extends CommonClass {
             case Protocols.Shadowsocks: return new Outbound.ShadowsocksSettings();
             case Protocols.Socks: return new Outbound.SocksSettings();
             case Protocols.HTTP: return new Outbound.HttpSettings();
+            case Protocols.Wireguard: return new Outbound.WireguardSettings();
             default: return null;
         }
     }
@@ -640,6 +642,7 @@ Outbound.Settings = class extends CommonClass {
             case Protocols.Shadowsocks: return Outbound.ShadowsocksSettings.fromJson(json);
             case Protocols.Socks: return Outbound.SocksSettings.fromJson(json);
             case Protocols.HTTP: return Outbound.HttpSettings.fromJson(json);
+            case Protocols.Wireguard: return Outbound.WireguardSettings.fromJson(json);
             default: return null;
         }
     }
@@ -895,6 +898,45 @@ Outbound.HttpSettings = class extends CommonClass {
                 port: this.port,
                 users: ObjectUtil.isEmpty(this.user) ? [] : [{user: this.user, pass: this.pass}],
             }],
+        };
+    }
+};
+Outbound.WireguardSettings = class extends CommonClass{
+    constructor(mtu=1420, secretKey='', address='', publicKey='', allowedIPs='0.0.0.0/0,::/0', endpoint='', keepAlive=0) {
+        super();
+        this.mtu = mtu,
+        this.secretKey = secretKey,
+        this.address = address,
+        this.publicKey = publicKey,
+        this.allowedIPs = allowedIPs,
+        this.endpoint = endpoint,
+        this.keepAlive = keepAlive
+    }
+
+    static fromJson(json={}){
+        const peers = json.peers
+        return new Outbound.WireguardSettings(
+            json.mtu,
+            json.secretKey,
+            json.address.toString(),
+            peers[0].publicKey,
+            peers[0].allowedIPs.toString(),
+            peers[0].endpoint,
+            peers[0].keepAlive
+        );
+    }
+
+    toJson() {
+        return {
+            mtu: this.mtu,
+            secretKey: this.secretKey,
+            address: this.address ? this.address.split(",") : [],
+            peers: [{
+                publicKey:this.publicKey,
+                allowedIPs: this.allowedIPs ? this.allowedIPs.split(",") : [],
+                keepAlive: this.keepAlive,
+                endpoint: this.endpoint
+            }]
         };
     }
 };

@@ -388,6 +388,10 @@
 "bridge" = "Liên kết"
 "portal" = "Cổng thông tin"
 "intercon" = "Kết nối"
+"secretKey" = "Chìa khoá bí mật"
+"publicKey" = "Khóa công khai"
+"allowedIPs" = "IP được phép"
+"endpoint" = "Điểm cuối"
 
 [tgbot]
 "noResult" = "❗ Không có kết quả!"

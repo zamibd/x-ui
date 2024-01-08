@@ -388,6 +388,10 @@
 "bridge" = "Мост"
 "portal" = "Портал"
 "intercon" = "Соединение"
+"secretKey" = "Секретный ключ"
+"publicKey" = "Открытый ключ"
+"allowedIPs" = "Разрешенные IP-адреса"
+"endpoint" = "Конечная точка"
 
 [tgbot]
 "noResult" = "❗ Нет результатов!"
