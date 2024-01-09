@@ -983,9 +983,9 @@ Outbound.WireguardSettings.Peer = class extends CommonClass {
         return {
             publicKey: this.publicKey,
             preSharedKey: this.psk.length>0 ? this.psk : undefined,
-            allowedIPs: this.allowedIPs ? this.allowedIPs.split(",") : [],
+            allowedIPs: this.allowedIPs ? this.allowedIPs.split(",") : undefined,
+            endpoint: this.endpoint,
             keepAlive: this.keepAlive?? undefined,
-            endpoint: this.endpoint
         };
     }
-}
+};
