@@ -1,7 +1,21 @@
 {{define "form/wireguard"}}
 <a-form :colon="false" :label-col="{ md: {span:6} }" :wrapper-col="{ md: {span:14} }">
-    <a-form-item label='{{ i18n "pages.xray.wireguard.secretKey" }}'>
+    <a-form-item>
+        <template slot="label">
+            <a-tooltip>
+                <template slot="title">
+                    <span>{{ i18n "reset" }}</span>
+                </template>
+                {{ i18n "pages.xray.wireguard.secretKey" }}
+                <a-icon type="sync"
+                    @click="[inbound.settings.pubKey, inbound.settings.secretKey] = Object.values(Wireguard.generateKeypair())">
+                </a-icon>
+            </a-tooltip>
+        </template>
         <a-input v-model.trim="inbound.settings.secretKey"></a-input>
+    </a-form-item>
+    <a-form-item label='{{ i18n "pages.xray.wireguard.publicKey" }}'>
+        <a-input disabled v-model="inbound.settings.pubKey"></a-input>
     </a-form-item>
     <a-form-item label='MTU'>
         <a-input-number v-model.number="inbound.settings.mtu"></a-input-number>

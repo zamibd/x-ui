@@ -2053,10 +2053,11 @@ Inbound.HttpSettings.HttpAccount = class extends XrayCommonClass {
 };
 
 Inbound.WireguardSettings = class extends XrayCommonClass {
-    constructor(protocol, mtu=1420, secretKey='', peers=[new Inbound.WireguardSettings.Peer()], kernelMode=false) {
+    constructor(protocol, mtu=1420, secretKey=Wireguard.generateKeypair().privateKey, peers=[new Inbound.WireguardSettings.Peer()], kernelMode=false) {
         super(protocol);
         this.mtu = mtu;
         this.secretKey = secretKey;
+        this.pubKey = secretKey.length>0 ? Wireguard.generateKeypair(secretKey).publicKey : '';
         this.peers = peers;
         this.kernelMode = kernelMode;
     }
