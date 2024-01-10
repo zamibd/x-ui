@@ -100,8 +100,8 @@
 "backup" = "Phục hồi dữ liệu đã lưu"
 "backupTitle" = "Sao lưu và Khôi phục cơ sở dữ liệu"
 "backupDescription" = "Bạn hãy nhớ sao lưu trước khi nhập cơ sở dữ liệu mới."
-"exportDatabase" = "Tải xuống cơ sở dữ liệu"
-"importDatabase" = "Tải lên cơ sở dữ liệu"
+"exportDatabase" = "Sao lưu"
+"importDatabase" = "Khôi phục"
 
 [pages.inbounds]
 "title" = "Điểm vào (Inbounds)"
@@ -167,7 +167,7 @@
 "emailDesc" = "vui lòng cung cấp một địa chỉ email duy nhất."
 "setDefaultCert" = "Đặt chứng chỉ từ bảng điều khiển"
 "telegramDesc" = "Sử dụng ID Telegram không có @ hoặc ID trò chuyện (bạn có thể lấy nó tại đây @userinfobot hoặc sử dụng lệnh '/id' trong bot)"
-"subscriptionDesc" = "Bạn có thể tìm thấy liên kết phụ của mình trên Chi tiết, bạn cũng có thể sử dụng cùng tên cho một số cấu hình"
+"subscriptionDesc" = "Bạn có thể tìm thấy liên kết phụ của mình trên Chi tiết, bạn cũng có thể sử dụng cùng tên cho một số khách hàng"
 "info" = "Thông tin"
 "same" = "Như nhau"
 "inboundData" = "Dữ liệu gửi đến"
