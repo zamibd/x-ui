@@ -12,8 +12,9 @@
     </a-form-item>
 </a-form>
 
-<!-- tcp request -->
 <a-form v-if="inbound.stream.tcp.type === 'http'" :colon="false" :label-col="{ md: {span:8} }" :wrapper-col="{ md: {span:14} }">
+    <!-- tcp request -->
+    <a-divider style="margin:0;">{{ i18n "pages.inbounds.stream.general.requestHeader" }}</a-divider>
     <a-form-item label='{{ i18n "pages.inbounds.stream.tcp.requestVersion" }}'>
         <a-input v-model.trim="inbound.stream.tcp.request.version"></a-input>
     </a-form-item>
@@ -45,7 +46,8 @@
             </a-input>
         </a-input-group>
     </a-form-item>
-        <!-- tcp response -->
+    <!-- tcp response -->
+    <a-divider style="margin:0;">{{ i18n "pages.inbounds.stream.tcp.responseHeader" }}</a-divider>
     <a-form-item label='{{ i18n "pages.inbounds.stream.tcp.responseVersion" }}'>
         <a-input v-model.trim="inbound.stream.tcp.response.version"></a-input>
     </a-form-item>
