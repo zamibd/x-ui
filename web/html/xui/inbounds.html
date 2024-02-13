@@ -137,6 +137,10 @@
                                                 <a-icon type="export"></a-icon>
                                                 {{ i18n "pages.inbounds.export" }}
                                             </a-menu-item>
+                                            <a-menu-item key="subs">
+                                                <a-icon type="export"></a-icon>
+                                                {{ i18n "pages.inbounds.export" }} - {{ i18n "pages.settings.subSettings" }}
+                                            </a-menu-item>
                                             <a-menu-item key="resetInbounds">
                                                 <a-icon type="reload"></a-icon>
                                                 {{ i18n "pages.inbounds.resetAllTraffic" }}
@@ -219,6 +223,10 @@
                                             <a-menu-item key="export">
                                                 <a-icon type="export"></a-icon>
                                                 {{ i18n "pages.inbounds.export"}}
+                                            </a-menu-item>
+                                            <a-menu-item key="subs">
+                                                <a-icon type="export"></a-icon>
+                                                {{ i18n "pages.inbounds.export"}} - {{ i18n "pages.settings.subSettings" }}
                                             </a-menu-item>
                                             <a-menu-item key="delDepletedClients" style="color: #FF4D4F;">
                                                 <a-icon type="rest"></a-icon>
@@ -727,6 +735,9 @@
                     case "export":
                         this.exportAllLinks();
                         break;
+                    case "subs":
+                        this.exportAllLinks();
+                        break;
                     case "resetInbounds":
                         this.resetAllTraffic();
                         break;
@@ -757,6 +768,9 @@
                         break;
                     case "export":
                         this.inboundLinks(dbInbound.id);
+                        break;
+                    case "subs":
+                        this.exportSubs(dbInbound.id);
                         break;
                     case "clipboard":
                         this.copyToClipboard(dbInbound.id);
@@ -1182,6 +1196,22 @@
                 newDbInbound = this.checkFallback(dbInbound);
                 txtModal.show('{{ i18n "pages.inbounds.export"}}', newDbInbound.genInboundLinks(this.remarkModel), newDbInbound.remark);
             },
+            exportSubs(dbInboundId) {
+                const dbInbound = this.dbInbounds.find(row => row.id === dbInboundId);
+                const clients = this.getInboundClients(dbInbound);
+                let subLinks = []
+                if (clients != null){
+                    clients.forEach(c => {
+                        if (c.subId && c.subId.length>0){
+                            subLinks.push(this.subSettings.subURI + c.subId + "?name=" + c.subId)
+                        }
+                    })
+                }
+                txtModal.show(
+                    '{{ i18n "pages.inbounds.export"}} - {{ i18n "pages.settings.subSettings" }}',
+                    [...new Set(subLinks)].join('\n'),
+                    dbInbound.remark + "-Subs");
+            },
             importInbound() {
                 promptModal.open({
                     title: '{{ i18n "pages.inbounds.importInbound" }}',
@@ -1195,6 +1225,23 @@
                 });
             },
 			exportAllLinks() {
+                let subLinks = []
+                for (const dbInbound of this.dbInbounds) {
+                    const clients = this.getInboundClients(dbInbound);
+                    if (clients != null){
+                        clients.forEach(c => {
+                            if (c.subId && c.subId.length>0){
+                                subLinks.push(this.subSettings.subURI + c.subId + "?name=" + c.subId)
+                            }
+                        })
+                    }
+                }
+                txtModal.show(
+                    '{{ i18n "pages.inbounds.export"}} - {{ i18n "pages.settings.subSettings" }}',
+                    [...new Set(subLinks)].join('\r\n'),
+                    'All-Inbounds-Subs');
+            },
+            exportAllSubs() {
                 let copyText = [];
                 for (const dbInbound of this.dbInbounds) {
                     copyText.push(dbInbound.genInboundLinks(this.remarkModel));
