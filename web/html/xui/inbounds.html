@@ -68,15 +68,15 @@
                     <a-card hoverable>
                         <a-row>
                             <a-col :xs="24" :sm="24" :lg="12">
-                                {{ i18n "pages.inbounds.totalDownUp" }}:
+                                <strong>{{ i18n "pages.inbounds.totalDownUp" }}:</strong>
                                 <a-tag color="blue">[[ sizeFormat(total.up) ]] / [[ sizeFormat(total.down) ]]</a-tag>
                             </a-col>
                             <a-col :xs="24" :sm="24" :lg="12">
-                                {{ i18n "pages.inbounds.totalUsage" }}:
+                                <strong>{{ i18n "pages.inbounds.totalUsage" }}:</strong>
                                 <a-tag color="blue">[[ sizeFormat(total.up + total.down) ]]</a-tag>
                             </a-col>
                             <a-col :xs="24" :sm="24" :lg="12">
-                                {{ i18n "pages.inbounds.inboundCount" }}:
+                                <strong>{{ i18n "pages.inbounds.inboundCount" }}:</strong>
                                 <a-tag color="blue">[[ dbInbounds.length ]]</a-tag>
                             </a-col>
                             <a-col :xs="24" :sm="24" :lg="12">
@@ -84,7 +84,7 @@
                                     <div>
                                         <a-back-top :target="() => document.getElementById('content-layout')" visibility-height="200">
                                         </a-back-top>
-                                {{ i18n "clients" }}:
+                                <strong>{{ i18n "clients" }}:</strong>
                                 <a-tag color="blue">[[ total.clients ]]</a-tag>
                                 <a-popover title='{{ i18n "disabled" }}' :overlay-class-name="themeSwitcher.currentTheme">
                                     <template slot="content">
@@ -145,7 +145,7 @@
                                                 <a-icon type="file-done"></a-icon>
                                                 {{ i18n "pages.inbounds.resetAllClientTraffics" }}
                                             </a-menu-item>
-                                            <a-menu-item key="delDepletedClients">
+                                            <a-menu-item key="delDepletedClients" style="color: #FF4D4F;">
                                                 <a-icon type="rest"></a-icon>
                                                 {{ i18n "pages.inbounds.delDepletedClients" }}
                                             </a-menu-item>
@@ -220,7 +220,7 @@
                                                 <a-icon type="export"></a-icon>
                                                 {{ i18n "pages.inbounds.export"}}
                                             </a-menu-item>
-                                            <a-menu-item key="delDepletedClients">
+                                            <a-menu-item key="delDepletedClients" style="color: #FF4D4F;">
                                                 <a-icon type="rest"></a-icon>
                                                 {{ i18n "pages.inbounds.delDepletedClients" }}
                                             </a-menu-item>
