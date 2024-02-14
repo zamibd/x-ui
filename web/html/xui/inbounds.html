@@ -203,7 +203,7 @@
                                             <a-icon type="edit"></a-icon>
                                             {{ i18n "edit" }}
                                         </a-menu-item>
-                                        <a-menu-item key="qrcode" v-if="dbInbound.isSS && !dbInbound.toInbound().isSSMultiUser">
+                                        <a-menu-item key="qrcode" v-if="(dbInbound.isSS && !dbInbound.toInbound().isSSMultiUser) || dbInbound.isWireguard">
                                             <a-icon type="qrcode"></a-icon>
                                             {{ i18n "qrCode" }}
                                         </a-menu-item>
@@ -736,7 +736,7 @@
                         this.exportAllLinks();
                         break;
                     case "subs":
-                        this.exportAllLinks();
+                        this.exportAllSubs();
                         break;
                     case "resetInbounds":
                         this.resetAllTraffic();
@@ -1224,7 +1224,7 @@
                     },
                 });
             },
-			exportAllLinks() {
+			exportAllSubs() {
                 let subLinks = []
                 for (const dbInbound of this.dbInbounds) {
                     const clients = this.getInboundClients(dbInbound);
@@ -1241,7 +1241,7 @@
                     [...new Set(subLinks)].join('\r\n'),
                     'All-Inbounds-Subs');
             },
-            exportAllSubs() {
+            exportAllLinks() {
                 let copyText = [];
                 for (const dbInbound of this.dbInbounds) {
                     copyText.push(dbInbound.genInboundLinks(this.remarkModel));
