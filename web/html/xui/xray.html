@@ -152,6 +152,49 @@
                                     </a-row>
                                 </a-list-item>
                                 </a-collapse-panel>
+                                <a-collapse-panel header='{{ i18n "pages.xray.logConfigs" }}'>
+                                    <a-row :xs="24" :sm="24" :lg="12">
+                                        <a-alert type="warning" style="text-align: center;">
+                                            <template slot="message">
+                                                <a-icon type="exclamation-circle" theme="filled" style="color: #FFA031"></a-icon>
+                                                {{ i18n "pages.xray.logConfigsDesc" }}
+                                            </template>
+                                        </a-alert>
+                                    </a-row>
+                                    <a-list-item>
+                                        <a-row style="padding: 20px">
+                                            <a-col :lg="24" :xl="12">
+                                                <a-list-item-meta title='Level'/>
+                                            </a-col>
+                                            <a-col :lg="24" :xl="12">
+                                                <template>
+                                                    <a-select
+                                                        v-model="logLevel"
+                                                        style="width: 100%" :dropdown-class-name="themeSwitcher.currentTheme">
+                                                        <a-select-option v-for="level in ['none', 'debug', 'info', 'warning', 'error']" :value="level">[[ level ]]</a-select-option>
+                                                    </a-select>
+                                                </template>
+                                            </a-col>
+                                        </a-row>
+                                    </a-list-item>
+                                    <a-row style="padding: 20px">
+                                        <a-col :lg="24" :xl="12">
+                                            <a-list-item-meta title='Access Logs' />
+                                        </a-col>
+                                        <a-col :lg="24" :xl="12">
+                                            <a-input v-model="logAccess"></a-input>
+                                        </a-col>
+                                    </a-row>
+                                    <a-row style="padding: 20px">
+                                        <a-col :lg="24" :xl="12">
+                                            <a-list-item-meta title='Error Logs' />
+                                        </a-col>
+                                        <a-col :lg="24" :xl="12">
+                                            <a-input v-model="logError"></a-input>
+                                        </a-col>
+                                    </a-row>
+                                </a-list-item>
+                                </a-collapse-panel>
                                 <a-collapse-panel header='{{ i18n "pages.xray.blockConfigs"}}'>
                                     <a-row :xs="24" :sm="24" :lg="12">
                                         <a-alert type="warning" style="text-align: center;">
@@ -919,6 +962,38 @@
             templateSettings: {
                 get: function () { return this.xraySetting ? JSON.parse(this.xraySetting) : null; },
                 set: function (newValue) { this.xraySetting = JSON.stringify(newValue, null, 2); },
+            },
+            logSettings: {
+                get: function () { return this.templateSettings ? this.templateSettings.log : {}; },
+                set: function (newValue) {
+                    newTemplateSettings = this.templateSettings;
+                    newTemplateSettings.log = newValue;
+                    this.templateSettings = newTemplateSettings;
+                },
+            },
+            logLevel: {
+                get: function () { return this.logSettings?.loglevel?? 'none'; },
+                set: function (newValue) {
+                    newLogSettings = this.logSettings;
+                    newLogSettings.loglevel = newValue;
+                    this.logSettings = newLogSettings;
+                 },
+            },
+            logAccess: {
+                get: function () { return this.logSettings?.access?? ''; },
+                set: function (newValue) {
+                    newLogSettings = this.logSettings;
+                    newValue == "" ? delete newLogSettings.access : newLogSettings.access = newValue;
+                    this.logSettings = newLogSettings;
+                 },
+            },
+            logError: {
+                get: function () { return this.logSettings?.error?? ''; },
+                set: function (newValue) {
+                    newLogSettings = this.logSettings;
+                    newValue == "" ? delete newLogSettings.error : newLogSettings.error = newValue;
+                    this.logSettings = newLogSettings;
+                 },
             },
             inboundSettings: {
                 get: function () { return this.templateSettings ? JSON.stringify(this.templateSettings.inbounds, null, 2) : null; },

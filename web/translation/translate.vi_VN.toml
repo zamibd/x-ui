@@ -309,6 +309,8 @@
 "advancedTemplate" = "Mẫu nâng cao"
 "generalConfigs" = "Cấu hình Chung"
 "generalConfigsDesc" = "Những tùy chọn này sẽ cung cấp điều chỉnh tổng quát."
+"logConfigs" = "Nhật ký"
+"logConfigsDesc" = "Nhật ký có thể ảnh hưởng đến hiệu suất máy chủ của bạn. Bạn chỉ nên kích hoạt nó một cách khôn ngoan trong trường hợp bạn cần"
 "blockConfigs" = "Cấu hình Chặn"
 "blockConfigsDesc" = "Những tùy chọn này sẽ ngăn người dùng kết nối đến các giao thức và trang web cụ thể."
 "blockCountryConfigs" = "Cấu hình Chặn Quốc gia"

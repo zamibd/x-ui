@@ -309,6 +309,8 @@
 "advancedTemplate" = "高级模板部件"
 "generalConfigs" = "通用配置"
 "generalConfigsDesc" = "这些选项将提供一般调整"
+"logConfigs"="日志"
+"logConfigsDesc" = "日志可能会影响您服务器的效率。建议仅在您需要时明智地启用它"
 "blockConfigs" = "阻塞配置"
 "blockConfigsDesc" = "这些选项将阻止用户连接到特定协议和网站"
 "blockCountryConfigs" = "阻止国家配置"
