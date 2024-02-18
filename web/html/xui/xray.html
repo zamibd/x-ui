@@ -141,13 +141,11 @@
                                                 description='{{ i18n "pages.xray.RoutingStrategyDesc" }}'/>
                                         </a-col>
                                         <a-col :lg="24" :xl="12">
-                                            <template>
-                                                <a-select
-                                                    v-model="routingStrategy"
-                                                    style="width: 100%" :dropdown-class-name="themeSwitcher.currentTheme">
-                                                    <a-select-option v-for="s in routingDomainStrategies" :value="s">[[ s ]]</a-select-option>
-                                                </a-select>
-                                            </template>
+                                            <a-select
+                                                v-model="routingStrategy"
+                                                style="width: 100%" :dropdown-class-name="themeSwitcher.currentTheme">
+                                                <a-select-option v-for="s in routingDomainStrategies" :value="s">[[ s ]]</a-select-option>
+                                            </a-select>
                                         </a-col>
                                     </a-row>
                                 </a-list-item>
@@ -1300,7 +1298,7 @@
                     if (newValue) {
                         newTemplateSettings.dns = this.settingsData.familyProtectDNS;
                     } else {
-                        delete newTemplateSettings.dns;
+                        newTemplateSettings.dns?.servers?.filter(data => !this.settingsData.familyProtectDNS.servers.includes(data))
                     }
                     this.templateSettings = newTemplateSettings;
                 },

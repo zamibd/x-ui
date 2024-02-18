@@ -116,7 +116,7 @@
         title: '',
         visible: false,
         confirmLoading: false,
-        okText: '{{ i18n "sure" }}',
+        okText: '{{ i18n "confirm" }}',
         isEdit: false,
         confirm: null,
         rule: {
@@ -142,7 +142,7 @@
             newRule = ruleModal.getResult();
             ObjectUtil.execute(ruleModal.confirm, newRule);
         },
-        show({ title='', okText='{{ i18n "sure" }}', rule, confirm=(rule)=>{}, isEdit=false  }) {
+        show({ title='', okText='{{ i18n "confirm" }}', rule, confirm=(rule)=>{}, isEdit=false  }) {
             this.title = title;
             this.okText = okText;
             this.confirm = confirm;
