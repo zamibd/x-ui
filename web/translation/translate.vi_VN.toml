@@ -419,6 +419,15 @@
 "psk" = "Khóa chia sẻ"
 "domainStrategy" = "Chiến lược tên miền"
 
+[pages.xray.dns]
+"enable" = "Kích hoạt DNS"
+"enableDesc" = "Kích hoạt máy chủ DNS tích hợp"
+"strategy" = "Chiến lược truy vấn"
+"strategyDesc" = "Chiến lược tổng thể để phân giải tên miền"
+"add" = "Thêm máy chủ"
+"edit" = "Chỉnh sửa máy chủ"
+"domains" = "Tên miền"
+
 [tgbot]
 "noResult" = "❗ Không có kết quả!"
 "wentWrong" = "❌ Đã xảy ra lỗi!"
