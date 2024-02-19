@@ -378,6 +378,7 @@
 "Outbounds" = "Исходящие"
 "Routings" = "Правила маршрутизации"
 "RoutingsDesc" = "Важен приоритет каждого правила!"
+"Balancers" = "Балансиры"
 
 [pages.xray.rules]
 "first" = "Первый"
@@ -392,6 +393,7 @@
 "add" = "Добавить правило"
 "edit" = "Редактировать правило"
 "useComma" = "Элементы, разделенные запятыми"
+"balancer" = "балансир"
 
 [pages.xray.outbound]
 "addOutbound" = "Добавить исходящий"
@@ -410,6 +412,15 @@
 "settings" = "Настройки"
 "accountInfo" = "Информация Об Учетной Записи"
 "outboundStatus" = "Исходящий статус"
+
+[pages.xray.balancer]
+"addBalancer" = "Добавить балансир"
+"editBalancer" = "Редактировать балансир"
+"balancerStrategy" = "Стратегия"
+"balancerSelectors" = "Селекторы"
+"tag" = "Тег"
+"tagDesc" = "уникальный тег"
+"balancerDesc" = "Невозможно одновременно использовать balancerTag и outboundTag. При одновременном использовании будет работать только outboundTag."
 
 [pages.xray.wireguard]
 "secretKey" = "Секретный ключ"

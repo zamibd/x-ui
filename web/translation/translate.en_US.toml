@@ -378,6 +378,7 @@
 "Outbounds" = "Outbounds"
 "Routings" = "Routing Rules"
 "RoutingsDesc" = "The priority of each rule is important!"
+"Balancers" = "Balancers"
 
 [pages.xray.rules]
 "first" = "First"
@@ -392,6 +393,7 @@
 "add" = "Add Rule"
 "edit" = "Edit Rule"
 "useComma" = "Comma-separated items"
+"balancer" = "Balancer"
 
 [pages.xray.outbound]
 "addOutbound" = "Add Outbound"
@@ -410,6 +412,15 @@
 "settings" = "Settings"
 "accountInfo" = "Account Information"
 "outboundStatus" = "Outbound Status"
+
+[pages.xray.balancer]
+"addBalancer" = "Add Balancer"
+"editBalancer" = "Edit Balancer"
+"balancerStrategy" = "Strategy"
+"balancerSelectors" = "Selectors"
+"tag" = "Tag"
+"tagDesc" = "Unique Tag"
+"balancerDesc" = "It is not possible to use balancerTag and outboundTag at the same time. If used at the same time, only outboundTag will work."
 
 [pages.xray.wireguard]
 "secretKey" = "Secret Key"

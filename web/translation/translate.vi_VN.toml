@@ -378,6 +378,7 @@
 "Outbounds" = "Đầu ra"
 "Routings" = "Quy tắc định tuyến"
 "RoutingsDesc" = "Mức độ ưu tiên của mỗi quy tắc là quan trọng!"
+"Balancers" = "Cân bằng"
 
 [pages.xray.rules]
 "first" = "Đầu tiên"
@@ -392,6 +393,7 @@
 "add" = "Thêm quy tắc"
 "edit" = "Chỉnh sửa quy tắc"
 "useComma" = "Các mục được phân tách bằng dấu phẩy"
+"balancer" = "Cân bằng"
 
 [pages.xray.outbound]
 "addOutbound" = "Thêm Đầu vào"
@@ -410,6 +412,15 @@
 "settings" = "cài đặt"
 "accountInfo" = "Thông tin tài khoản"
 "outboundStatus" = "Trạng thái đầu ra"
+
+[pages.xray.balancer]
+"addBalancer" = "Thêm cân bằng"
+"editBalancer" = "Chỉnh sửa cân bằng"
+"balancerStrategy" = "Chiến lược"
+"balancerSelectors" = "Bộ chọn"
+"tag" = "Thẻ"
+"tagDesc" = "thẻ duy nhất"
+"balancerDesc" = "Không thể sử dụng balancerTag và outboundTag cùng một lúc. Nếu sử dụng cùng lúc thì chỉ outboundTag mới hoạt động."
 
 [pages.xray.wireguard]
 "secretKey" = "Chìa khoá bí mật"

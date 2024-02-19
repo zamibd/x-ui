@@ -378,6 +378,7 @@
 "Outbounds" = "出站"
 "Routings" = "路由规则"
 "RoutingsDesc" = "每条规则的优先级都很重要"
+"Balancers" = "平衡器"
 
 [pages.xray.rules]
 "first" = "第一个"
@@ -392,6 +393,7 @@
 "add" = "添加规则"
 "edit" = "编辑规则"
 "useComma" = "逗号分隔的项目"
+"balancer" = "平衡器"
 
 [pages.xray.outbound]
 "addOutbound" = "添加出站"
@@ -410,6 +412,15 @@
 "settings" = "设置"
 "accountInfo" = "帐户信息"
 "outboundStatus" = "出站状态"
+
+[pages.xray.balancer]
+"addBalancer" = "添加平衡器"
+"editBalancer" = "编辑平衡器"
+"balancerStrategy" = "战略"
+"balancerSelectors" = "选择器"
+"tag" = "标签"
+"tagDesc" = "唯一标记"
+"balancerDesc" = "不能同时使用balancerTag和outboundTag。 如果同时使用，则只有outboundTag起作用。"
 
 [pages.xray.wireguard]
 "secretKey" = "密钥"
