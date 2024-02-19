@@ -850,8 +850,8 @@
                     port: RandomUtil.randomIntRange(10000, 60000),
                     protocol: baseInbound.protocol,
                     settings: Inbound.Settings.getSettings(baseInbound.protocol).toString(),
-		    streamSettings: baseInbound.stream.toString(),
-                    sniffing: baseInbound.canSniffing() ? baseInbound.sniffing.toString() : '{}',
+                    streamSettings: baseInbound.stream.toString(),
+                    sniffing: baseInbound.sniffing.toString(),
                 };
                 await this.submit('/xui/inbound/add', data, inModal);
             },
@@ -870,7 +870,7 @@
                     settings: inbound.settings.toString(),
                 };
                 if (inbound.canEnableStream()) data.streamSettings = inbound.stream.toString();
-                if (inbound.canSniffing()) data.sniffing = inbound.sniffing.toString();
+                data.sniffing = inbound.sniffing.toString();
 
                 await this.submit('/xui/inbound/add', data, inModal);
             },
@@ -889,7 +889,7 @@
                     settings: inbound.settings.toString(),
                 };
                 if (inbound.canEnableStream()) data.streamSettings = inbound.stream.toString();
-                if (inbound.canSniffing()) data.sniffing = inbound.sniffing.toString();
+                data.sniffing = inbound.sniffing.toString();
 
                 await this.submit(`/xui/inbound/update/${dbInbound.id}`, data, inModal);
             },
