@@ -1291,14 +1291,14 @@
             familyProtectSettings: {
                 get: function () {
                     if (!this.templateSettings || !this.templateSettings.dns || !this.templateSettings.dns.servers) return false;
-                    return doAllItemsExist(this.templateSettings.dns.servers, this.settingsData.familyProtectDNS.servers);
+                    return doAllItemsExist(this.settingsData.familyProtectDNS.servers, this.templateSettings.dns.servers);
                 },
                 set: function (newValue) {
                     newTemplateSettings = this.templateSettings;
                     if (newValue) {
                         newTemplateSettings.dns = this.settingsData.familyProtectDNS;
                     } else {
-                        newTemplateSettings.dns?.servers?.filter(data => !this.settingsData.familyProtectDNS.servers.includes(data))
+                        newTemplateSettings.dns.servers = newTemplateSettings.dns?.servers?.filter(data => !this.settingsData.familyProtectDNS.servers.includes(data))
                     }
                     this.templateSettings = newTemplateSettings;
                 },
