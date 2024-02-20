@@ -442,6 +442,12 @@
 "edit" = "编辑服务器"
 "domains" = "域"
 
+[pages.xray.fakedns]
+"add" = "添加假 DNS"
+"edit" = "编辑假 DNS"
+"ipPool" = "IP 池子网"
+"poolSize" = "池大小"
+
 [tgbot]
 "noResult" = "❗ 没有结果！"
 "wentWrong" = "❌ 出了点问题！"

@@ -442,6 +442,12 @@
 "edit" = "Chỉnh sửa máy chủ"
 "domains" = "Tên miền"
 
+[pages.xray.fakedns]
+"add" = "Thêm DNS giả"
+"edit" = "Chỉnh sửa DNS giả"
+"ipPool" = "Mạng con nhóm IP"
+"poolSize" = "Kích thước bể bơi"
+
 [tgbot]
 "noResult" = "❗ Không có kết quả!"
 "wentWrong" = "❌ Đã xảy ra lỗi!"
