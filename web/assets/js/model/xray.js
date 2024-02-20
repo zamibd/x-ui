@@ -2096,7 +2096,7 @@ Inbound.WireguardSettings = class extends XrayCommonClass {
     }
 
     addPeer() {
-        this.peers.push(new Inbound.WireguardSettings.Peer());
+        this.peers.push(new Inbound.WireguardSettings.Peer(null,null,'',['10.0.0.' + (this.peers.length+2)]));
     }
 
     delPeer(index) {
