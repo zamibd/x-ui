@@ -294,6 +294,8 @@
 "subShowInfoDesc" = "Hiển thị lưu lượng truy cập còn lại và ngày sau tên cấu hình"
 "subURI" = "URI proxy ngược"
 "subURIDesc" = "Thay đổi URI cơ sở của URL đăng ký để sử dụng ở phía sau proxy"
+"fragment" = "Sự phân mảnh"
+"fragmentDesc" = "Kích hoạt phân mảnh cho gói TLS hello"
 
 [pages.settings.toasts]
 "modifySettings" = "Sửa đổi cài đặt"
