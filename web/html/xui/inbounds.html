@@ -185,7 +185,7 @@
                             </a-radio-group>
                         </div>
                         <a-back-top></a-back-top>
-                        <a-table :columns="isMobile ? mobileColums : columns" :row-key="dbInbound => dbInbound.id"
+                        <a-table :columns="isMobile ? mobileColumns : columns" :row-key="dbInbound => dbInbound.id"
                                  :data-source="searchedInbounds"
                                  :scroll="isMobile ? {} : { x: 1000 }"
                                  :pagination=pagination(searchedInbounds)
@@ -502,7 +502,7 @@
         scopedSlots: { customRender: 'expiryTime' },
     }];
 
-    const mobileColums = [{
+    const mobileColumns = [{
         title: "ID",
         align: 'right',
         dataIndex: "id",
@@ -526,19 +526,73 @@
     }];
 
     const innerColumns = [
-        { title: '{{ i18n "pages.inbounds.operate" }}', width: 50, scopedSlots: { customRender: 'actions' } },
-        { title: '{{ i18n "pages.inbounds.enable" }}', width: 20, scopedSlots: { customRender: 'enable' } },
-        { title: '{{ i18n "online" }}', width: 20, scopedSlots: { customRender: 'online' } },
-        { title: '{{ i18n "pages.inbounds.client" }}', width: 70, scopedSlots: { customRender: 'client' } },
-        { title: '{{ i18n "pages.inbounds.traffic" }}', width: 80, align: 'center', scopedSlots: { customRender: 'traffic' } },
-        { title: '{{ i18n "pages.inbounds.expireDate" }}', width: 70, align: 'center', scopedSlots: { customRender: 'expiryTime' } },
-    ];
+            {
+                title: '{{ i18n "pages.inbounds.operate" }}',
+                width: 50,
+                scopedSlots: { customRender: 'actions' },
+            },
+            {
+                title: '{{ i18n "pages.inbounds.enable" }}',
+                width: 20,
+                scopedSlots: { customRender: 'enable' },
+            },
+            {
+                title: '{{ i18n "online" }}',
+                width: 20,
+                scopedSlots: { customRender: 'online' },
+            },
+            {
+                title: '{{ i18n "pages.inbounds.client" }}',
+                dataIndex: 'email',
+                width: 70,
+                scopedSlots: { customRender: 'client' },
+                sorter: (a, b) => {
+                    const clientA = a.email || '';
+                    const clientB = b.email || '';
+                    return clientA.localeCompare(clientB, undefined, { sensitivity: 'base' });
+                },
+            },
+            {
+                title: '{{ i18n "pages.inbounds.traffic" }}',
+                dataIndex: 'traffic',
+                width: 80,
+                align: 'center',
+                scopedSlots: { customRender: 'traffic' },
+            },
+            {
+                title: '{{ i18n "pages.inbounds.expireDate" }}',
+                width: 70,
+                align: 'center',
+                scopedSlots: { customRender: 'expiryTime' },
+            },
+        ];
 
-    const innerMobileColumns = [
-        { title: '{{ i18n "pages.inbounds.operate" }}', width: 10, align: 'center', scopedSlots: { customRender: 'actionMenu' } },
-        { title: '{{ i18n "pages.inbounds.client" }}', width: 90, align: 'left', scopedSlots: { customRender: 'client' } },
-        { title: '{{ i18n "pages.inbounds.info" }}', width: 10, align: 'center', scopedSlots: { customRender: 'info' } },
-    ];
+        const innerMobileColumns = [
+            {
+                title: '{{ i18n "pages.inbounds.operate" }}',
+                width: 10,
+                align: 'center',
+                scopedSlots: { customRender: 'actionMenu' },
+            },
+            {
+                title: '{{ i18n "pages.inbounds.client" }}',
+                dataIndex: 'email',
+                width: 90,
+                align: 'left',
+                scopedSlots: { customRender: 'client' },
+                sorter: (a, b) => {
+                    const clientA = a.email || '';
+                    const clientB = b.email || '';
+                    return clientA.localeCompare(clientB, undefined, { sensitivity: 'base' });
+                },
+            },
+            {
+                title: '{{ i18n "pages.inbounds.info" }}',
+                width: 10,
+                align: 'center',
+                scopedSlots: { customRender: 'info' },
+            },
+        ];
 
     const app = new Vue({
         delimiters: ['[[', ']]'],
