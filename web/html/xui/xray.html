@@ -1285,7 +1285,7 @@
                     newLogSettings = this.logSettings;
                     newLogSettings.loglevel = newValue;
                     this.logSettings = newLogSettings;
-                 },
+                },
             },
             logAccess: {
                 get: function () { return this.logSettings?.access?? ''; },
@@ -1293,7 +1293,7 @@
                     newLogSettings = this.logSettings;
                     newValue == "" ? delete newLogSettings.access : newLogSettings.access = newValue;
                     this.logSettings = newLogSettings;
-                 },
+                },
             },
             logError: {
                 get: function () { return this.logSettings?.error?? ''; },
@@ -1301,7 +1301,7 @@
                     newLogSettings = this.logSettings;
                     newValue == "" ? delete newLogSettings.error : newLogSettings.error = newValue;
                     this.logSettings = newLogSettings;
-                 },
+                },
             },
             inboundSettings: {
                 get: function () { return this.templateSettings ? JSON.stringify(this.templateSettings.inbounds, null, 2) : null; },

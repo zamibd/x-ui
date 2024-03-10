@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+
 	"x-ui/database/model"
 	"x-ui/web/service"
 	"x-ui/web/session"
@@ -63,6 +64,7 @@ func (a *InboundController) getInbound(c *gin.Context) {
 	}
 	jsonObj(c, inbound, nil)
 }
+
 func (a *InboundController) getClientTraffics(c *gin.Context) {
 	email := c.Param("email")
 	clientTraffics, err := a.inboundService.GetClientTrafficByEmail(email)

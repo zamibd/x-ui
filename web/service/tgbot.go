@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
 	"x-ui/config"
 	"x-ui/database"
 	"x-ui/database/model"
@@ -19,10 +20,12 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
-var bot *tgbotapi.BotAPI
-var adminIds []int64
-var isRunning bool
-var hostname string
+var (
+	bot       *tgbotapi.BotAPI
+	adminIds  []int64
+	isRunning bool
+	hostname  string
+)
 
 type LoginStatus byte
 

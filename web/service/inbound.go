@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 	"time"
+
 	"x-ui/database"
 	"x-ui/database/model"
 	"x-ui/logger"
@@ -90,7 +91,6 @@ func (s *InboundService) getAllEmails() ([]string, error) {
 		FROM inbounds,
 			JSON_EACH(JSON_EXTRACT(inbounds.settings, '$.clients')) AS client
 		`).Scan(&emails).Error
-
 	if err != nil {
 		return nil, err
 	}
@@ -1044,13 +1044,15 @@ func (s *InboundService) UpdateClientStat(tx *gorm.DB, email string, client *mod
 			"email":       client.Email,
 			"total":       client.TotalGB,
 			"expiry_time": client.ExpiryTime,
-			"reset":       client.Reset})
+			"reset":       client.Reset,
+		})
 	err := result.Error
 	if err != nil {
 		return err
 	}
 	return nil
 }
+
 func (s *InboundService) DelClientStat(tx *gorm.DB, email string) error {
 	return tx.Where("email = ?", email).Delete(xray.ClientTraffic{}).Error
 }
@@ -1131,7 +1133,6 @@ func (s *InboundService) ResetAllClientTraffics(id int) error {
 		Updates(map[string]interface{}{"enable": true, "up": 0, "down": 0})
 
 	err := result.Error
-
 	if err != nil {
 		return err
 	}
@@ -1146,7 +1147,6 @@ func (s *InboundService) ResetAllTraffics() error {
 		Updates(map[string]interface{}{"up": 0, "down": 0})
 
 	err := result.Error
-
 	if err != nil {
 		return err
 	}
