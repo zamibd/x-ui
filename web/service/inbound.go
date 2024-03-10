@@ -553,21 +553,30 @@ func (s *InboundService) UpdateInboundClient(data *model.Inbound, clientId strin
 	}
 
 	oldEmail := ""
+	newClientId := ""
 	clientIndex := 0
 	for index, oldClient := range oldClients {
 		oldClientId := ""
 		if oldInbound.Protocol == "trojan" {
 			oldClientId = oldClient.Password
+			newClientId = clients[0].Password
 		} else if oldInbound.Protocol == "shadowsocks" {
 			oldClientId = oldClient.Email
+			newClientId = clients[0].Email
 		} else {
 			oldClientId = oldClient.ID
+			newClientId = clients[0].ID
 		}
 		if clientId == oldClientId {
 			oldEmail = oldClient.Email
 			clientIndex = index
 			break
 		}
+	}
+
+	// Validate new client ID
+	if newClientId == "" {
+		return false, common.NewError("empty client ID")
 	}
 
 	if len(clients[0].Email) > 0 && clients[0].Email != oldEmail {
