@@ -132,7 +132,7 @@ func (t *Tgbot) OnReceive() {
 		isAdmin := checkAdmin(tgId)
 		if update.Message == nil {
 			if update.CallbackQuery != nil {
-				t.asnwerCallback(update.CallbackQuery, isAdmin)
+				t.asnwerCallback(update.CallbackQuery)
 			}
 		} else {
 			if update.Message.IsCommand() {
@@ -193,7 +193,7 @@ func (t *Tgbot) answerCommand(message *tgbotapi.Message, chatId int64, isAdmin b
 	t.SendAnswer(chatId, msg, isAdmin)
 }
 
-func (t *Tgbot) asnwerCallback(callbackQuery *tgbotapi.CallbackQuery, isAdmin bool) {
+func (t *Tgbot) asnwerCallback(callbackQuery *tgbotapi.CallbackQuery) {
 	// Respond to the callback query, telling Telegram to show the user
 	// a message with the data received.
 	callback := tgbotapi.NewCallback(callbackQuery.ID, callbackQuery.Data)

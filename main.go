@@ -318,7 +318,7 @@ func main() {
 			updateTgbotEnableSts(enabletgbot)
 		}
 	default:
-		fmt.Println("except 'run' or 'setting' subcommands")
+		fmt.Println("Invalid subcommands")
 		fmt.Println()
 		runCmd.Usage()
 		fmt.Println()
