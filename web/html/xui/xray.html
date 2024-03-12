@@ -1139,10 +1139,6 @@
                 let realIndex = newTemplateSettings.routing.balancers.findIndex((b) => b.tag === removedBalancer.tag);
                 newTemplateSettings.routing.balancers.splice(realIndex, 1);
 
-                // Remove related routing rules
-                let rules = newTemplateSettings.routing.rules.filter((r) => !r.balancerTag || r.balancerTag !== removedBalancer.tag);
-                newTemplateSettings.routing.rules = rules;
-
                 // Update balancers property to an empty array if there are no more balancers
                 if (newTemplateSettings.routing.balancers.length === 0) {
                     delete newTemplateSettings.routing.balancers;
