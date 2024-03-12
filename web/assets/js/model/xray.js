@@ -435,19 +435,21 @@ class QuicStreamSettings extends XrayCommonClass {
 }
 
 class GrpcStreamSettings extends XrayCommonClass {
-    constructor(serviceName="", multiMode=false) {
+    constructor(serviceName="", authority="", multiMode=false) {
         super();
         this.serviceName = serviceName;
+        this.authority = authority;
         this.multiMode = multiMode;
     }
 
     static fromJson(json={}) {
-        return new GrpcStreamSettings(json.serviceName, json.multiMode);
+        return new GrpcStreamSettings(json.serviceName, json.authority, json.multiMode);
     }
 
     toJson() {
         return {
             serviceName: this.serviceName,
+            authority: this.authority,
             multiMode: this.multiMode,
         }
     }
@@ -1079,6 +1081,7 @@ class Inbound extends XrayCommonClass {
             obj.path = this.stream.quic.key;
         } else if (network === 'grpc') {
             obj.path = this.stream.grpc.serviceName;
+            obj.authority = this.stream.grpc.authority;
             if (this.stream.grpc.multiMode){
                 obj.type = 'multi'
             }
@@ -1154,6 +1157,7 @@ class Inbound extends XrayCommonClass {
             case "grpc":
                 const grpc = this.stream.grpc;
                 params.set("serviceName", grpc.serviceName);
+                params.set("authority", grpc.authority);
                 if(grpc.multiMode){
                     params.set("mode", "multi");
                 }
@@ -1261,6 +1265,7 @@ class Inbound extends XrayCommonClass {
             case "grpc":
                 const grpc = this.stream.grpc;
                 params.set("serviceName", grpc.serviceName);
+                params.set("authority", grpc.authority);
                 if(grpc.multiMode){
                     params.set("mode", "multi");
                 }
@@ -1347,6 +1352,7 @@ class Inbound extends XrayCommonClass {
             case "grpc":
                 const grpc = this.stream.grpc;
                 params.set("serviceName", grpc.serviceName);
+                params.set("authority", grpc.authority);
                 if(grpc.multiMode){
                     params.set("mode", "multi");
                 }

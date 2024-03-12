@@ -257,19 +257,21 @@ class QuicStreamSettings extends CommonClass {
 }
 
 class GrpcStreamSettings extends CommonClass {
-    constructor(serviceName="", multiMode=false) {
+    constructor(serviceName="", authority="", multiMode=false) {
         super();
         this.serviceName = serviceName;
+        this.authority = authority;
         this.multiMode = multiMode;
     }
 
     static fromJson(json={}) {
-        return new GrpcStreamSettings(json.serviceName, json.multiMode);
+        return new GrpcStreamSettings(json.serviceName, json.authority, json.multiMode);
     }
 
     toJson() {
         return {
             serviceName: this.serviceName,
+            authority: this.authority,
             multiMode: this.multiMode,
         }
     }
@@ -640,7 +642,7 @@ class Outbound extends CommonClass {
                 json.path,
                 json.type ? json.type : 'none');
         } else if (network === 'grpc') {
-            stream.grpc = new GrpcStreamSettings(json.path, json.type == 'multi');
+            stream.grpc = new GrpcStreamSettings(json.path, json.authority, json.type == 'multi');
         } else if (network === 'httpupgrade') {
             stream.httpupgrade = new HttpUpgradeStreamSettings(json.path,json.host);
         }
@@ -682,7 +684,10 @@ class Outbound extends CommonClass {
                 url.searchParams.get('key') ?? '',
                 headerType ?? 'none');
         } else if (type === 'grpc') {
-            stream.grpc = new GrpcStreamSettings(url.searchParams.get('serviceName') ?? '', url.searchParams.get('mode') == 'multi');
+            stream.grpc = new GrpcStreamSettings(
+                url.searchParams.get('serviceName') ?? '',
+                url.searchParams.get('authority') ?? '',
+                url.searchParams.get('mode') == 'multi');
         } else if (type === 'httpupgrade') {
             stream.httpupgrade = new HttpUpgradeStreamSettings(path,host);
         }
