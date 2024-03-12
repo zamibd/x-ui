@@ -226,22 +226,23 @@
             <a-select-option value="http">HTTP/2</a-select-option>
             <a-select-option value="quic">QUIC</a-select-option>
             <a-select-option value="grpc">gRPC</a-select-option>
+            <a-select-option value="httpupgrade">HttpUpgrade</a-select-option>
+        </a-select>
         </a-select>
     </a-form-item>
     <template v-if="outbound.stream.network === 'tcp'">
         <a-form-item label='HTTP {{ i18n "camouflage" }}'>
-            <a-switch
-                :checked="outbound.stream.tcp.type === 'http'"
+            <a-switch :checked="outbound.stream.tcp.type === 'http'"
                 @change="checked => outbound.stream.tcp.type = checked ? 'http' : 'none'">
             </a-switch>
         </a-form-item>
         <template v-if="outbound.stream.tcp.type == 'http'">
-        <a-form-item label='{{ i18n "host" }}'>
-            <a-input v-model.trim="outbound.stream.tcp.host"></a-input>
-        </a-form-item> 
-        <a-form-item label='{{ i18n "path" }}'>
-            <a-input v-model.trim="outbound.stream.tcp.path"></a-input>
-        </a-form-item> 
+            <a-form-item label='{{ i18n "host" }}'>
+                <a-input v-model.trim="outbound.stream.tcp.host"></a-input>
+            </a-form-item> 
+            <a-form-item label='{{ i18n "path" }}'>
+                <a-input v-model.trim="outbound.stream.tcp.path"></a-input>
+            </a-form-item> 
         </template>
     </template>
     
@@ -268,7 +269,7 @@
         </a-form-item>
         <a-form-item label='Uplink (MB/s)'>
             <a-input-number v-model.number="outbound.stream.kcp.upCap"></a-input-number>
-        </a-form-item> 
+        </a-form-item>
         <a-form-item label='Downlink (MB/s)'>
             <a-input-number v-model.number="outbound.stream.kcp.downCap"></a-input-number>
         </a-form-item>
@@ -335,6 +336,16 @@
         <a-form-item label='Multi Mode'>
             <a-switch v-model="outbound.stream.grpc.multiMode"></a-switch>
         </a-form-item>
+    </template>
+
+    <!-- httpupgrade -->
+    <template v-if="outbound.stream.network === 'httpupgrade'">
+        <a-form-item label='{{ i18n "host" }}'>
+            <a-input v-model="outbound.stream.httpupgrade.host"></a-input>
+        </a-form-item>
+        <a-form-item label='{{ i18n "path" }}'>
+            <a-form-item><a-input v-model.trim="outbound.stream.httpupgrade.path"></a-input>
+            </a-form-item>
     </template>
 </template>
 

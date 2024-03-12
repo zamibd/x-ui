@@ -213,6 +213,10 @@ func (s *SubService) genVmessLink(inbound *model.Inbound, email string) string {
 		if grpc["multiMode"].(bool) {
 			obj["type"] = "multi"
 		}
+	case "httpupgrade":
+		httpupgrade, _ := stream["httpupgradeSettings"].(map[string]interface{})
+		obj["path"] = httpupgrade["path"].(string)
+		obj["host"] = httpupgrade["host"].(string)
 	}
 
 	security, _ := stream["security"].(string)
@@ -347,6 +351,10 @@ func (s *SubService) genVlessLink(inbound *model.Inbound, email string) string {
 		if grpc["multiMode"].(bool) {
 			params["mode"] = "multi"
 		}
+	case "httpupgrade":
+		httpupgrade, _ := stream["httpupgradeSettings"].(map[string]interface{})
+		params["path"] = httpupgrade["path"].(string)
+		params["host"] = httpupgrade["host"].(string)
 	}
 
 	security, _ := stream["security"].(string)
@@ -528,6 +536,10 @@ func (s *SubService) genTrojanLink(inbound *model.Inbound, email string) string 
 		if grpc["multiMode"].(bool) {
 			params["mode"] = "multi"
 		}
+	case "httpupgrade":
+		httpupgrade, _ := stream["httpupgradeSettings"].(map[string]interface{})
+		params["path"] = httpupgrade["path"].(string)
+		params["host"] = httpupgrade["host"].(string)
 	}
 
 	security, _ := stream["security"].(string)
@@ -705,6 +717,10 @@ func (s *SubService) genShadowsocksLink(inbound *model.Inbound, email string) st
 		if grpc["multiMode"].(bool) {
 			params["mode"] = "multi"
 		}
+	case "httpupgrade":
+		httpupgrade, _ := stream["httpupgradeSettings"].(map[string]interface{})
+		params["path"] = httpupgrade["path"].(string)
+		params["host"] = httpupgrade["host"].(string)
 	}
 
 	security, _ := stream["security"].(string)
