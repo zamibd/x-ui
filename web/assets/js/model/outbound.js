@@ -480,7 +480,7 @@ class Mux extends CommonClass {
 
     static fromJson(json = {}) {
         if (Object.keys(json).length === 0) return undefined;
-        return new SockoptStreamSettings(
+        return new Mux(
             json.enabled,
             json.concurrency,
             json.xudpConcurrency,
@@ -546,6 +546,10 @@ class Outbound extends CommonClass {
 
     canEnableStream() {
         return [Protocols.VMess, Protocols.VLESS, Protocols.Trojan, Protocols.Shadowsocks].includes(this.protocol);
+    }
+
+    canEnableMux() {
+        return [Protocols.VMess, Protocols.VLESS, Protocols.Trojan, Protocols.Shadowsocks, Protocols.HTTP, Protocols.Socks].includes(this.protocol);
     }
 
     hasVnext() {
