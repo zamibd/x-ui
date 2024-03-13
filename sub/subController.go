@@ -53,7 +53,6 @@ func (a *SUBController) initRouter(g *gin.RouterGroup) {
 }
 
 func (a *SUBController) subs(c *gin.Context) {
-	println(c.Request.Header["User-Agent"][0])
 	subId := c.Param("subid")
 	host := strings.Split(c.Request.Host, ":")[0]
 	subs, header, err := a.subService.GetSubs(subId, host)
