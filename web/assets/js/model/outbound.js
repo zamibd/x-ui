@@ -194,14 +194,14 @@ class WsStreamSettings extends CommonClass {
     static fromJson(json={}) {
         return new WsStreamSettings(
             json.path,
-            json.headers && !ObjectUtil.isEmpty(json.headers.Host) ? json.headers.Host : '',
+            json.host,
         );
     }
 
     toJson() {
         return {
             path: this.path,
-            headers: ObjectUtil.isEmpty(this.host) ? undefined : {Host: this.host},
+            host: this.host,
         };
     }
 }
