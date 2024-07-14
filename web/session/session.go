@@ -19,6 +19,9 @@ func init() {
 
 func SetLoginUser(c *gin.Context, user *model.User) error {
 	s := sessions.Default(c)
+	s.Options(sessions.Options{
+		HttpOnly: true,
+	})
 	s.Set(loginUser, user)
 	return s.Save()
 }
