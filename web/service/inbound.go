@@ -667,12 +667,14 @@ func (s *InboundService) UpdateInboundClient(data *model.Inbound, clientId strin
 	needRestart := false
 	if len(oldEmail) > 0 {
 		s.xrayApi.Init(p.GetAPIPort())
-		err1 := s.xrayApi.RemoveUser(oldInbound.Tag, oldEmail)
-		if err1 == nil {
-			logger.Debug("Old client deleted by api:", clients[0].Email)
-		} else {
-			logger.Debug("Error in deleting client by api:", err1)
-			needRestart = true
+		if oldClients[clientIndex].Enable {
+			err1 := s.xrayApi.RemoveUser(oldInbound.Tag, oldEmail)
+			if err1 == nil {
+				logger.Debug("Old client deleted by api:", clients[0].Email)
+			} else {
+				logger.Debug("Error in deleting client by api:", err1)
+				needRestart = true
+			}
 		}
 		if clients[0].Enable {
 			cipher := ""
@@ -1292,8 +1294,8 @@ func (s *InboundService) GetClientTrafficByEmail(email string) (traffic *xray.Cl
 	return nil, nil
 }
 
-func (s *InboundService) GetClientTrafficByID(id string) ([]xray.ClientTraffic, error)  {
-	db := database.GetDB() 
+func (s *InboundService) GetClientTrafficByID(id string) ([]xray.ClientTraffic, error) {
+	db := database.GetDB()
 	var traffics []xray.ClientTraffic
 
 	err := db.Model(xray.ClientTraffic{}).Where(`email IN(
