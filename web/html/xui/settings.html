@@ -220,7 +220,7 @@
                                     <setting-list-item type="text" title='Interval' v-model="fragmentInterval" placeholder="10-20"></setting-list-item>
                                 </a-collapse-panel>
                                 <a-collapse-panel header='Noise' v-if="enableNoise">
-                                    <setting-list-item type="text" title='Packets' v-model="noisePackets" placeholder="rand:5-10"></setting-list-item>
+                                    <setting-list-item type="text" title='Packet' v-model="noisePacket" placeholder="rand:5-10"></setting-list-item>
                                     <setting-list-item type="text" title='Delay' v-model="noiseDelay" placeholder="5-10"></setting-list-item>
                                 </a-collapse-panel>
                                 <a-collapse-panel header='Mux' v-if="enableMux">                                    
@@ -307,7 +307,7 @@
                 settings: {
                 domainStrategy: "AsIs",
                 noise: {
-                    packets: "rand:5-10",
+                    packet: "rand:5-10",
                     delay: "5-10",
                 }
                 },
@@ -469,12 +469,12 @@
                     this.allSetting.subJsonNoise = v ? JSON.stringify(this.defaultNoise) : "";
                 }
             },
-            noisePackets: {
-                get: function () { return this.enableNoise ? JSON.parse(this.allSetting.subJsonNoise).settings.noise.packets : ""; },
+            noisePacket: {
+                get: function () { return this.enableNoise ? JSON.parse(this.allSetting.subJsonNoise).settings.noise.packet : ""; },
                 set: function (v) {
                     if (v != "") {
                         newNoise = JSON.parse(this.allSetting.subJsonNoise);
-                        newNoise.settings.noise.packets = v;
+                        newNoise.settings.noise.packet = v;
                         this.allSetting.subJsonNoise = JSON.stringify(newNoise);
                     }
                 }
