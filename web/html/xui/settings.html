@@ -209,6 +209,7 @@
                                 <setting-list-item type="text" title='{{ i18n "pages.settings.subPath"}}' desc='{{ i18n "pages.settings.subPathDesc"}}' v-model="allSetting.subJsonPath"></setting-list-item>
                                 <setting-list-item type="text" title='{{ i18n "pages.settings.subURI"}}' desc='{{ i18n "pages.settings.subURIDesc"}}' v-model="allSetting.subJsonURI" placeholder="(http|https)://domain[:port]/path/"></setting-list-item>
                                 <setting-list-item type="switch" title='{{ i18n "pages.settings.fragment"}}' desc='{{ i18n "pages.settings.fragmentDesc"}}' v-model="fragment"></setting-list-item>
+                                <setting-list-item type="switch" title='Noise' v-model="enableNoise"></setting-list-item>
                                 <setting-list-item type="switch" title='Mux' v-model="enableMux"></setting-list-item>
                                 <setting-list-item type="switch" title='{{ i18n "pages.xray.directCountryConfigs"}}' desc='{{ i18n "pages.xray.directCountryConfigsDesc"}}' v-model="enableDirect"></setting-list-item>
                             </a-list>
@@ -217,6 +218,10 @@
                                     <setting-list-item type="text" title='Packets' v-model="fragmentPackets" placeholder="1-1 | 1-3 | tlshello | ..."></setting-list-item>
                                     <setting-list-item type="text" title='Length' v-model="fragmentLength" placeholder="100-200"></setting-list-item>
                                     <setting-list-item type="text" title='Interval' v-model="fragmentInterval" placeholder="10-20"></setting-list-item>
+                                </a-collapse-panel>
+                                <a-collapse-panel header='Noise' v-if="enableNoise">
+                                    <setting-list-item type="text" title='Packets' v-model="noisePackets" placeholder="rand:5-10"></setting-list-item>
+                                    <setting-list-item type="text" title='Delay' v-model="noiseDelay" placeholder="5-10"></setting-list-item>
                                 </a-collapse-panel>
                                 <a-collapse-panel header='Mux' v-if="enableMux">                                    
                                     <setting-list-item type="number" title='Concurrency' v-model="muxConcurrency" :min="-1" :max="1024"></setting-list-item>
@@ -295,6 +300,17 @@
                         tcpNoDelay: true
                     }
                 }
+            },
+            defaultNoise: {
+                tag: "noise",
+                protocol: "freedom",
+                settings: {
+                domainStrategy: "AsIs",
+                noise: {
+                    packets: "rand:5-10",
+                    delay: "5-10",
+                }
+                },
             },
             defaultMux: {
                 enabled: true,
@@ -444,6 +460,32 @@
                         newFragment = JSON.parse(this.allSetting.subJsonFragment);
                         newFragment.settings.fragment.interval = v;
                         this.allSetting.subJsonFragment = JSON.stringify(newFragment);
+                    }
+                }
+            },
+            enableNoise: {
+                get: function () { return this.allSetting?.subJsonNoise != ""; },
+                set: function (v) {
+                    this.allSetting.subJsonNoise = v ? JSON.stringify(this.defaultNoise) : "";
+                }
+            },
+            noisePackets: {
+                get: function () { return this.enableNoise ? JSON.parse(this.allSetting.subJsonNoise).settings.noise.packets : ""; },
+                set: function (v) {
+                    if (v != "") {
+                        newNoise = JSON.parse(this.allSetting.subJsonNoise);
+                        newNoise.settings.noise.packets = v;
+                        this.allSetting.subJsonNoise = JSON.stringify(newNoise);
+                    }
+                }
+            },
+            noiseDelay: {
+                get: function () { return this.enableNoise ? JSON.parse(this.allSetting.subJsonNoise).settings.noise.delay : ""; },
+                set: function (v) {
+                    if (v != "") {
+                        newNoise = JSON.parse(this.allSetting.subJsonNoise);
+                        newNoise.settings.noise.delay = v;
+                        this.allSetting.subJsonNoise = JSON.stringify(newNoise);
                     }
                 }
             },

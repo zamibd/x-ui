@@ -45,6 +45,20 @@
             <a-input v-model.trim="outbound.settings.fragment.interval"></a-input>
         </a-form-item>
     </template>
+    <a-form-item label='Noise'>
+        <a-switch
+            :checked="Object.keys(outbound.settings.noise).length >0"
+            @change="checked => outbound.settings.noise = checked ? new Outbound.FreedomSettings.Noise() : {}">
+        </a-switch>
+    </a-form-item>
+    <template v-if="Object.keys(outbound.settings.noise).length >0">
+    <a-form-item label='Packets'>
+        <a-input v-model.trim="outbound.settings.noise.packets"></a-input>
+    </a-form-item>
+    <a-form-item label='Delay'>
+        <a-input v-model.trim="outbound.settings.noise.delay"></a-input>
+    </a-form-item>
+    </template>
 </template>
 
 <!-- blackhole settings -->
