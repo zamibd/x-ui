@@ -2054,13 +2054,12 @@ Inbound.ShadowsocksSettings.Shadowsocks = class extends XrayCommonClass {
 };
 
 Inbound.DokodemoSettings = class extends Inbound.Settings {
-    constructor(protocol, address, port, network='tcp,udp', followRedirect=false, timeout=0) {
+    constructor(protocol, address, port, network='tcp,udp', followRedirect=false) {
         super(protocol);
         this.address = address;
         this.port = port;
         this.network = network;
         this.followRedirect = followRedirect;
-        this.timeout = timeout;
     }
 
     static fromJson(json={}) {
@@ -2069,8 +2068,7 @@ Inbound.DokodemoSettings = class extends Inbound.Settings {
             json.address,
             json.port,
             json.network,
-            json.followRedirect,
-            json.timeout,
+            json.followRedirect
         );
     }
 
@@ -2079,8 +2077,7 @@ Inbound.DokodemoSettings = class extends Inbound.Settings {
             address: this.address,
             port: this.port,
             network: this.network,
-            followRedirect: this.followRedirect,
-            timeout: this.timeout,
+            followRedirect: this.followRedirect
         };
     }
 };
