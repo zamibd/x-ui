@@ -79,7 +79,7 @@ elif [[ "${release}" == "rocky" ]]; then
     if [[ ${os_version} -lt 8 ]]; then
         echo -e "${red} Please use Rocky Linux 8 or higher ${plain}\n" && exit 1
     fi
-elif [[ "${release}" == "oracle" ]]; then
+elif [[ "${release}" == "ol" ]]; then
     if [[ ${os_version} -lt 8 ]]; then
         echo -e "${red} Please use Oracle Linux 8 or higher ${plain}\n" && exit 1
     fi
@@ -622,7 +622,7 @@ ssl_cert_issue() {
     ubuntu | debian | armbian)
         apt update && apt install socat -y
         ;;
-    centos | almalinux | rocky | oracle)
+    centos | almalinux | rocky | ol)
         yum -y update && yum -y install socat
         ;;
     fedora | amzn)
@@ -973,10 +973,10 @@ enable_bbr() {
     ubuntu | debian | armbian)
         apt-get update && apt-get install -yqq --no-install-recommends ca-certificates
         ;;
-    centos | almalinux | rocky | oracle)
+    centos | almalinux | rocky | ol)
         yum -y update && yum -y install ca-certificates
         ;;
-    fedora)
+    fedora | amzn)
         dnf -y update && dnf -y install ca-certificates
         ;;
     arch | manjaro | parch)
