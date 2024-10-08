@@ -786,13 +786,21 @@ Outbound.FreedomSettings = class extends CommonClass {
         domainStrategy = '',
         redirect = '',
         fragment = {},
-        noise = {}
+        noises = []
     ) {
         super();
         this.domainStrategy = domainStrategy;
         this.redirect = redirect;
         this.fragment = fragment;
-        this.noise = noise;
+        this.noises = noises;
+    }
+
+    addNoise() {
+        this.noises.push(new Outbound.FreedomSettings.Noise());
+    }
+
+    delNoise(index) {
+        this.noises.splice(index, 1);
     }
 
     static fromJson(json = {}) {
@@ -800,7 +808,7 @@ Outbound.FreedomSettings = class extends CommonClass {
             json.domainStrategy,
             json.redirect,
             json.fragment ? Outbound.FreedomSettings.Fragment.fromJson(json.fragment) : undefined,
-            json.noise ? Outbound.FreedomSettings.Noise.fromJson(json.noise) : undefined,
+            json.noises ? json.noises.map(noise => Outbound.FreedomSettings.Noise.fromJson(noise)) : [new Outbound.FreedomSettings.Noise()],
         );
     }
 
@@ -809,10 +817,11 @@ Outbound.FreedomSettings = class extends CommonClass {
             domainStrategy: ObjectUtil.isEmpty(this.domainStrategy) ? undefined : this.domainStrategy,
             redirect: this.redirect,
             fragment: Object.keys(this.fragment).length === 0 ? undefined : this.fragment,
-            noise: Object.keys(this.noise).length === 0 ? undefined : this.noise,
+            noises: Outbound.FreedomSettings.Noise.toJsonArray(this.noises),
         };
     }
 };
+
 Outbound.FreedomSettings.Fragment = class extends CommonClass {
     constructor(packets='1-3',length='',interval=''){
         super();
@@ -829,20 +838,40 @@ Outbound.FreedomSettings.Fragment = class extends CommonClass {
         );
     }
 };
+
 Outbound.FreedomSettings.Noise = class extends CommonClass {
-    constructor(packet = '', delay = '') {
+    constructor(
+        type = 'rand',
+        packet = '10-20',
+        delay = '10-16'
+    ) {
         super();
+        this.type = type;
         this.packet = packet;
         this.delay = delay;
     }
 
     static fromJson(json = {}) {
         return new Outbound.FreedomSettings.Noise(
+            json.type,
             json.packet,
             json.delay,
         );
     }
+
+    toJson() {
+        return {
+            type: this.type,
+            packet: this.packet,
+            delay: this.delay,
+        };
+    }
+
+    static toJsonArray(noises) {
+        return noises.map(noise => noise.toJson());
+    }
 };
+
 Outbound.BlackholeSettings = class extends CommonClass {
     constructor(type) {
         super();
