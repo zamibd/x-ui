@@ -360,6 +360,10 @@
 "accessLogDesc" = "Đường dẫn tệp cho nhật ký truy cập."
 "errorLog" = "Nhật ký lỗi"
 "errorLogDesc" = "Đường dẫn tệp cho nhật ký lỗi."
+"dnsLog" = "Nhật ký DNS"
+"dnsLogDesc" = "Có bật nhật ký truy vấn DNS không"
+"maskAddress" = "Ẩn Địa Chỉ"
+"maskAddressDesc" = "Mặt nạ địa chỉ IP, khi được bật, sẽ tự động thay thế địa chỉ IP xuất hiện trong nhật ký."
 
 [pages.xray.rules]
 "first" = "Đầu tiên"
