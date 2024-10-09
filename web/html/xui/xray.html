@@ -657,6 +657,9 @@
                                     <template slot="domain" slot-scope="dns,index">
                                         <span v-if="typeof dns == 'object'">[[ dns.domains.join(",") ]]</span>
                                     </template>
+                                    <template slot="expectIPs" slot-scope="dns,index">
+                                        <span v-if="typeof dns == 'object'">[[ dns.expectIPs.join(",") ]]</span>
+                                    </template>
                                 </a-table>
                                 <a-divider>Fake DNS</a-divider>
                                 <a-button type="primary" icon="plus" @click="addFakedns()" style="margin-bottom: 10px;">{{ i18n "pages.xray.fakedns.add" }}</a-button>
@@ -766,6 +769,7 @@
         { title: "#", align: 'center', width: 20, scopedSlots: { customRender: 'action' } },
         { title: '{{ i18n "pages.xray.outbound.address"}}', align: 'center', width: 50, scopedSlots: { customRender: 'address' } },
         { title: '{{ i18n "pages.xray.dns.domains"}}', align: 'center', width: 50, scopedSlots: { customRender: 'domain' } },
+        { title: '{{ i18n "pages.xray.dns.expectIPs"}}', align: 'center', width: 50, scopedSlots: { customRender: 'expectIPs' } },
     ];
 
     const fakednsColumns = [
