@@ -98,8 +98,9 @@ func (s *InboundService) getAllEmails() ([]string, error) {
 }
 
 func (s *InboundService) contains(slice []string, str string) bool {
+	lowerStr := strings.ToLower(str)
 	for _, s := range slice {
-		if s == str {
+		if strings.ToLower(s) == lowerStr {
 			return true
 		}
 	}
