@@ -328,7 +328,6 @@
 "blockConfigsDesc" = "这些选项将禁止用户连接到特定协议和网站"
 "basicRouting" = "基本路由"
 "blockConnectionsConfigsDesc" = "这些选项将根据特定的请求国家阻止流量。"
-"directConnectionsConfigs" = "直接连接"
 "directConnectionsConfigsDesc" = "直接连接确保特定的流量不会通过其他服务器路由。"
 "blockips" = "阻止IP"
 "blockdomains" = "阻止域名"
