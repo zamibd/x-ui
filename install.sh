@@ -267,9 +267,9 @@ install_x-ui() {
     systemctl start x-ui
     echo -e "${green}x-ui v${last_version}${plain} installation finished, it is up and running now..."
     echo -e ""
-    echo "You may access the Panel with following URL(s):"
+    echo "${yellow}You may access the Panel with following URL(s):"
     /usr/local/x-ui/x-ui uri
-    echo -e ""
+    echo -e "${plain}"
     echo "X-UI Control Menu Usage"
     echo "------------------------------------------"
     echo "SUBCOMMANDS:"

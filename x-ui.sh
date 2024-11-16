@@ -276,7 +276,7 @@ get_uri() {
         show_menu
     fi
     LOGI "You may access the Panel with following URL(s):"
-    echo -e "${yellow}${info}${reset}"
+    echo -e "${yellow}${info}${plain}"
 }
 
 set_port() {
