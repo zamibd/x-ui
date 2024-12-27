@@ -625,7 +625,10 @@ TlsStreamSettings.Cert = class extends XrayCommonClass {
 };
 
 TlsStreamSettings.Settings = class extends XrayCommonClass {
-    constructor(allowInsecure = false, fingerprint = '') {
+    constructor(
+        allowInsecure = false,
+        fingerprint = UTLS_FINGERPRINT.UTLS_CHROME,
+    ) { 
         super();
         this.allowInsecure = allowInsecure;
         this.fingerprint = fingerprint;
@@ -700,7 +703,12 @@ class RealityStreamSettings extends XrayCommonClass {
 }
 
 RealityStreamSettings.Settings = class extends XrayCommonClass {
-    constructor(publicKey = '', fingerprint = UTLS_FINGERPRINT.UTLS_FIREFOX, serverName = '', spiderX= '/') {
+    constructor(
+        publicKey = '',
+        fingerprint = UTLS_FINGERPRINT.UTLS_CHROME,
+        serverName = '',
+        spiderX = '/'
+    ) {
         super();
         this.publicKey = publicKey;
         this.fingerprint = fingerprint;
