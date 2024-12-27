@@ -200,11 +200,6 @@ func (s *SubService) genVmessLink(inbound *model.Inbound, email string) string {
 			headers, _ := ws["headers"].(map[string]interface{})
 			obj["host"] = searchHost(headers)
 		}
-	case "http":
-		obj["net"] = "h2"
-		http, _ := stream["httpSettings"].(map[string]interface{})
-		obj["path"], _ = http["path"].(string)
-		obj["host"] = searchHost(http)
 	case "grpc":
 		grpc, _ := stream["grpcSettings"].(map[string]interface{})
 		obj["path"], _ = grpc["serviceName"].(string)
@@ -353,10 +348,6 @@ func (s *SubService) genVlessLink(inbound *model.Inbound, email string) string {
 			headers, _ := ws["headers"].(map[string]interface{})
 			params["host"] = searchHost(headers)
 		}
-	case "http":
-		http, _ := stream["httpSettings"].(map[string]interface{})
-		params["path"] = http["path"].(string)
-		params["host"] = searchHost(http)
 	case "grpc":
 		grpc, _ := stream["grpcSettings"].(map[string]interface{})
 		params["serviceName"] = grpc["serviceName"].(string)
@@ -551,10 +542,6 @@ func (s *SubService) genTrojanLink(inbound *model.Inbound, email string) string 
 			headers, _ := ws["headers"].(map[string]interface{})
 			params["host"] = searchHost(headers)
 		}
-	case "http":
-		http, _ := stream["httpSettings"].(map[string]interface{})
-		params["path"] = http["path"].(string)
-		params["host"] = searchHost(http)
 	case "grpc":
 		grpc, _ := stream["grpcSettings"].(map[string]interface{})
 		params["serviceName"] = grpc["serviceName"].(string)
@@ -745,10 +732,6 @@ func (s *SubService) genShadowsocksLink(inbound *model.Inbound, email string) st
 			headers, _ := ws["headers"].(map[string]interface{})
 			params["host"] = searchHost(headers)
 		}
-	case "http":
-		http, _ := stream["httpSettings"].(map[string]interface{})
-		params["path"] = http["path"].(string)
-		params["host"] = searchHost(http)
 	case "grpc":
 		grpc, _ := stream["grpcSettings"].(map[string]interface{})
 		params["serviceName"] = grpc["serviceName"].(string)
