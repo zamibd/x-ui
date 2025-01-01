@@ -373,12 +373,12 @@ class RealityStreamSettings extends CommonClass {
 };
 
 class SockoptStreamSettings extends CommonClass {
-    constructor(dialerProxy = "", tcpFastOpen = false, tcpKeepAliveInterval = 0, tcpNoDelay = false) {
+    constructor(dialerProxy = "", tcpFastOpen = false, tcpKeepAliveInterval = 0, penetrate = false) {
         super();
         this.dialerProxy = dialerProxy;
         this.tcpFastOpen = tcpFastOpen;
         this.tcpKeepAliveInterval = tcpKeepAliveInterval;
-        this.tcpNoDelay = tcpNoDelay;
+        this.penetrate = penetrate;
     }
 
     static fromJson(json = {}) {
@@ -387,7 +387,7 @@ class SockoptStreamSettings extends CommonClass {
             json.dialerProxy,
             json.tcpFastOpen,
             json.tcpKeepAliveInterval,
-            json.tcpNoDelay,
+            json.penetrate,
         );
     }
 
@@ -396,7 +396,7 @@ class SockoptStreamSettings extends CommonClass {
             dialerProxy: this.dialerProxy,
             tcpFastOpen: this.tcpFastOpen,
             tcpKeepAliveInterval: this.tcpKeepAliveInterval,
-            tcpNoDelay: this.tcpNoDelay,
+            penetrate: this.penetrate,
         };
     }
 }
