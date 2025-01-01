@@ -267,9 +267,9 @@ class xHTTPStreamSettings extends CommonClass {
         xmux = {
             maxConcurrency: "16-32",
             maxConnections: 0,
-            cMaxReuseTimes: "64-128",
-            cMaxLifetimeMs: 0,
-            hMaxRequestTimes: "800-900",
+            cMaxReuseTimes: 0,
+            hMaxRequestTimes: "600-900",
+            hMaxReusableSecs: "1800-3000",
             hKeepAlivePeriod: 0,
         },
     ) {
@@ -304,8 +304,8 @@ class xHTTPStreamSettings extends CommonClass {
                 maxConcurrency: this.xmux.maxConcurrency,
                 maxConnections: this.xmux.maxConnections,
                 cMaxReuseTimes: this.xmux.cMaxReuseTimes,
-                cMaxLifetimeMs: this.xmux.cMaxLifetimeMs,
                 hMaxRequestTimes: this.xmux.hMaxRequestTimes,
+                hMaxReusableSecs: this.xmux.hMaxReusableSecs,
                 hKeepAlivePeriod: this.xmux.hKeepAlivePeriod,
             },
         };
