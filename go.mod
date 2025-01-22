@@ -12,11 +12,11 @@ require (
 	github.com/op/go-logging v0.0.0-20160315200505-970db520ece7
 	github.com/pelletier/go-toml/v2 v2.2.3
 	github.com/robfig/cron/v3 v3.0.1
-	github.com/shirou/gopsutil/v4 v4.24.11
+	github.com/shirou/gopsutil/v4 v4.24.12
 	github.com/xtls/xray-core v1.8.25-0.20250101120305-e80ca67feed9
 	go.uber.org/atomic v1.11.0
 	golang.org/x/text v0.21.0
-	google.golang.org/grpc v1.69.2
+	google.golang.org/grpc v1.69.4
 	gorm.io/driver/sqlite v1.5.7
 	gorm.io/gorm v1.25.12
 )
