@@ -1385,6 +1385,9 @@ class Inbound extends XrayCommonClass {
             if (!ObjectUtil.isEmpty(this.stream.reality.settings.spiderX)) {
                 params.set("spx", this.stream.reality.settings.spiderX);
             }
+            if (!ObjectUtil.isEmpty(this.stream.reality.settings.mldsa65Verify)) {
+                params.set("pqv", this.stream.reality.settings.mldsa65Verify);
+            }
             if (type == 'tcp' && !ObjectUtil.isEmpty(flow)) {
                 params.set("flow", flow);
             }
@@ -1564,6 +1567,9 @@ class Inbound extends XrayCommonClass {
             }
             if (!ObjectUtil.isEmpty(this.stream.reality.settings.spiderX)) {
                 params.set("spx", this.stream.reality.settings.spiderX);
+            }
+            if (!ObjectUtil.isEmpty(this.stream.reality.settings.mldsa65Verify)) {
+                params.set("pqv", this.stream.reality.settings.mldsa65Verify);
             }
         }
 
