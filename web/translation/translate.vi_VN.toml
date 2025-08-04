@@ -123,6 +123,7 @@
 "remark" = "Nhận xét"
 "protocol" = "Giao thức"
 "port" = "Cổng"
+"portMap" = "Cổng điều chính"
 "traffic" = "Lưu lượng"
 "details" = "Chi tiết"
 "transportConfig" = "Cấu hình vận chuyển"
