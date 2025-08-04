@@ -2258,12 +2258,14 @@ Inbound.DokodemoSettings = class extends Inbound.Settings {
         protocol,
         address,
         port,
+        portMap = [],
         network = 'tcp,udp',
         followRedirect = false
     ) {
         super(protocol);
         this.address = address;
         this.port = port;
+        this.portMap = portMap;
         this.network = network;
         this.followRedirect = followRedirect;
     }
@@ -2273,6 +2275,7 @@ Inbound.DokodemoSettings = class extends Inbound.Settings {
             Protocols.DOKODEMO,
             json.address,
             json.port,
+            XrayCommonClass.toHeaders(json.portMap),
             json.network,
             json.followRedirect,
         );
@@ -2282,6 +2285,7 @@ Inbound.DokodemoSettings = class extends Inbound.Settings {
         return {
             address: this.address,
             port: this.port,
+            portMap: XrayCommonClass.toV2Headers(this.portMap),
             network: this.network,
             followRedirect: this.followRedirect,
         };
