@@ -429,6 +429,11 @@ func (s *SubService) genVlessLink(inbound *model.Inbound, email string) string {
 					params["fp"] = fp
 				}
 			}
+			if pqvValue, ok := searchKey(realitySettings, "mldsa65Verify"); ok {
+				if pqv, ok := pqvValue.(string); ok && len(pqv) > 0 {
+					params["pqv"] = pqv
+				}
+			}
 			params["spx"] = "/" + random.Seq(15)
 		}
 
@@ -617,6 +622,11 @@ func (s *SubService) genTrojanLink(inbound *model.Inbound, email string) string 
 			if fpValue, ok := searchKey(realitySettings, "fingerprint"); ok {
 				if fp, ok := fpValue.(string); ok && len(fp) > 0 {
 					params["fp"] = fp
+				}
+			}
+			if pqvValue, ok := searchKey(realitySettings, "mldsa65Verify"); ok {
+				if pqv, ok := pqvValue.(string); ok && len(pqv) > 0 {
+					params["pqv"] = pqv
 				}
 			}
 			params["spx"] = "/" + random.Seq(15)
