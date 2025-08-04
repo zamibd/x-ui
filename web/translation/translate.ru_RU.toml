@@ -123,6 +123,7 @@
 "remark" = "Примечание"
 "protocol" = "Протокол"
 "port" = "Порт"
+"portMap" = "Порт-перенаправление"
 "traffic" = "Трафик"
 "details" = "Подробнее"
 "transportConfig" = "Перенести"
