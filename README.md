@@ -186,23 +186,6 @@ docker build -t x-ui .
 - HTTPS for secure access to the web panel and subscription service (self-provided domain + SSL certificate)
 - Dark/Light theme
 
-## Recommended OS
-
-- Ubuntu 22.04+
-- Debian 11+
-- CentOS 8+
-- OpenEuler 22.03+
-- Fedora 36+
-- Arch Linux
-- Parch Linux
-- Manjaro
-- Armbian
-- AlmaLinux 8.0+
-- Rocky Linux 8+
-- Oracle Linux 8+
-- OpenSUSE Tubleweed
-- Amazon Linux 2023
-
 ## Preview
 
 ![inbounds](./media/inbounds.png)
