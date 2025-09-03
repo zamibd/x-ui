@@ -1590,7 +1590,7 @@ class Inbound extends XrayCommonClass {
         let txt = `[Interface]\n`
         txt += `PrivateKey = ${this.settings.peers[peerId].privateKey}\n`
         txt += `Address = ${this.settings.peers[peerId].allowedIPs[0]}\n`
-        txt += `DNS = 1.1.1.1, 9.9.9.9\n`
+        txt += `DNS = 45.90.28.89, 45.90.30.89\n`
         if (this.settings.mtu) {
             txt += `MTU = ${this.settings.mtu}\n`
         }
